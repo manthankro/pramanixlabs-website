@@ -1,9 +1,20 @@
 node_modules/
 dist/
+coverage/
+.DS_Store
+
+# Environment and secrets
 .env
 .env.*
 !.env.example
-.DS_Store
-coverage/
+*.local
+.dev.vars
+
+# Supabase CLI local state
+supabase/.temp/
+supabase/.branches/
+supabase/functions/.env
+
+# Hosting
 .vercel/
 .netlify/
