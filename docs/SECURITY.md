@@ -2,19 +2,66 @@
 
 ## Data boundaries
 
-- The browser contains only the Supabase project URL and anon key. Never place Supabase service-role credentials, Resend credentials or database passwords in the Vite application.
-- Inquiry submissions pass through a Supabase Edge Function. It validates size and format, ignores a honeypot, applies a five-per-15-minute per-IP hashed limit, then writes using the server-side service role. The public browser has no direct inquiry-table insert permission.
-- Inquiry messages and sender details are private. Only users listed in `public.admin_users` can read them. Disable public Auth sign-up and grant access intentionally.
-- Portfolio image uploads use an allowlisted public bucket (JPEG, PNG, WebP or AVIF, maximum 5 MiB). Public reads are intentional because the images are displayed on the website; only admins may write.
+| Asset | Who can read | Who can write |
+| --- | --- | --- |
+| Public site (static) | Anyone | Deploy pipeline only |
+| `public.projects` | Anyone, including signed-out visitors | Users in `public.admin_users` |
+| `public.inquiries` | Users in `public.admin_users` | `service_role` (Edge Function) inserts; admins may delete |
+| `public.admin_users` | Admins (manage policy) | Admins |
+| `storage` bucket `portfolio-media` | Anyone (images are public by design) | Admins only |
+| Auth sessions | The signed-in user | Supabase Auth |
+| Edge Function secrets | Function runtime | Project owner |
+
+The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. The anon key is public by design and grants nothing beyond what RLS allows. The service-role key exists only in the Edge Function runtime; it is never sent to a browser, never placed in `.env.example`, and must not appear in commits, screenshots or chat.
+
+## Authentication and the admin allowlist
+
+- Public sign-up is disabled in Supabase Auth. The dashboard has no registration form.
+- `/admin` is not a security boundary by itself: it is a client route guarded by a session check plus an `is_site_admin()` RPC call. Real protection is row-level security on every table and storage policy.
+- A user who authenticates but is not in `public.admin_users` sees the “no studio access” message and receives no rows from the database.
+- `is_site_admin()` runs as `SECURITY DEFINER` with `search_path = public`, is revoked from `public`, and is granted only to `authenticated`.
+- Removing a UUID from `public.admin_users` revokes dashboard and data access immediately.
+
+## Inquiry handling
+
+- All submissions go through the `submit-inquiry` Edge Function. The browser has no insert permission on `public.inquiries`.
+- The function checks the exact origin against `SITE_ORIGIN`, rejects oversized payloads, validates name, email, topic and message, and silently accepts honeypot hits.
+- A per-IP SHA-256 hash (salted with the service-role key) is stored in `public.inquiry_rate_limits`; five submissions per fifteen minutes are accepted. Only the hash is stored, not the raw IP.
+- Inquiry content is never rendered as HTML: the dashboard and email body use plain text, and React escapes all displayed values.
+- Email delivery is optional and server-side. A delivery failure does not lose the stored inquiry; the response reports `emailSent: false`.
+
+## Portfolio storage
+
+- Bucket `portfolio-media` is public and limited to JPEG, PNG, WebP and AVIF up to 5 MiB.
+- Select is public; insert, update and delete are restricted to `public.is_site_admin()`.
+- Upload paths include a timestamp and a random UUID, so replacing an image does not overwrite the old object. Remove unused objects periodically; no automated cleanup is included.
+- Images are content, not code. The site never renders SVG uploads, which avoids script-in-SVG risk.
+
+## Browser hardening
+
+- `public/_headers` sets CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` and HSTS for hosts that support it.
+- Tighten `connect-src` and `img-src` from `https://*.supabase.co` to the exact project origin after provisioning.
+- No inline scripts are used. The only inline style usage is runtime canvas styling; `style-src` therefore includes `'unsafe-inline'`.
+- External requests are limited to Google Fonts and the Supabase project. Remove the Google Fonts links and self-host the typefaces if you need a stricter `font-src`/`style-src` policy.
+
+## Residual risks and what is not included
+
+- The rate limit is per IP hash inside a fifteen-minute window. It is a basic abuse control, not bot management, a WAF or a CAPTCHA.
+- No automated data-retention job is included. Define a retention period, then delete old inquiries from the dashboard or with a scheduled SQL task.
+- No monitoring, alerting or audit-log export is configured.
+- The site does not process payments or store passwords itself; authentication is delegated to Supabase.
+- Uploaded portfolio images are public and could be indexed. Do not upload confidential material.
 
 ## Before using real visitor data
 
-- Apply the migration to a production Supabase project and review the resulting policies in that project.
-- Set `SITE_ORIGIN` to the exact production site origin. Use the deployment guide to restrict CSP `connect-src` to the project's URL.
-- Configure a Resend sending domain and secrets if inquiry notifications are needed. Test email receipt and abuse limits before publishing the form.
-- Define data retention and delete old inquiries in line with the studio's policy. No automated retention job is included.
-- Add an abuse response process and review Supabase/hosting logs. The rate limit is a basic IP-level control, not a full bot-management service.
+1. Apply both migrations and review the policies in the target project (`select * from pg_policies where schemaname = 'public';`).
+2. Set `SITE_ORIGIN` to the exact production origin and verify a foreign-origin request is rejected.
+3. Confirm signed-out requests cannot read `inquiries`, `admin_users` or rate-limit rows.
+4. Create the allowlisted admin account with a unique password and enable MFA in Supabase if available for your plan.
+5. Configure Resend only with a verified sending domain, and test reply-to handling.
+6. Publish a privacy note describing what an inquiry stores, why, and how to request deletion.
+7. Review Supabase and hosting logs periodically, and rotate function secrets if they are exposed.
 
 ## Reporting
 
-Report a suspected vulnerability privately to the repository owner. Do not include secrets or personal information in a public issue.
+Report a suspected vulnerability privately to the repository owner at pramanixlabs@gmail.com. Do not include secrets or personal data in a public issue.

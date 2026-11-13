@@ -1,46 +1,89 @@
 # PramanixLabs website
 
-Official company website for PramanixLabs, a technology venture founded by Manthan Lonkar in Pune, India. The site introduces the studio, its six listed service areas, project portfolio, upcoming innovations, editorial themes and inquiry channel.
+The official website of PramanixLabs, an independent technology studio founded by Manthan Lonkar in Pune, India. The site introduces the studio, six service areas, the project portfolio, projects still in exploration, editorial themes and an inquiry channel.
+
+The public site is a React + TypeScript + Vite application with a Three.js particle-vortex hero. A private studio dashboard at `/admin` edits project records and reads inquiries through Supabase.
 
 ## Stack
 
-- React, TypeScript and Vite
-- Three.js via React Three Fiber for the 15,000-point vortex hero
-- Supabase Auth and Postgres for the private dashboard, editable portfolio and inquiry inbox
-- Vitest for content checks
+- React 19, TypeScript, Vite 6
+- Three.js via React Three Fiber for the hero (lazy-loaded, with a CSS fallback)
+- Supabase: Auth, Postgres with row-level security, Storage and one Edge Function
+- Vitest and Testing Library for content and form checks
 
-## Run locally
+## Project structure
+
+```text
+index.html                     document metadata, JSON-LD, fonts
+public/                        favicon, social image, robots.txt, _headers, _redirects
+src/App.tsx                    tiny router: public site or /admin
+src/pages/HomePage.tsx         public page composition
+src/pages/AdminPage.tsx        private dashboard (login, portfolio editor, inbox)
+src/components/                Header, Vortex hero, InquiryForm, Brand
+src/data/content.ts            services, projects, insights, inquiry topics
+src/styles.css                 design system and responsive layout
+src/lib/supabase.ts            browser client; null when unconfigured
+src/lib/useSeo.ts              per-route title and social metadata
+supabase/migrations/           schema, RLS, allowlist, storage, seed copy
+supabase/functions/            submit-inquiry Edge Function
+docs/                          deployment and security guides
+```
+
+## Local development
 
 ```sh
-npm install
-cp .env.example .env.local
+npm ci
+cp .env.example .env.local     # optional: leave empty to run without Supabase
 npm run dev
 ```
 
-The public site works without Supabase. Inquiry delivery, admin access, editable project records and portfolio uploads require a configured Supabase project. Never put a service-role key in this Vite application.
+The public site works without Supabase; only inquiry delivery, admin access, editable project rows and image uploads need it. The hero still animates without any backend.
+
+Useful scripts:
+
+```sh
+npm run build     # type-check and production build to dist/
+npm test          # content and form tests
+npm run lint      # ESLint
+npm run preview   # serve the built site locally
+```
+
+## Content
+
+- **Services, projects, insights, form topics and studio links** live in `src/data/content.ts`. Project `tags` and public repository links come from this file only; database rows cannot add links.
+- **Project copy, status, ordering, upcoming flag and portfolio images** are managed at `/admin` and stored in Supabase. The public site falls back to `src/data/content.ts` when no rows are available.
+- **Upcoming innovations** are project rows with `upcoming = true`. Toggle the flag in the dashboard to move an entry into the “On the horizon” section; the counter updates automatically.
+- **Insights** are labelled “Editorial theme” in the UI. They are not articles, and intentionally have no fake publish dates or links.
+
+Restovra and KavachScan are private projects: their records carry no repository link and are described as “Source kept private”. Do not add public links to them.
 
 ## Supabase setup
 
-1. Create a Supabase project and set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env.local` and your hosting provider.
-2. Install the Supabase CLI, link the project and run `supabase db push` to apply `supabase/migrations/202611130001_init.sql`.
-3. In Supabase Authentication, disable public signups. Create an admin user in the dashboard, then insert that user's UUID into `public.admin_users` using the SQL editor while signed in as the project owner.
-4. Deploy the inquiry function: `supabase functions deploy submit-inquiry`. Set `SITE_ORIGIN` to the comma-separated production origin(s). To enable notifications, set `RESEND_API_KEY`, `INQUIRY_RECIPIENT` and `INQUIRY_FROM` as Supabase function secrets. Inquiry records are stored even when email notifications are not configured. The function applies a five-submissions-per-15-minute per-IP limit and a honeypot check.
-5. Open `/admin` and sign in. The database row-level security policies allow only listed admin user IDs to read inquiries, edit projects or upload portfolio images. Portfolio images are public by design; only allowlisted admins can upload or replace them.
+Full steps, secrets and troubleshooting are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). In short:
 
-The Supabase Edge Function validates inquiry fields and stores messages in Postgres. Resend email delivery is optional and requires server-side secrets. Do not expose service credentials in client code.
+1. Create a Supabase project.
+2. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env.local` and in your host's build environment.
+3. Apply both migrations in `supabase/migrations/` with `supabase db push`.
+4. Disable public sign-ups. Create the studio user in Supabase Auth, then insert its UUID into `public.admin_users`.
+5. Deploy `submit-inquiry` with `--no-verify-jwt` (it is a public form endpoint) and set `SITE_ORIGIN`.
+6. Optionally add `RESEND_API_KEY`, `INQUIRY_RECIPIENT` and `INQUIRY_FROM` as function secrets for email notifications. Inquiries are stored with or without email.
 
-## Build and checks
-
-```sh
-npm run build
-npm test
-npm run lint
-```
+Access model: the browser holds only the project URL and anon key. Row-level security limits reads of inquiries, writes to projects and storage uploads to users in `public.admin_users`. The service-role key exists only inside the Edge Function runtime. There is no public sign-up and no public admin link other than the small “Studio access” link in the footer.
 
 ## Deployment
 
-See [the deployment guide](docs/DEPLOYMENT.md) for Supabase provisioning, static hosting, security headers and launch checks. No deployment, domain, email delivery or live Supabase project is included or claimed here. See [security notes](docs/SECURITY.md) for the access model and data boundaries.
+The build is static. `public/_headers` and `public/_redirects` cover Cloudflare Pages and Netlify (headers and SPA fallback). Other hosts need the included `_headers` values applied in their configuration, plus a rewrite of unknown paths to `/index.html`.
 
-## Content and accuracy
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for hosting options, CSP, canonical/OG URLs and the launch checklist, and [docs/SECURITY.md](docs/SECURITY.md) for the access model and data boundaries.
 
-Company and founder framing follows the LinkedIn profiles. Restovra, KavachScan and Pramanix AI descriptions follow their repository READMEs. Links are shown for public repositories; private project sources are not exposed as visitor links. The remaining projects are named from the project brief, with descriptions kept intentionally limited. Editorial cards are clearly labeled as themes, not published articles. Update portfolio copy and article content as project scope becomes public.
+## Accuracy policy
+
+- Company and founder framing follows the public LinkedIn profiles.
+- Project descriptions follow the public project sources. Private repositories are never linked or described as publicly available.
+- Cybersecurity and digital learning appear as areas of active interest through existing projects, not as claims of an independently verified company service. The six listed service areas are AI & AI agents, SaaS products & dashboards, web development, mobile applications, custom software, and automation & digital solutions.
+- No customers, testimonials, awards, launch dates, guarantees or measured outcomes are claimed anywhere on the site.
+- Projects in exploration are explicitly labelled as such.
+
+## Status of external services
+
+This repository contains the complete application and schema, but no live Supabase project, email provider, domain or hosting account. Supabase, email delivery, storage, authentication and deployment have not been verified by the repository author; follow the deployment guide to configure and verify them against your own project.
