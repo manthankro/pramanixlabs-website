@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+  <defs>
+    <radialGradient id="bg" cx="72%" cy="42%" r="72%">
+      <stop offset="0" stop-color="#132033" />
+      <stop offset="0.5" stop-color="#090c11" />
+      <stop offset="1" stop-color="#06070a" />
+    </radialGradient>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#cfe2ff" stop-opacity="0.9" />
+      <stop offset="0.35" stop-color="#3f8cff" stop-opacity="0.28" />
+      <stop offset="1" stop-color="#3f8cff" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5aa0ff" />
+      <stop offset="1" stop-color="#1f5fce" />
+    </linearGradient>
+    <clipPath id="frame">
+      <rect width="1200" height="630" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="630" fill="url(#bg)" />
+
+    <g opacity="0.5" stroke="#8facd2" stroke-width="1">
+      <path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200" opacity="0.12" />
+      <path d="M90 0v630M180 0v630M270 0v630M360 0v630M450 0v630M540 0v630M630 0v630M720 0v630M810 0v630M900 0v630M990 0v630M1080 0v630" opacity="0.1" />
+    </g>
+
+    <circle cx="830" cy="300" r="300" fill="url(#core)" />
+    <g fill="none" stroke="#3f8cff" stroke-opacity="0.34">
+      <ellipse cx="830" cy="300" rx="270" ry="108" transform="rotate(-24 830 300)" />
+      <ellipse cx="830" cy="300" rx="205" ry="78" transform="rotate(18 830 300)" />
+      <ellipse cx="830" cy="300" rx="135" ry="52" transform="rotate(-8 830 300)" />
+    </g>
+    <g fill="#8ab8ff">
+      <circle cx="830" cy="300" r="7" />
+      <circle cx="1010" cy="196" r="3.4" opacity="0.9" />
+      <circle cx="655" cy="338" r="2.8" opacity="0.8" />
+      <circle cx="905" cy="420" r="2.4" opacity="0.7" />
+      <circle cx="960" cy="248" r="2" opacity="0.6" />
+    </g>
+    <circle cx="968" cy="238" r="4" fill="#ff8a5c" opacity="0.8" />
+
+    <g transform="translate(88 84)">
+      <circle cx="27" cy="27" r="26" fill="none" stroke="#3f8cff" stroke-width="1.6" opacity="0.9" />
+      <text x="27" y="35" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="25" font-weight="700" fill="#eef2f8">P</text>
+      <text x="41" y="31" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#3f8cff">×</text>
+      <text x="66" y="24" font-family="Helvetica, Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="3" fill="#eef2f8">PRAMANIX<tspan fill="#8b94a1">LABS</tspan></text>
+      <text x="66" y="42" font-family="Courier, monospace" font-size="9" letter-spacing="3.4" fill="#77818f">IMAGINE. BUILD. EVOLVE.</text>
+    </g>
+
+    <text x="88" y="320" font-family="Helvetica, Arial, sans-serif" font-size="82" font-weight="600" letter-spacing="-4.4" fill="#eef2f8">Ideas into</text>
+    <text x="88" y="408" font-family="Helvetica, Arial, sans-serif" font-size="82" font-weight="600" letter-spacing="-4.4" fill="#7fb2ff">intelligent things.</text>
+
+    <text x="88" y="474" font-family="Helvetica, Arial, sans-serif" font-size="19" fill="#97a2b2">An independent technology studio in Pune.</text>
+    <text x="88" y="504" font-family="Helvetica, Arial, sans-serif" font-size="19" fill="#97a2b2">AI · SaaS · Web · Mobile · Custom software · Automation</text>
+
+    <rect x="88" y="560" width="1024" height="1" fill="#bcd0ee" opacity="0.16" />
+    <text x="88" y="594" font-family="Courier, monospace" font-size="11" letter-spacing="2.6" fill="#7b8696">PRAMANIXLABS</text>
+    <text x="1112" y="594" text-anchor="end" font-family="Courier, monospace" font-size="11" letter-spacing="2.6" fill="#7b8696">PUNE, INDIA</text>
+  </g>
+</svg>
