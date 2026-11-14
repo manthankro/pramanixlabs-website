@@ -108,6 +108,9 @@
       pointer-events: auto;
     }
 
+    #chapter-5 { touch-action: pan-y; overscroll-behavior-y: contain; }
+    #chapter-5.active { pointer-events: auto; }
+
     /* Tactile Dark-Glass HUD Panels */
     .hud-glass {
       background: rgba(6, 9, 18, 0.62);
@@ -246,7 +249,7 @@
       <div class="hidden md:flex items-center gap-6 lg:gap-7 font-mono text-[11px] tracking-[0.16em] uppercase text-slate-300">
         <button type="button" onclick="jumpToChapter(1)" data-nav-idx="1" class="nav-link hover:text-white transition-colors">STUDIO</button>
         <button type="button" onclick="jumpToChapter(2)" data-nav-idx="2" class="nav-link hover:text-sky-300 transition-colors">SERVICES</button>
-        <button type="button" onclick="jumpToChapter(5)" data-nav-idx="5" class="nav-link hover:text-white transition-colors">PRODUCTS</button>
+        <button type="button" onclick="jumpToChapter(5)" data-nav-idx="5" class="nav-link hover:text-white transition-colors">SERVICES</button>
         <button type="button" onclick="jumpToChapter(4)" data-nav-idx="4" class="nav-link hover:text-white transition-colors">START HERE</button>
         <button type="button" onclick="openBookingOrInquiry('Something else')" class="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white hover:text-slate-950 text-white border border-white/15 transition-all">
           START A PROJECT
@@ -287,7 +290,7 @@
       <span class="sr-only">05 · Project planning</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">05 · Product ideas</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(5)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="5" aria-label="Go to PramanixLabs products" title="PramanixLabs products">
+    <button type="button" onclick="jumpToChapter(5)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="5" aria-label="Go to services and contact" title="PramanixLabs products">
       <span class="sr-only">06 · Products</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">06 · Products</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
@@ -1294,7 +1297,8 @@
     function applyProjects(projects) {
       if (!Array.isArray(projects)) return;
       const keysByCode = { '01': 'restovra', '02': 'kavachscan', '03': 'pramanix-ai', '04': 'second-life-id', '05': 'pramanix-shelf' };
-      const grid = document.getElementById('projects-grid');\n      if (!grid) return;
+      const grid = document.getElementById('projects-grid');
+      if (!grid) return;
       const cards = new Map(Array.from(grid.querySelectorAll('[data-project-code]')).map(card => [card.dataset.projectCode, card]));
       const ordered = [];
       const incomingCodes = new Set(projects.map(project => String(project.code ?? '')));
