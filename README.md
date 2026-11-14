@@ -17,7 +17,8 @@ The public site is a React + TypeScript + Vite application with a Three.js parti
 index.html                     document metadata, JSON-LD, fonts
 public/                        favicon, social image, robots.txt, _headers, _redirects
 src/App.tsx                    tiny router: public site or /admin
-src/pages/HomePage.tsx         public page composition
+src/pages/HomePage.tsx         cosmic experience host and project data bridge
+public/cosmic-architecture.html  standalone 3D chapter experience
 src/pages/AdminPage.tsx        private dashboard (login, portfolio editor, inbox)
 src/components/                Header, Vortex hero, InquiryForm, Brand
 src/data/content.ts            services, projects, insights, inquiry topics
@@ -37,7 +38,7 @@ cp .env.example .env.local     # optional: leave empty to run without Supabase
 npm run dev
 ```
 
-The public site works without Supabase; only inquiry delivery, admin access, editable project rows and image uploads need it. The hero still animates without any backend.
+The public site works without Supabase. Without the public Supabase settings, the inquiry form falls back to the visitor’s email app; with the settings and deployed function, inquiries are stored in Supabase. Admin access, editable project rows and image uploads also need Supabase.
 
 Useful scripts:
 
@@ -72,7 +73,7 @@ Access model: the browser holds only the project URL and anon key. Row-level sec
 
 ## Deployment
 
-The build is static. `public/_headers` and `public/_redirects` cover Cloudflare Pages and Netlify (headers and SPA fallback). Other hosts need the included `_headers` values applied in their configuration, plus a rewrite of unknown paths to `/index.html`.
+The build is static. `vercel.json` configures Vercel security headers and the `/admin` SPA fallback. `public/_headers` and `public/_redirects` cover Cloudflare Pages and Netlify. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel for Preview and Production; these are public browser configuration values. Configure `SITE_ORIGIN` and optional email secrets in Supabase Edge Function settings.
 
 See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for hosting options, CSP, canonical/OG URLs and the launch checklist, and [docs/SECURITY.md](docs/SECURITY.md) for the access model and data boundaries.
 
@@ -86,4 +87,4 @@ See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for hosting options, CSP, canonical
 
 ## Status of external services
 
-This repository contains the complete application and schema, but no live Supabase project, email provider, domain or hosting account. The migrations and row-level security policies have been executed and exercised against a local Postgres-compatible engine, but Supabase Auth, Storage, Edge Function execution, email delivery and deployment have not been verified against a live project. Follow the deployment guide to configure and verify them against your own project.
+The repository contains the application and schema. The website is deployed through Vercel, while live Supabase setup, inquiry delivery, admin access and email notifications depend on the project owner’s Supabase configuration. Follow the deployment guide and verify each feature against the connected services.
