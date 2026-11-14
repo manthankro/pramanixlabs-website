@@ -98,7 +98,7 @@ The anon key is designed to be public; RLS and the admin allowlist enforce acces
 `/admin` is a client-side route. The host must serve `index.html` for unknown paths:
 
 - Cloudflare Pages / Netlify: `public/_redirects` is already included and copied into `dist/`.
-- Vercel: `vercel.json` now rewrites unmatched routes to `/index.html`; static files such as `/cosmic-architecture.html` continue to resolve first.
+- Vercel: `vercel.json` now rewrites unmatched routes to `/index.html`; static files continue to resolve first.
 - Any static server: configure the equivalent fallback.
 
 ### Headers
@@ -134,7 +134,7 @@ Work through this list against the real project, not the repository defaults.
 - [ ] `/admin` loads directly (SPA fallback works), an allowlisted account signs in, and a non-allowlisted account is denied.
 - [ ] A submitted inquiry appears in Supabase and in the dashboard inbox. If email secrets are set, the notification arrives with a working reply-to.
 - [ ] Submitting faster than five times in fifteen minutes returns the rate-limit message.
-- [ ] An image upload from `/admin` appears on the public portfolio with its alt text, and an unapproved MIME type or a file over 5 MB is rejected.
+- [ ] An image upload from `/admin` appears on the public in-house product section with its alt text, and an unapproved MIME type or a file over 5 MB is rejected.
 - [ ] Sign out clears access; reloading `/admin` requires a new session.
 - [ ] Response headers include CSP and HSTS; the browser console has no CSP violations.
 - [ ] Touch, keyboard-only navigation, Escape-to-close menu and visible focus states all work.
