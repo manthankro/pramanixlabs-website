@@ -211,6 +211,14 @@
     .drawer-backdrop.open .drawer-panel {
       transform: translateY(0) scale(1);
     }
+
+    @media (max-width: 380px) {
+      header nav { gap: 0.5rem; padding-inline: 0.625rem; }
+      .mobile-brand { gap: 0.4rem; min-width: 0; }
+      .mobile-brand-mark { width: 1.35rem; height: 1.35rem; }
+      .mobile-brand-wordmark { font-size: 0.68rem; letter-spacing: 0.08em; white-space: nowrap; }
+      .mobile-monolith { display: none !important; }
+    }
   </style>
 </head>
 <body class="selection:bg-sky-500/30 selection:text-white">
@@ -226,9 +234,9 @@
       <div id="nav-progress" class="absolute bottom-0 left-0 h-[1.5px] bg-gradient-to-r from-sky-400 via-cyan-300 to-orange-500 w-0 transition-all duration-75"></div>
 
       <!-- Left: Exact PramanixLabs Monogram + PRAMANIXLABS Dual-Tone Wordmark -->
-      <button type="button" onclick="jumpToChapter(0)" class="prx-logo-trigger flex items-center gap-3 text-left group">
-        <span class="prx-logo-slot w-7 h-7 flex items-center justify-center" data-size="28" data-id="nav"></span>
-        <span class="text-sm sm:text-base tracking-[0.14em] uppercase font-semibold">
+      <button type="button" onclick="jumpToChapter(0)" class="prx-logo-trigger mobile-brand flex items-center gap-3 text-left group">
+        <span class="prx-logo-slot mobile-brand-mark w-7 h-7 flex items-center justify-center" data-size="28" data-id="nav"></span>
+        <span class="mobile-brand-wordmark text-sm sm:text-base tracking-[0.14em] uppercase font-semibold">
           <span class="text-white">PRAMANIX</span><span class="text-sky-400 font-normal">LABS</span>
         </span>
       </button>
@@ -238,7 +246,7 @@
         <button type="button" onclick="jumpToChapter(1)" data-nav-idx="1" class="nav-link hover:text-white transition-colors">STUDIO</button>
         <button type="button" onclick="jumpToChapter(2)" data-nav-idx="2" class="nav-link hover:text-sky-300 transition-colors">SERVICES</button>
         <button type="button" onclick="jumpToChapter(5)" data-nav-idx="5" class="nav-link hover:text-white transition-colors">WORK</button>
-        <button type="button" onclick="jumpToChapter(4)" data-nav-idx="4" class="nav-link hover:text-white transition-colors">INSIGHTS</button>
+        <button type="button" onclick="jumpToChapter(4)" data-nav-idx="4" class="nav-link hover:text-white transition-colors">HORIZON</button>
         <button type="button" onclick="openInquiryModal('General Studio Inquiry')" class="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white hover:text-slate-950 text-white border border-white/15 transition-all">
           SAY HELLO
         </button>
@@ -246,7 +254,7 @@
 
       <!-- Mobile Quick Action -->
       <div class="flex md:hidden items-center gap-2">
-        <button type="button" onclick="jumpToChapter(2)" class="px-3 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/40 font-mono text-[10px] tracking-wider uppercase text-sky-200">
+        <button type="button" onclick="jumpToChapter(2)" class="mobile-monolith px-3 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/40 font-mono text-[10px] tracking-wider uppercase text-sky-200">
           3D Logo
         </button>
         <button type="button" onclick="openInquiryModal('General Studio Inquiry')" class="px-3 py-1.5 rounded-full bg-white text-slate-950 font-mono text-[10px] font-semibold uppercase">
@@ -258,28 +266,28 @@
 
   <!-- Right-Edge Cosmic Chapter Navigator Dots -->
   <aside aria-label="Chapter Navigator" class="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-end gap-3">
-    <button type="button" onclick="jumpToChapter(0)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="0">
-      <span class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">01 · Portal</span>
+    <button type="button" onclick="jumpToChapter(0)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="0" aria-label="Go to Portal" title="Portal">
+      <span class="sr-only">01 · Portal</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">01 · Portal</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white scale-125 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(1)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="1">
-      <span class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">02 · Studio</span>
+    <button type="button" onclick="jumpToChapter(1)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="1" aria-label="Go to Studio" title="Studio">
+      <span class="sr-only">02 · Studio</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">02 · Studio</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(2)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="2">
-      <span class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-sky-300 opacity-0 group-hover:opacity-100 transition-opacity">03 · 3D Logo Matrix</span>
+    <button type="button" onclick="jumpToChapter(2)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="2" aria-label="Go to Services and 3D logo matrix" title="Services and 3D logo matrix">
+      <span class="sr-only">03 · Services and 3D logo matrix</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-sky-300 opacity-0 group-hover:opacity-100 transition-opacity">03 · Services and 3D logo matrix</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(3)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="3">
-      <span class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">04 · Horizon</span>
+    <button type="button" onclick="jumpToChapter(3)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="3" aria-label="Go to Engineering philosophy" title="Engineering philosophy">
+      <span class="sr-only">04 · Philosophy</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">04 · Philosophy</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(4)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="4">
-      <span class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">05 · Singularity</span>
+    <button type="button" onclick="jumpToChapter(4)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="4" aria-label="Go to On the horizon" title="On the horizon">
+      <span class="sr-only">05 · On the horizon</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">05 · On the horizon</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(5)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="5">
-      <span class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">06 · Universe</span>
+    <button type="button" onclick="jumpToChapter(5)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="5" aria-label="Go to Selected work" title="Selected work">
+      <span class="sr-only">06 · Selected work</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">06 · Selected work</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
   </aside>
@@ -318,7 +326,7 @@
         </h1>
 
         <p class="text-xs sm:text-base text-slate-300/90 max-w-lg mx-auto leading-relaxed font-light">
-          PramanixLabs is an independent technology studio in Pune, India — engineering applied AI systems, resilient software, and security diagnostics from first principles.
+          PramanixLabs is an independent technology studio in Pune, India — building AI systems and software, with active interests in cybersecurity and digital learning.
         </p>
 
         <div class="interactive pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
@@ -388,7 +396,7 @@
             </div>
             <h3 class="text-base sm:text-lg font-medium text-white">Hardened boundaries by default</h3>
             <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed">
-              Strict Row-Level Security, least-privilege execution, and automated secret hygiene are embedded before the first deploy.
+              We value clear access boundaries, careful data handling and security considerations from the start of a project.
             </p>
           </div>
         </div>
@@ -411,6 +419,14 @@
             engineering discipline.<br />
             We build from first principles.
           </h2>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-1.5 pt-2 font-mono text-[10px] sm:text-[11px] tracking-wide text-white/60" aria-label="Studio services">
+            <li>AI &amp; AI agents</li>
+            <li>SaaS &amp; dashboards</li>
+            <li>Web development</li>
+            <li>Mobile applications</li>
+            <li>Custom software</li>
+            <li>Automation &amp; digital solutions</li>
+          </ul>
         </div>
       </div>
 
@@ -466,19 +482,24 @@
     <section id="chapter-4" class="chapter-layer items-center justify-between py-24 text-center">
       <div class="space-y-3 pt-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-violet-500/10 border border-violet-400/30 font-mono text-[10px] tracking-[0.22em] uppercase text-violet-200">
-          <span>05 / THE SINGULARITY LAYER</span>
+          <span>05 / ON THE HORIZON</span>
         </div>
         <h2 class="text-3xl sm:text-5xl font-medium tracking-tight text-white">
-          Controlled Evaluation &amp; <span class="font-serif italic font-normal text-violet-300">Deep R&amp;D</span>
+          Early ideas, <span class="font-serif italic font-normal text-violet-300">taking shape</span>
         </h2>
       </div>
 
-      <div class="h-56"></div>
-
-      <div class="max-w-md mx-auto hud-glass rounded-2xl px-6 py-4">
-        <p class="font-mono text-[11px] tracking-wider uppercase text-slate-300 leading-relaxed">
-          PRIVATE REPOSITORIES · HARDENED SANDBOXES · VERIFIED ARCHITECTURE BRIEFS
-        </p>
+      <div class="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 text-left">
+        <article class="hud-glass rounded-2xl p-5">
+          <p class="font-mono text-[10px] tracking-[0.16em] uppercase text-orange-300">Digital identity · In exploration</p>
+          <h3 class="mt-2 text-lg font-medium text-white">SECOND LIFE ID</h3>
+          <p class="mt-2 text-xs leading-relaxed text-slate-300/85">An early-stage identity concept. Scope and product details are still being explored.</p>
+        </article>
+        <article class="hud-glass rounded-2xl p-5">
+          <p class="font-mono text-[10px] tracking-[0.16em] uppercase text-sky-300">Digital learning · In exploration</p>
+          <h3 class="mt-2 text-lg font-medium text-white">Pramanix Shelf</h3>
+          <p class="mt-2 text-xs leading-relaxed text-slate-300/85">A reading and learning experience in early exploration. Its shape is still being worked out.</p>
+        </article>
       </div>
     </section>
 
@@ -506,7 +527,7 @@
 
         <!-- 5 Real PramanixLabs Project Cards -->
         <div id="projects-grid" class="interactive grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          <article data-category="active" onclick="openProjectDrawer('restovra')" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+          <article data-category="active" onclick="openProjectDrawer('restovra')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('restovra')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
                 <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-400/30">IN DEVELOPMENT</span>
@@ -514,16 +535,16 @@
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-sky-300 transition-colors">Restovra</h3>
               <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed">
-                Hospitality operations and real-time kitchen-to-floor coordination platform engineered for multi-outlet reliability.
+                A self-hosted recovery assurance workbench that turns authorised database backups into reviewed recovery drills and inspectable evidence.
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Inspect Architecture</span>
+              <span>Project notes</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
 
-          <article data-category="active" onclick="openProjectDrawer('kavachscan')" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+          <article data-category="active" onclick="openProjectDrawer('kavachscan')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('kavachscan')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
                 <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-400/30">CONTROLLED EVALUATION</span>
@@ -531,33 +552,33 @@
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-sky-300 transition-colors">KavachScan</h3>
               <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed">
-                Automated repository vulnerability and policy-drift scanner identifying exposed secrets and misconfigurations pre-deploy.
+                A consent-first, read-only website security checker for small businesses in India, turning selected website and email settings into plain-language observations and next steps.
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Inspect Architecture</span>
+              <span>Project notes</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
 
-          <article data-category="exploration" onclick="openProjectDrawer('pramanix-ai')" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+          <article data-category="active" onclick="openProjectDrawer('pramanix-ai')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('pramanix-ai')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300 border border-violet-400/30">PROTOTYPE &amp; RESEARCH</span>
-                <span class="font-mono text-[10px] text-slate-400">AI CORE</span>
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300 border border-violet-400/30">PUBLIC REPOSITORY</span>
+                <span class="font-mono text-[10px] text-slate-400">AI LEARNING</span>
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-sky-300 transition-colors">Pramanix AI</h3>
               <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed">
-                Schema-constrained reasoning and deterministic tool-routing runtime built for verifiable code audits and synthesis.
+                An AI engineering mentor and capstone companion exploring project architecture, software concepts, debugging and viva preparation for engineering students.
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Inspect Architecture</span>
+              <span>Project notes</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
 
-          <article data-category="exploration" onclick="openProjectDrawer('second-life-id')" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+          <article data-category="exploration" onclick="openProjectDrawer('second-life-id')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('second-life-id')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
                 <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-400/30">EXPLORATION</span>
@@ -565,28 +586,28 @@
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-orange-300 transition-colors">SECOND LIFE ID</h3>
               <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed">
-                Verifiable circular lifecycle and repair provenance passports extending hardware longevity and trust.
+                An early-stage identity concept. Scope and product details are still being explored.
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Inspect Architecture</span>
+              <span>Project notes</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
 
-          <article data-category="exploration" onclick="openProjectDrawer('pramanix-shelf')" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between sm:col-span-2 lg:col-span-2">
+          <article data-category="exploration" onclick="openProjectDrawer('pramanix-shelf')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('pramanix-shelf')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between sm:col-span-2 lg:col-span-2">
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-slate-200 border border-white/20">SHELF · READING ROOM</span>
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-slate-200 border border-white/20">IN EXPLORATION</span>
                 <span class="font-mono text-[10px] text-slate-400">ARCHIVE</span>
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-sky-300 transition-colors">Pramanix Shelf</h3>
               <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed max-w-2xl">
-                A quiet, distraction-free reading room and curated technical archive housing architectural notes, systems essays, and long-form research references.
+                A reading and learning experience in early exploration. The product shape is still being worked out.
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Inspect Architecture</span>
+              <span>Project notes</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
@@ -622,12 +643,12 @@
   <!-- Physical Scroll Spacer Driving the 6 Cosmic Chapters -->
   <div class="scroll-track" aria-hidden="true"></div>
 
-  <!-- Project Architecture Slide-Over Modal -->
+  <!-- Project Details Slide-Over Modal -->
   <div id="project-drawer" class="drawer-backdrop fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4" onclick="closeProjectDrawer()">
-    <div class="drawer-panel hud-glass bg-[#070B16]/95 border border-white/20 rounded-3xl max-w-xl w-full p-6 sm:p-8 text-white space-y-6" onclick="event.stopPropagation()">
+    <div role="dialog" aria-modal="true" aria-labelledby="drawer-title" class="drawer-panel hud-glass bg-[#070B16]/95 border border-white/20 rounded-3xl max-w-xl w-full p-6 sm:p-8 text-white space-y-6" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b border-white/10 pb-4">
-        <span id="drawer-stage" class="font-mono text-[11px] tracking-widest uppercase text-sky-400">STAGE</span>
-        <button type="button" onclick="closeProjectDrawer()" class="font-mono text-xs text-slate-400 hover:text-white px-2 py-1">ESC / CLOSE ✕</button>
+        <span id="drawer-stage" class="font-mono text-[11px] tracking-widest uppercase text-sky-400">PROJECT STAGE</span>
+        <button type="button" onclick="closeProjectDrawer()" aria-label="Close project details" class="font-mono text-xs text-slate-400 hover:text-white px-2 py-1">ESC / CLOSE ✕</button>
       </div>
 
       <div>
@@ -636,57 +657,73 @@
       </div>
 
       <div class="space-y-2.5">
-        <div class="font-mono text-[10px] tracking-widest uppercase text-slate-400">System Topology</div>
+        <div class="font-mono text-[10px] tracking-widest uppercase text-slate-400">Project Detail</div>
         <ul id="drawer-topology" class="space-y-2"></ul>
       </div>
 
       <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <span id="drawer-privacy" class="font-mono text-[11px] text-slate-400">🔒 Source kept private</span>
-        <button type="button" id="drawer-inquire-btn" class="pill-cta-primary px-5 py-2.5 rounded-full text-xs font-medium text-white">
-          Ask about this system →
-        </button>
+        <div class="flex flex-wrap items-center gap-3">
+          <a id="drawer-public-link" class="hidden px-4 py-2.5 rounded-full border border-white/20 text-xs text-sky-200 hover:text-white" target="_blank" rel="noreferrer">View public repository ↗</a>
+          <button type="button" id="drawer-inquire-btn" class="pill-cta-primary px-5 py-2.5 rounded-full text-xs font-medium text-white">
+            Ask about this project →
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Direct Studio Inquiry Modal -->
   <div id="inquiry-modal" class="drawer-backdrop fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4" onclick="closeInquiryModal()">
-    <div class="drawer-panel hud-glass bg-[#070B16]/95 border border-white/20 rounded-3xl max-w-lg w-full p-6 sm:p-8 text-white space-y-5" onclick="event.stopPropagation()">
+    <div role="dialog" aria-modal="true" aria-labelledby="inquiry-title" class="drawer-panel hud-glass bg-[#070B16]/95 border border-white/20 rounded-3xl max-w-lg w-full p-6 sm:p-8 text-white space-y-5" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b border-white/10 pb-4">
         <span class="font-mono text-[11px] tracking-widest uppercase text-orange-400">PRAMANIXLABS · DIRECT DISPATCH</span>
-        <button type="button" onclick="closeInquiryModal()" class="font-mono text-xs text-slate-400 hover:text-white">CLOSE ✕</button>
+        <button type="button" onclick="closeInquiryModal()" aria-label="Close inquiry form" class="font-mono text-xs text-slate-400 hover:text-white">CLOSE ✕</button>
       </div>
 
       <div>
-        <h3 class="text-2xl font-medium text-white">Start a conversation</h3>
-        <p class="text-xs text-slate-400 mt-1">Pune, India · Direct routing to <span class="text-sky-300 font-mono">pramanixlabs@gmail.com</span></p>
+        <h3 id="inquiry-title" class="text-2xl font-medium text-white">Start a conversation</h3>
+        <p class="text-xs text-slate-400 mt-1">Send your note to <span class="text-sky-300 font-mono">pramanixlabs@gmail.com</span>. Your details are used only to respond to this inquiry.</p>
       </div>
 
       <form onsubmit="handleInquirySubmit(event)" class="space-y-4">
         <div>
           <label for="inq-name" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">Your Name</label>
-          <input id="inq-name" type="text" required placeholder="Alex Rivera"
+          <input id="inq-name" name="name" type="text" required maxlength="100" autocomplete="name" placeholder="Alex Rivera"
             class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none" />
         </div>
 
         <div>
           <label for="inq-email" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">Email Address</label>
-          <input id="inq-email" type="email" required placeholder="alex@company.com"
+          <input id="inq-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="alex@company.com"
             class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none" />
         </div>
 
         <div>
           <label for="inq-topic" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">Focus Area / Project</label>
-          <input id="inq-topic" type="text" required value="General Studio Inquiry"
-            class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white focus:outline-none" />
+          <select id="inq-topic" name="topic" required
+            class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white focus:outline-none">
+            <option value="" disabled>Select a focus area</option>
+            <option>AI &amp; AI agents</option>
+            <option>SaaS products &amp; dashboards</option>
+            <option>Web development</option>
+            <option>Mobile applications</option>
+            <option>Custom software</option>
+            <option>Automation &amp; digital solutions</option>
+            <option selected>Something else</option>
+          </select>
         </div>
 
         <div>
           <label for="inq-msg" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">What are we building?</label>
-          <textarea id="inq-msg" rows="3" required placeholder="Share your problem statement, timeline, or system requirements..."
+          <textarea id="inq-msg" name="message" rows="3" required minlength="10" maxlength="5000" placeholder="Share a little about what you need..."
             class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none"></textarea>
         </div>
 
+        <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
+          <label for="inq-company-website">Leave this field empty</label>
+          <input id="inq-company-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
         <div class="pt-2 flex items-center justify-between gap-3">
           <span id="inq-feedback" class="font-mono text-[11px] text-emerald-400 hidden">✓ Prepared email dispatch</span>
           <button type="submit" class="ml-auto pill-cta-primary px-6 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white">
@@ -1192,6 +1229,8 @@
             else el.classList.remove('active');
           });
           dotEls.forEach((btn, i) => {
+            if (i === idx) btn.setAttribute('aria-current', 'step');
+            else btn.removeAttribute('aria-current');
             const dot = btn.querySelector('.dot-indicator');
             if (!dot) return;
             if (i === idx) {
@@ -1306,56 +1345,55 @@
     // =========================================================================
     const PROJECTS_DATA = {
       restovra: {
-        stage: 'IN DEVELOPMENT · HOSPITALITY OPERATIONS',
+        stage: 'IN DEVELOPMENT · RECOVERY ASSURANCE',
         title: 'Restovra',
-        summary: 'Real-time kitchen-to-floor coordination platform engineered for sub-second order state propagation and strict multi-outlet tenant isolation.',
-        privacy: '🔒 Source kept private to protect active operational workflows',
+        summary: 'A self-hosted recovery assurance workbench that turns authorised database backups into reviewed recovery drills and evidence teams can inspect.',
+        privacy: '🔒 Source kept private',
         topology: [
-          '01 · Floor & POS Terminals → Low-latency WebSocket event stream',
-          '02 · Postgres Row-Level Security → Strict outlet & role isolation',
-          '03 · Deterministic Order State Engine → Zero dropped kitchen tickets',
+          '01 · Authorised database backups',
+          '02 · Reviewed recovery drills',
+          '03 · Inspectable recovery evidence',
         ],
       },
       kavachscan: {
-        stage: 'CONTROLLED EVALUATION · SECURITY DIAGNOSTICS',
+        stage: 'CONTROLLED EVALUATION · CYBERSECURITY',
         title: 'KavachScan',
-        summary: 'Automated repository vulnerability and policy-drift scanner catching exposed secrets, weak permissions, and misconfigurations before deployment.',
-        privacy: '🔒 Source kept private to protect detection rulesets',
+        summary: 'A consent-first, read-only website security checker for small businesses in India. It turns selected public website and email settings into plain-language observations and practical next steps.',
+        privacy: '🔒 Source kept private',
         topology: [
-          '01 · AST & Configuration Parser → Sandboxed repository inspection',
-          '02 · Entropy & Policy Rule Engine → Secret & RLS posture verification',
-          '03 · Actionable Remediation Briefs → Pre-deploy release gates',
+          '01 · Selected public website and email settings',
+          '02 · Consent-first, read-only checks',
+          '03 · Plain-language observations and next steps',
         ],
       },
       'pramanix-ai': {
-        stage: 'PROTOTYPE & RESEARCH · APPLIED AI RUNTIME',
+        stage: 'PUBLIC REPOSITORY · AI LEARNING',
         title: 'Pramanix AI',
-        summary: 'Schema-constrained reasoning and deterministic tool-routing runtime designed for verifiable code audits and technical synthesis.',
-        privacy: '✦ Active research architecture inside PramanixLabs',
+        summary: 'An AI engineering mentor and capstone companion exploring project architecture, software concepts, debugging and viva preparation for engineering students.',
+        privacy: 'Public repository',
         topology: [
-          '01 · Hybrid Lexical + Vector Retrieval → Grounded context assembly',
-          '02 · Type-Safe Tool Execution Router → Sandboxed capability boundaries',
-          '03 · Verification & Citation Harness → Deterministic output validation',
+          'AI engineering mentor and capstone companion',
+          'Architecture, software concepts and debugging',
+          'Viva preparation for engineering students',
         ],
+        href: 'https://github.com/manthankro/pramanix-ai-',
       },
       'second-life-id': {
-        stage: 'EXPLORATION · LIFECYCLE PROVENANCE',
+        stage: 'IN EXPLORATION · DIGITAL IDENTITY',
         title: 'SECOND LIFE ID',
-        summary: 'Verifiable circular hardware lifecycle and repair provenance passports built to extend device longevity and component trust.',
-        privacy: '✦ Early-stage system exploration',
+        summary: 'An early-stage identity concept in the PramanixLabs portfolio. Scope and product details are still being explored.',
+        privacy: '✦ Early-stage concept',
         topology: [
-          '01 · Append-Only Repair & Ownership Ledger → Tamper-evident history',
-          '02 · Portable Verification Token → Lightweight cross-vendor lookup',
+          'Product scope is still being explored.',
         ],
       },
       'pramanix-shelf': {
-        stage: 'SHELF · CURATED READING ROOM',
+        stage: 'IN EXPLORATION · DIGITAL LEARNING',
         title: 'Pramanix Shelf',
-        summary: 'A quiet, distraction-free reading room and curated archive housing architectural notes, systems essays, and technical references.',
-        privacy: '✦ Public reading room in curation',
+        summary: 'A reading and learning experience in early exploration. The product shape is still being worked out.',
+        privacy: '✦ Early-stage concept',
         topology: [
-          '01 · Minimalist Typography-First Reader → Zero algorithmic clutter',
-          '02 · Structured Topic Taxonomy → Systems, AI, Security & Craft',
+          'Product scope is still being explored.',
         ],
       },
     };
@@ -1363,6 +1401,14 @@
     function openProjectDrawer(key) {
       const data = PROJECTS_DATA[key];
       if (!data) return;
+      const publicLink = document.getElementById('drawer-public-link');
+      if (data.href) {
+        publicLink.href = data.href;
+        publicLink.classList.remove('hidden');
+      } else {
+        publicLink.classList.add('hidden');
+        publicLink.removeAttribute('href');
+      }
       document.getElementById('drawer-stage').textContent = data.stage;
       document.getElementById('drawer-title').textContent = data.title;
       document.getElementById('drawer-summary').textContent = data.summary;
@@ -1385,7 +1431,10 @@
 
     function openInquiryModal(topic) {
       const topicInput = document.getElementById('inq-topic');
-      if (topicInput && topic) topicInput.value = topic;
+      if (topicInput) {
+        const options = Array.from(topicInput.options).map(option => option.value);
+        topicInput.value = options.includes(topic) ? topic : 'Something else';
+      }
       document.getElementById('inquiry-modal').classList.add('open');
     }
 
@@ -1410,20 +1459,63 @@
       }
     }
 
-    function handleInquirySubmit(e) {
+    let inquiryConfig = null;
+
+    window.addEventListener('message', event => {
+      if (event.origin !== window.location.origin || event.source !== window.parent) return;
+      if (event.data?.type !== 'PRAMANIX_SUPABASE_CONFIG') return;
+      const { url, anonKey } = event.data;
+      if (typeof url === 'string' && typeof anonKey === 'string' && url && anonKey) {
+        inquiryConfig = { url: url.replace(/\/$/, ''), anonKey };
+      }
+    });
+
+    async function handleInquirySubmit(e) {
       e.preventDefault();
+      const form = e.currentTarget;
       const name = document.getElementById('inq-name').value.trim();
       const email = document.getElementById('inq-email').value.trim();
       const topic = document.getElementById('inq-topic').value.trim();
       const msg = document.getElementById('inq-msg').value.trim();
-      const fb = document.getElementById('inq-feedback');
-      if (fb) fb.classList.remove('hidden');
+      const companyWebsite = document.getElementById('inq-company-website').value.trim();
+      const feedback = document.getElementById('inq-feedback');
+      const submit = form.querySelector('button[type="submit"]');
+      submit.disabled = true;
+      feedback.classList.remove('hidden');
 
-      const subject = encodeURIComponent(`[PramanixLabs] ${topic} — ${name}`);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\n${msg}`);
-      setTimeout(() => {
+      if (!inquiryConfig) {
+        feedback.textContent = 'Opening your email app. If it does not open, email pramanixlabs@gmail.com.';
+        const subject = encodeURIComponent(`[PramanixLabs] ${topic} — ${name}`);
+        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\n${msg}`);
         window.location.href = `mailto:pramanixlabs@gmail.com?subject=${subject}&body=${body}`;
-      }, 350);
+        submit.disabled = false;
+        return;
+      }
+
+      feedback.textContent = 'Sending your inquiry…';
+      try {
+        const response = await fetch(`${inquiryConfig.url}/functions/v1/submit-inquiry`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: inquiryConfig.anonKey,
+            Authorization: `Bearer ${inquiryConfig.anonKey}`,
+          },
+          body: JSON.stringify({ name, email, topic, message: msg, company_website: companyWebsite }),
+        });
+        const result = await response.json();
+        if (!response.ok || result.success !== true) {
+          throw new Error(result.error || 'Unable to send your inquiry right now.');
+        }
+        feedback.textContent = result.emailSent
+          ? 'Inquiry sent. We will reply to the email address you provided.'
+          : 'Inquiry received. We will reply to the email address you provided.';
+        form.reset();
+      } catch (error) {
+        feedback.textContent = `${error.message || 'Unable to send your inquiry.'} Please email pramanixlabs@gmail.com.`;
+      } finally {
+        submit.disabled = false;
+      }
     }
 
     window.addEventListener('keydown', (e) => {
