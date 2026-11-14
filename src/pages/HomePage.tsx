@@ -1,7 +1,27 @@
+import { useEffect, useState } from 'react'
 import { useSeo } from '../lib/useSeo'
 import Header from '../components/Header'
 import InquiryForm from '../components/InquiryForm'
-import { services, studio } from '../data/content'
+import { projects as initialProjects, services, studio, type Project } from '../data/content'
+import { supabase } from '../lib/supabase'
+
+function mergeStudioProjects(rows: Record<string, unknown>[]): Project[] {
+  return rows.flatMap(row => {
+    const code = String(row.id)
+    const base = initialProjects.find(project => project.code === code)
+    if (!base) return []
+    return [{
+      ...base,
+      name: String(row.name ?? base.name),
+      category: String(row.category ?? base.category),
+      description: String(row.description ?? base.description),
+      status: String(row.status ?? base.status),
+      upcoming: Boolean(row.upcoming),
+      image_url: typeof row.image_url === 'string' ? row.image_url : null,
+      image_alt: typeof row.image_alt === 'string' ? row.image_alt : null,
+    }]
+  })
+}
 
 function chooseService(topic: string) {
   const select = document.querySelector<HTMLSelectElement>('#inquiry-topic')
@@ -9,6 +29,19 @@ function chooseService(topic: string) {
 }
 
 export default function HomePage() {
+  const [projects, setProjects] = useState<Project[]>(initialProjects.filter(project => !project.upcoming))
+
+  useEffect(() => {
+    if (!supabase) return
+    let active = true
+    supabase.from('projects').select('*').order('sort_order')
+      .then(({ data, error }) => {
+        if (active && !error && data) setProjects(mergeStudioProjects(data).filter(project => !project.upcoming))
+      })
+      .catch(() => undefined)
+    return () => { active = false }
+  }, [])
+
   useSeo({
     title: 'PramanixLabs | Software and digital product development',
     description:
@@ -114,6 +147,28 @@ export default function HomePage() {
           </div>
         </section>
 
+        {projects.length > 0 && (
+          <section className="section business-work" aria-labelledby="studio-work-title">
+            <div className="container">
+              <div className="section-label"><span>Studio products</span><span>In-house work</span></div>
+              <div className="business-work-head">
+                <div><p className="eyebrow">Built inside PramanixLabs</p><h2 id="studio-work-title">We work on <span>our own products, too.</span></h2></div>
+                <p>These are in-house products at different stages of development, shown with their current status. They are not client case studies.</p>
+              </div>
+              <div className="business-work-list">
+                {projects.map(project => (
+                  <article key={project.code} className="business-work-item">
+                    <div className="business-work-status"><span>{project.category}</span><span>{project.status}</span></div>
+                    <h3>{project.name}</h3>
+                    <p>{project.description}</p>
+                    {project.href && <a href={project.href} target="_blank" rel="noreferrer">View public repository <span aria-hidden="true">↗</span></a>}
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         <section id="contact" className="section contact business-contact">
           <div className="container">
             <div className="section-label"><span>04 / Project inquiry</span><span>Replies go to your email</span></div>
@@ -143,12 +198,25 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        <section id="privacy" className="section business-privacy">
+          <div className="container">
+            <div className="section-label"><span>Privacy notice</span><span>Project inquiries</span></div>
+            <div className="business-privacy-copy">
+              <h2>How we use your <span>inquiry details.</span></h2>
+              <div>
+                <p>We collect the name and email you provide, your selected service, project description, and any optional company or timing details. We use them to review and respond to your request and arrange a conversation.</p>
+                <p>When online delivery is configured, the request is stored in the PramanixLabs Supabase inbox. If email notifications are enabled, the details are also processed by the configured notification provider. If online delivery is not configured, the form opens an email draft; nothing is sent until you press Send in your email app.</p>
+                <p>We do not use inquiry details for advertising. To ask about or request deletion of a message, contact <a href={'mailto:' + studio.email}>{studio.email}</a>. Please do not include passwords, financial account data or other sensitive information in the form.</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
       <footer className="footer">
         <div className="container footer-inner">
           <a className="brand" href="#main"><span className="brand-symbol">P<span>.</span></span><span className="brand-word">PRAMANIX<span className="brand-light">LABS</span><small>IMAGINE. BUILD. EVOLVE.</small></span></a>
           <nav className="footer-nav" aria-label="Footer navigation">
-            <a href="#services">Services</a><a href="#process">How we work</a><a href="#contact">Project inquiry</a>
+            <a href="#services">Services</a><a href="#process">How we work</a><a href="#contact">Project inquiry</a><a href="#privacy">Privacy</a>
           </nav>
           <div className="footer-meta"><span>© {new Date().getFullYear()} PramanixLabs</span><span>{studio.location}</span></div>
         </div>
