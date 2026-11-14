@@ -7,7 +7,6 @@ import { isSupabaseConfigured, supabase } from '../lib/supabase'
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 const messages = {
-  unavailable: 'Online delivery is not configured yet. Email us directly and we will pick it up there.',
   rateLimited: 'That is a few messages in a short time. Please wait a few minutes, or email us directly.',
   invalid: 'Please check the fields above and try again.',
   generic: 'Something went wrong while sending. Please try again, or email us directly.',
@@ -37,8 +36,11 @@ export default function InquiryForm() {
     }
 
     if (!supabase) {
+      const subject = encodeURIComponent(`[PramanixLabs] ${payload.topic} — ${payload.name}`)
+      const emailBody = encodeURIComponent([`Name: ${payload.name}`, `Email: ${payload.email}`, `Service: ${payload.topic}`, payload.organization ? `Company / organization: ${payload.organization}` : '', payload.timeline ? `Preferred timing: ${payload.timeline}` : '', '', payload.message].filter(Boolean).join('\\n'))
+      setMessage('Your email app should open with the request. Review it and press send. If it does not open, email pramanixlabs@gmail.com.')
+      window.location.href = `mailto:${studio.email}?subject=${subject}&body=${emailBody}`
       setStatus('error')
-      setMessage(messages.unavailable)
       return
     }
 
@@ -105,7 +107,7 @@ export default function InquiryForm() {
         <span>Service you need</span>
         <select id="inquiry-topic" name="topic" required defaultValue="">
           <option value="" disabled>
-            Select a focus area
+            Select a service
           </option>
           {inquiryTopics.map(topic => (
             <option key={topic} value={topic}>
@@ -138,7 +140,7 @@ export default function InquiryForm() {
           name="message"
           required
           minLength={10}
-          maxLength={5000}
+          maxLength={4500}
           rows={5}
           placeholder="What are you trying to build or improve? Who will use it, and what would a useful result look like?"
         />
