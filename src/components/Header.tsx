@@ -5,8 +5,7 @@ import Brand from './Brand'
 const links = [
   { label: 'Studio', href: '#studio' },
   { label: 'Services', href: '#services' },
-  { label: 'Work', href: '#work' },
-  { label: 'Insights', href: '#insights' },
+  { label: 'How we work', href: '#process' },
 ] as const
 
 export default function Header() {
