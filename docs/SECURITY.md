@@ -48,7 +48,7 @@ The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY
 ## Residual risks and what is not included
 
 - The rate limit is per IP hash inside a fifteen-minute window. It is a basic abuse control, not bot management, a WAF or a CAPTCHA.
-- No automated data-retention job is included. Define a retention period, then delete old inquiries from the dashboard or with a scheduled SQL task.
+- No automated data-retention job is included. Delete old inquiries from the dashboard or with a scheduled SQL task when they are no longer needed.
 - No monitoring, alerting or audit-log export is configured.
 - The site does not process payments or store passwords itself; authentication is delegated to Supabase.
 - Uploaded product images are public and could be indexed. Do not upload confidential material.
