@@ -4,7 +4,7 @@ import { ArrowUpRight, Check, Loader2 } from 'lucide-react'
 import { inquiryTopics, studio } from '../data/content'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 
-type Status = 'idle' | 'sending' | 'sent' | 'error'
+type Status = 'idle' | 'sending' | 'sent' | 'error' | 'info'
 
 const messages = {
   rateLimited: 'That is a few messages in a short time. Please wait a few minutes, or email us directly.',
@@ -37,10 +37,10 @@ export default function InquiryForm() {
 
     if (!supabase) {
       const subject = encodeURIComponent(`[PramanixLabs] ${payload.topic} — ${payload.name}`)
-      const emailBody = encodeURIComponent([`Name: ${payload.name}`, `Email: ${payload.email}`, `Service: ${payload.topic}`, payload.organization ? `Company / organization: ${payload.organization}` : '', payload.timeline ? `Preferred timing: ${payload.timeline}` : '', '', payload.message].filter(Boolean).join('\\n'))
-      setMessage('Your email app should open with the request. Review it and press send. If it does not open, email pramanixlabs@gmail.com.')
+      const emailBody = encodeURIComponent([`Name: ${payload.name}`, `Email: ${payload.email}`, `Service: ${payload.topic}`, payload.organization ? `Company / organization: ${payload.organization}` : '', payload.timeline ? `Preferred timing: ${payload.timeline}` : '', '', payload.message].filter(Boolean).join('\n'))
+      setMessage('Your email draft should open. Review it and press Send. If it does not open, use the direct email link below.')
       window.location.href = `mailto:${studio.email}?subject=${subject}&body=${emailBody}`
-      setStatus('error')
+      setStatus('info')
       return
     }
 
@@ -168,16 +168,16 @@ export default function InquiryForm() {
         <p className="form-note">
           {isSupabaseConfigured
             ? 'Your request goes to the studio inbox. We use your details only to respond.'
-            : 'Online delivery needs the Supabase settings configured. You can email us directly below.'}
+            : 'No inquiry is sent until you press Send in your email app.'}
         </p>
       </div>
       {!isSupabaseConfigured && <p className="form-note form-note--fallback">Email us at <a href={`mailto:${studio.email}`}>{studio.email}</a>. <a href="#privacy">Privacy notice</a>.</p>}
 
       <p className={`form-status${status === 'error' ? ' is-error' : ''}`} role="status" aria-live="polite">
-        {status === 'error' && (
+        {(status === 'error' || status === 'info') && (
           <>
             {message}{' '}
-            <a href={`mailto:${studio.email}`}>{studio.email}</a>
+            {status === 'error' && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
           </>
         )}
       </p>
