@@ -2,12 +2,12 @@
 
 The official website of PramanixLabs, an independent technology studio founded by Manthan Lonkar in Pune, India. The site introduces the studio, six service areas, the project portfolio, projects still in exploration, editorial themes and an inquiry channel.
 
-The public site is a React + TypeScript + Vite application with a Three.js particle-vortex hero. A private studio dashboard at `/admin` edits project records and reads inquiries through Supabase.
+The public site is a React + TypeScript + Vite application hosting a standalone Three.js cosmic chapter experience. A private studio dashboard at `/admin` edits project records and reads inquiries through Supabase.
 
 ## Stack
 
 - React 19, TypeScript, Vite 6
-- Three.js via React Three Fiber for the hero (lazy-loaded, with a CSS fallback)
+- Three.js cosmic experience in `public/cosmic-architecture.html`, embedded by the React homepage
 - Supabase: Auth, Postgres with row-level security, Storage and one Edge Function
 - Vitest and Testing Library for content and form checks
 
@@ -15,7 +15,7 @@ The public site is a React + TypeScript + Vite application with a Three.js parti
 
 ```text
 index.html                     document metadata, JSON-LD, fonts
-public/                        favicon, social image, robots.txt, _headers, _redirects
+public/                        cosmic experience, favicon, social image, robots.txt, _headers, _redirects
 src/App.tsx                    tiny router: public site or /admin
 src/pages/HomePage.tsx         cosmic experience host and project data bridge
 public/cosmic-architecture.html  standalone 3D chapter experience
