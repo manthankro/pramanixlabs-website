@@ -25,7 +25,7 @@ The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY
 
 ## Inquiry handling
 
-- All submissions go through the `submit-inquiry` Edge Function. The browser has no insert permission on `public.inquiries`.
+- When Supabase is configured, submissions go through the `submit-inquiry` Edge Function. Without that configuration, the page uses a `mailto:` fallback and does not store inquiries in the database. The browser has no insert permission on `public.inquiries`.
 - The function checks the exact origin against `SITE_ORIGIN`, rejects oversized payloads, validates name, email, topic and message, and silently accepts honeypot hits.
 - A per-IP SHA-256 hash (salted with the service-role key) is stored in `public.inquiry_rate_limits`; five submissions per fifteen minutes are accepted. Only the hash is stored, not the raw IP.
 - Inquiry content is never rendered as HTML: the dashboard and email body use plain text, and React escapes all displayed values.
@@ -40,10 +40,10 @@ The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY
 
 ## Browser hardening
 
-- `public/_headers` sets CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` and HSTS for hosts that support it.
+- `vercel.json` sets CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` and HSTS on Vercel. `public/_headers` provides equivalent host rules for Cloudflare Pages/Netlify.
 - Tighten `connect-src` and `img-src` from `https://*.supabase.co` to the exact project origin after provisioning.
-- No inline scripts are used. The only inline style usage is runtime canvas styling; `style-src` therefore includes `'unsafe-inline'`.
-- External requests are limited to Google Fonts and the Supabase project. Remove the Google Fonts links and self-host the typefaces if you need a stricter `font-src`/`style-src` policy.
+- The cosmic experience currently uses inline scripts, Tailwind from `cdn.tailwindcss.com`, Three.js from cdnjs, and Google Fonts. Its CSP allows these sources and `'unsafe-inline'` for scripts and styles. This is a compatibility baseline, not a strict CSP; bundle/self-host these assets and remove inline handlers before tightening the policy.
+- The main React site embeds the same-origin cosmic HTML page in an iframe, so `frame-ancestors 'self'` and `X-Frame-Options: SAMEORIGIN` are required.
 
 ## Residual risks and what is not included
 

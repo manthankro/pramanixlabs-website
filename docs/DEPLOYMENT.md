@@ -84,21 +84,21 @@ npm ci
 npm run build
 ```
 
-Publish `dist/`. Set these browser-visible build variables in the hosting provider:
+Publish `dist/`. In Vercel → Project → Settings → Environment Variables, set the following for Preview and Production (and Development if desired):
 
 ```text
 VITE_SUPABASE_URL=https://<project-ref>.supabase.co
 VITE_SUPABASE_ANON_KEY=<project-anon-key>
 ```
 
-The anon key is designed to be public; RLS and the admin allowlist enforce access. Never use a service-role key or database password in a `VITE_*` variable.
+The anon key is designed to be public; RLS and the admin allowlist enforce access. Never use a service-role key or database password in a `VITE_*` variable. Vite embeds `VITE_*` values into browser code. After changing a Vercel variable, create a new deployment for it to take effect.
 
 ### SPA fallback
 
 `/admin` is a client-side route. The host must serve `index.html` for unknown paths:
 
 - Cloudflare Pages / Netlify: `public/_redirects` is already included and copied into `dist/`.
-- Vercel: add a rewrite of `/(.*)` to `/index.html`.
+- Vercel: `vercel.json` now rewrites unmatched routes to `/index.html`; static files such as `/cosmic-architecture.html` continue to resolve first.
 - Any static server: configure the equivalent fallback.
 
 ### Headers
@@ -114,7 +114,7 @@ Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 ```
 
-The included `_headers` uses `https://*.supabase.co` so it works before the project ref is known. Tighten `connect-src` and `img-src` to the exact project origin before launch. `style-src 'unsafe-inline'` is required because the Three.js canvas sets inline style attributes; avoid adding inline scripts.
+Vercel uses the equivalent headers in `vercel.json`; `public/_headers` applies to Cloudflare Pages and Netlify. The current cosmic experience uses inline scripts and Tailwind/Three.js CDNs, so its compatible CSP allows inline scripts and those external hosts. This is a compatibility policy; bundle or self-host these assets before tightening CSP. Restrict Supabase connect/image hosts to the project where practical.
 
 ### Canonical URL and social preview
 
