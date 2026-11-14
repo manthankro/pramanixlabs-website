@@ -2,7 +2,7 @@
 
 The official website of PramanixLabs, an independent technology studio founded by Manthan Lonkar in Pune, India. The site explains the studio’s services, project approach and inquiry process for businesses looking for software and digital product development.
 
-The public site is a React + TypeScript + Vite application hosting a standalone Three.js cosmic chapter experience. A private studio dashboard at `/admin` edits project records and reads inquiries through Supabase.
+The public site is a responsive React + TypeScript + Vite company website focused on services, project inquiries and a small overview of the studio’s own products. A private dashboard at `/admin` manages product details and reads inquiries through Supabase.
 
 ## Stack
 
@@ -19,8 +19,8 @@ public/                        favicon, social image, robots.txt, _headers, _red
 src/App.tsx                    tiny router: public site or /admin
 src/pages/HomePage.tsx         company services and project inquiry page
 src/pages/AdminPage.tsx        private dashboard (login, portfolio editor, inbox)
-src/components/                Header, Vortex hero, InquiryForm, Brand
-src/data/content.ts            services, projects, insights, inquiry topics
+src/components/                Header, InquiryForm and Brand
+src/data/content.ts            services, studio products and inquiry topics
 src/styles.css                 design system and responsive layout
 src/lib/supabase.ts            browser client; null when unconfigured
 src/lib/useSeo.ts              per-route title and social metadata
@@ -51,7 +51,7 @@ npm run preview   # serve the built site locally
 ## Content
 
 - **Services, project records, inquiry topics and studio links** live in `src/data/content.ts`. Service descriptions and inquiry topics are used on the company website.
-- **Project copy, status, ordering, upcoming flag and portfolio images** are managed at `/admin` and stored in Supabase. The public site falls back to `src/data/content.ts` when no rows are available.
+- **In-house product names, status and descriptions** can be managed at `/admin` and stored in Supabase. The public section falls back to `src/data/content.ts` when Supabase is not configured.
 - **Upcoming innovations** are project rows with `upcoming = true`. Toggle the flag in the dashboard to move an entry into the “On the horizon” section; the counter updates automatically.
 - The homepage is designed to explain services and collect project requests. It does not claim client testimonials, case study outcomes or fixed delivery timelines.
 
