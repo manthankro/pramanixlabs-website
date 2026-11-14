@@ -42,8 +42,8 @@ The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY
 
 - `vercel.json` sets CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` and HSTS on Vercel. `public/_headers` provides equivalent host rules for Cloudflare Pages/Netlify.
 - Tighten `connect-src` and `img-src` from `https://*.supabase.co` to the exact project origin after provisioning.
-- The cosmic experience currently uses inline scripts, Tailwind from `cdn.tailwindcss.com`, Three.js from cdnjs, and Google Fonts. Its CSP allows these sources and `'unsafe-inline'` for scripts and styles. This is a compatibility baseline, not a strict CSP; bundle/self-host these assets and remove inline handlers before tightening the policy.
-- The main React site embeds the same-origin cosmic HTML page in an iframe, so `frame-ancestors 'self'` and `X-Frame-Options: SAMEORIGIN` are required.
+- The public site uses a same-origin React bundle and Google Fonts. The CSP does not allow inline scripts or third-party script CDNs. `style-src 'unsafe-inline'` remains for the static no-JavaScript notice in `index.html`.
+- The site is not embedded in an iframe; framing is denied with `frame-ancestors 'none'` and `X-Frame-Options: DENY`.
 
 ## Residual risks and what is not included
 
