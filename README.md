@@ -1,13 +1,13 @@
 # PramanixLabs website
 
-The official website of PramanixLabs, an independent technology studio founded by Manthan Lonkar in Pune, India. The site introduces the studio, six service areas, the project portfolio, projects still in exploration, editorial themes and an inquiry channel.
+The official website of PramanixLabs, an independent technology studio founded by Manthan Lonkar in Pune, India. The site explains the studio’s services, project approach and inquiry process for businesses looking for software and digital product development.
 
 The public site is a React + TypeScript + Vite application hosting a standalone Three.js cosmic chapter experience. A private studio dashboard at `/admin` edits project records and reads inquiries through Supabase.
 
 ## Stack
 
 - React 19, TypeScript, Vite 6
-- Three.js cosmic experience in `public/cosmic-architecture.html`, embedded by the React homepage
+- Responsive service and project inquiry experience with React
 - Supabase: Auth, Postgres with row-level security, Storage and one Edge Function
 - Vitest and Testing Library for content and form checks
 
@@ -15,10 +15,9 @@ The public site is a React + TypeScript + Vite application hosting a standalone 
 
 ```text
 index.html                     document metadata, JSON-LD, fonts
-public/                        cosmic experience, favicon, social image, robots.txt, _headers, _redirects
+public/                        favicon, social image, robots.txt, _headers, _redirects
 src/App.tsx                    tiny router: public site or /admin
-src/pages/HomePage.tsx         cosmic experience host and project data bridge
-public/cosmic-architecture.html  standalone 3D chapter experience
+src/pages/HomePage.tsx         company services and project inquiry page
 src/pages/AdminPage.tsx        private dashboard (login, portfolio editor, inbox)
 src/components/                Header, Vortex hero, InquiryForm, Brand
 src/data/content.ts            services, projects, insights, inquiry topics
@@ -51,10 +50,10 @@ npm run preview   # serve the built site locally
 
 ## Content
 
-- **Services, projects, insights, form topics and studio links** live in `src/data/content.ts`. Project `tags` and public repository links come from this file only; database rows cannot add links.
+- **Services, project records, inquiry topics and studio links** live in `src/data/content.ts`. Service descriptions and inquiry topics are used on the company website.
 - **Project copy, status, ordering, upcoming flag and portfolio images** are managed at `/admin` and stored in Supabase. The public site falls back to `src/data/content.ts` when no rows are available.
 - **Upcoming innovations** are project rows with `upcoming = true`. Toggle the flag in the dashboard to move an entry into the “On the horizon” section; the counter updates automatically.
-- **Insights** are labelled “Editorial theme” in the UI. They are not articles, and intentionally have no fake publish dates or links.
+- The homepage is designed to explain services and collect project requests. It does not claim client testimonials, case study outcomes or fixed delivery timelines.
 
 Restovra and KavachScan are private projects: their records carry no repository link and are described as “Source kept private”. Do not add public links to them.
 
