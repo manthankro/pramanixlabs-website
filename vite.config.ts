@@ -5,14 +5,14 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', ['VITE_', 'NEXT_PUBLIC_'])
 
   return {
-  plugins: [react()],
-  define: {
+    plugins: [react()],
+    define: {
     // Vercel already has these public values under NEXT_PUBLIC_ names.
     // Map only the two browser-safe Supabase settings; never expose service secrets.
     'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL || ''),
     'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(env.VITE_SUPABASE_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''),
   },
-  build: {
+    build: {
     // three is only fetched when the hero mounts; its chunk is expected to be large.
     chunkSizeWarningLimit: 800,
     rollupOptions: {
@@ -27,6 +27,6 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-  },
+    },
   }
 })
