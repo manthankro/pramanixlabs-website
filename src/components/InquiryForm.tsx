@@ -160,7 +160,7 @@ export default function InquiryForm() {
             </>
           ) : (
             <>
-              Send inquiry
+              {isSupabaseConfigured ? 'Send project request' : 'Continue by email'}
               <ArrowUpRight aria-hidden="true" size={16} />
             </>
           )}
@@ -171,7 +171,7 @@ export default function InquiryForm() {
             : 'Online delivery needs the Supabase settings configured. You can email us directly below.'}
         </p>
       </div>
-      {!isSupabaseConfigured && <p className="form-note form-note--fallback">Email us at <a href={`mailto:${studio.email}`}>{studio.email}</a>.</p>}
+      {!isSupabaseConfigured && <p className="form-note form-note--fallback">Email us at <a href={`mailto:${studio.email}`}>{studio.email}</a>. <a href="#privacy">Privacy notice</a>.</p>}
 
       <p className={`form-status${status === 'error' ? ' is-error' : ''}`} role="status" aria-live="polite">
         {status === 'error' && (
