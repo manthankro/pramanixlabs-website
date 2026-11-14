@@ -109,15 +109,15 @@ The anon key is designed to be public; RLS and the admin allowlist enforce acces
 `public/_headers` ships the production header set for Cloudflare Pages and Netlify. For another host, apply the same values in its configuration:
 
 ```text
-Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://<project-ref>.supabase.co; connect-src 'self' https://<project-ref>.supabase.co wss://<project-ref>.supabase.co; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://<project-ref>.supabase.co; connect-src 'self' https://<project-ref>.supabase.co wss://<project-ref>.supabase.co; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self' mailto:; upgrade-insecure-requests
 X-Content-Type-Options: nosniff
-X-Frame-Options: DENY
+X-Frame-Options: SAMEORIGIN
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 ```
 
-Vercel uses the equivalent headers in `vercel.json`; `public/_headers` applies to Cloudflare Pages and Netlify. The current company page does not load the old Three.js/Tailwind prototype. The policy allows the same-origin app, Google Fonts, and Supabase. `style-src 'unsafe-inline'` supports the existing inline style on the no-JavaScript fallback. Restrict Supabase connect/image hosts to the project where practical.
+Vercel uses the equivalent headers in `vercel.json`; `public/_headers` applies to Cloudflare Pages and Netlify. The 3D company page loads Three.js and Tailwind from the listed CDNs, Google Fonts, and Supabase. Its inline script and styles require `unsafe-inline`; keep the allowed script hosts limited to the two listed CDNs. `frame-ancestors 'self'` and `X-Frame-Options: SAMEORIGIN` allow the same-origin React shell to host the experience. Restrict Supabase connect/image hosts to the project where practical.
 
 ### Canonical URL and social preview
 
