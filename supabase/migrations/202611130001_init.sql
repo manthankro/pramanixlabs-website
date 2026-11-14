@@ -6,6 +6,9 @@ create table if not exists public.admin_users (
   user_id uuid primary key references auth.users(id) on delete cascade,
   created_at timestamptz not null default now()
 );
+-- Required: without RLS the authenticated grants below would expose the allowlist.
+-- Migration 003 also enables this for projects that applied 001 before the fix.
+alter table public.admin_users enable row level security;
 create or replace function public.is_site_admin()
 returns boolean language sql stable security definer set search_path = public
 as $$ select exists (select 1 from public.admin_users where user_id = auth.uid()) $$;
