@@ -89,6 +89,8 @@ Publish `dist/`. In Vercel → Project → Settings → Environment Variables, s
 ```text
 VITE_SUPABASE_URL=https://<project-ref>.supabase.co
 VITE_SUPABASE_ANON_KEY=<project-anon-key>
+
+Existing Vercel projects may keep the equivalent browser-safe names `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`; the Vite build maps only these two values to the browser config. Either name pair works. Never use `SUPABASE_SERVICE_ROLE_KEY` as browser config.
 ```
 
 
