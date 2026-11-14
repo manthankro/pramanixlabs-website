@@ -34,11 +34,14 @@ export default function HomePage() {
   useEffect(() => {
     if (!supabase) return
     let active = true
-    supabase.from('projects').select('*').order('sort_order')
-      .then(({ data, error }) => {
+    void (async () => {
+      try {
+        const { data, error } = await supabase.from('projects').select('*').order('sort_order')
         if (active && !error && data) setProjects(mergeStudioProjects(data).filter(project => !project.upcoming))
-      })
-      .catch(() => undefined)
+      } catch {
+        // Keep the source-controlled project details if the database is unreachable.
+      }
+    })()
     return () => { active = false }
   }, [])
 
