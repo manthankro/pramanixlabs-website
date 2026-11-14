@@ -1,10 +1,13 @@
 import { useSeo } from '../lib/useSeo'
 
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim() ?? ''
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim() ?? ''
+
 export default function HomePage() {
   useSeo({
     title: 'PramanixLabs — Imagine. Build. Evolve.',
     description:
-      'PramanixLabs is an independent technology studio in Pune building AI systems, software, security diagnostics and digital learning experiences.',
+      'PramanixLabs is an independent technology studio in Pune building AI systems and software, with active interests in cybersecurity and digital learning.',
   })
 
   return (
@@ -12,6 +15,16 @@ export default function HomePage() {
       <iframe
         title="PramanixLabs cosmic architecture experience"
         src="/cosmic-architecture.html"
+        onLoad={event => {
+          event.currentTarget.contentWindow?.postMessage(
+            {
+              type: 'PRAMANIX_SUPABASE_CONFIG',
+              url: supabaseUrl,
+              anonKey: supabaseAnonKey,
+            },
+            window.location.origin,
+          )
+        }}
         style={{ display: 'block', width: '100%', height: '100%', border: 0 }}
       />
     </main>
