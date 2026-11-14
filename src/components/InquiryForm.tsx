@@ -4,10 +4,9 @@ import { ArrowUpRight, Check, Loader2 } from 'lucide-react'
 import { inquiryTopics, studio } from '../data/content'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 
-type Status = 'idle' | 'sending' | 'sent' | 'error'
+type Status = 'idle' | 'sending' | 'sent' | 'error' | 'info'
 
 const messages = {
-  unavailable: 'Online delivery is not configured yet. Email us directly and we will pick it up there.',
   rateLimited: 'That is a few messages in a short time. Please wait a few minutes, or email us directly.',
   invalid: 'Please check the fields above and try again.',
   generic: 'Something went wrong while sending. Please try again, or email us directly.',
@@ -31,29 +30,38 @@ export default function InquiryForm() {
       email: String(data.get('email') ?? '').trim(),
       topic: String(data.get('topic') ?? '').trim(),
       message: String(data.get('message') ?? '').trim(),
+      organization: String(data.get('organization') ?? '').trim(),
+      timeline: String(data.get('timeline') ?? '').trim(),
       company_website: String(data.get('company_website') ?? ''),
     }
 
     if (!supabase) {
-      setStatus('error')
-      setMessage(messages.unavailable)
+      const subject = encodeURIComponent(`[PramanixLabs] ${payload.topic} — ${payload.name}`)
+      const emailBody = encodeURIComponent([`Name: ${payload.name}`, `Email: ${payload.email}`, `Service: ${payload.topic}`, payload.organization ? `Company / organization: ${payload.organization}` : '', payload.timeline ? `Preferred timing: ${payload.timeline}` : '', '', payload.message].filter(Boolean).join('\n'))
+      setMessage('Your email draft should open. Review it and press Send. If it does not open, use the direct email link below.')
+      window.location.href = `mailto:${studio.email}?subject=${subject}&body=${emailBody}`
+      setStatus('info')
       return
     }
 
     setStatus('sending')
     setMessage('')
 
-    const { data: result, error } = await supabase.functions.invoke('submit-inquiry', { body: payload })
-
-    if (error || !result?.success) {
-      const code = (error as { context?: { status?: number } } | null)?.context?.status
+    const projectMessage = [payload.message, payload.organization ? `Company / organization: ${payload.organization}` : '', payload.timeline ? `Preferred timing: ${payload.timeline}` : ''].filter(Boolean).join('\n\n')
+    try {
+      const { data: result, error } = await supabase.functions.invoke('submit-inquiry', { body: { ...payload, message: projectMessage } })
+      if (error || !result?.success) {
+        const code = (error as { context?: { status?: number } } | null)?.context?.status
+        setStatus('error')
+        setMessage(code === 429 ? messages.rateLimited : code === 400 ? messages.invalid : messages.generic)
+        return
+      }
+      setStatus('sent')
+      form.reset()
+    } catch {
       setStatus('error')
-      setMessage(code === 429 ? messages.rateLimited : code === 400 ? messages.invalid : messages.generic)
-      return
+      setMessage(messages.generic)
     }
-
-    setStatus('sent')
-    form.reset()
   }
 
   if (status === 'sent') {
@@ -96,10 +104,10 @@ export default function InquiryForm() {
       </div>
 
       <label className="field">
-        <span>Focus area</span>
-        <select name="topic" required defaultValue="">
+        <span>Service you need</span>
+        <select id="inquiry-topic" name="topic" required defaultValue="">
           <option value="" disabled>
-            Select a focus area
+            Select a service
           </option>
           {inquiryTopics.map(topic => (
             <option key={topic} value={topic}>
@@ -109,15 +117,32 @@ export default function InquiryForm() {
         </select>
       </label>
 
+      <div className="form-row">
+        <label className="field">
+          <span>Company or organization <small>(optional)</small></span>
+          <input name="organization" autoComplete="organization" maxLength={160} placeholder="Company name" />
+        </label>
+        <label className="field">
+          <span>When are you looking to start? <small>(optional)</small></span>
+          <select name="timeline" defaultValue="">
+            <option value="">Select a timeframe</option>
+            <option>As soon as possible</option>
+            <option>Within 1–3 months</option>
+            <option>More than 3 months away</option>
+            <option>Still exploring</option>
+          </select>
+        </label>
+      </div>
+
       <label className="field">
-        <span>A little about it</span>
+        <span>Project details</span>
         <textarea
           name="message"
           required
           minLength={10}
-          maxLength={5000}
+          maxLength={4500}
           rows={5}
-          placeholder="The idea, the challenge, or simply where you are in the journey…"
+          placeholder="What are you trying to build or improve? Who will use it, and what would a useful result look like?"
         />
       </label>
 
@@ -135,23 +160,24 @@ export default function InquiryForm() {
             </>
           ) : (
             <>
-              Send inquiry
+              {isSupabaseConfigured ? 'Send project request' : 'Continue by email'}
               <ArrowUpRight aria-hidden="true" size={16} />
             </>
           )}
         </button>
         <p className="form-note">
           {isSupabaseConfigured
-            ? 'Your message goes to the studio inbox. No newsletter, no sharing.'
-            : `Direct email is the most reliable route right now.`}
+            ? 'Your request goes to the studio inbox. We use your details only to respond.'
+            : 'No inquiry is sent until you press Send in your email app.'}
         </p>
       </div>
+      {!isSupabaseConfigured && <p className="form-note form-note--fallback">Email us at <a href={`mailto:${studio.email}`}>{studio.email}</a>. <a href="#privacy">Privacy notice</a>.</p>}
 
       <p className={`form-status${status === 'error' ? ' is-error' : ''}`} role="status" aria-live="polite">
-        {status === 'error' && (
+        {(status === 'error' || status === 'info') && (
           <>
             {message}{' '}
-            <a href={`mailto:${studio.email}`}>{studio.email}</a>
+            {status === 'error' && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
           </>
         )}
       </p>

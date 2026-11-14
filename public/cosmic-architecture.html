@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PramanixLabs — Ideas Into Intelligent Things</title>
+  <title>PramanixLabs | 3D Product &amp; Software Studio</title>
+  <meta name="description" content="Explore PramanixLabs in a 3D cosmic experience. Pune-based product and software studio for AI, SaaS, websites, apps and automation. Start a project inquiry." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -245,10 +246,10 @@
       <div class="hidden md:flex items-center gap-6 lg:gap-7 font-mono text-[11px] tracking-[0.16em] uppercase text-slate-300">
         <button type="button" onclick="jumpToChapter(1)" data-nav-idx="1" class="nav-link hover:text-white transition-colors">STUDIO</button>
         <button type="button" onclick="jumpToChapter(2)" data-nav-idx="2" class="nav-link hover:text-sky-300 transition-colors">SERVICES</button>
-        <button type="button" onclick="jumpToChapter(5)" data-nav-idx="5" class="nav-link hover:text-white transition-colors">WORK</button>
-        <button type="button" onclick="jumpToChapter(4)" data-nav-idx="4" class="nav-link hover:text-white transition-colors">HORIZON</button>
-        <button type="button" onclick="openInquiryModal('General Studio Inquiry')" class="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white hover:text-slate-950 text-white border border-white/15 transition-all">
-          SAY HELLO
+        <button type="button" onclick="jumpToChapter(5)" data-nav-idx="5" class="nav-link hover:text-white transition-colors">PRODUCTS</button>
+        <button type="button" onclick="jumpToChapter(4)" data-nav-idx="4" class="nav-link hover:text-white transition-colors">IDEAS</button>
+        <button type="button" onclick="openBookingOrInquiry('Something else')" class="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white hover:text-slate-950 text-white border border-white/15 transition-all">
+          START A PROJECT
         </button>
       </div>
 
@@ -257,8 +258,8 @@
         <button type="button" onclick="jumpToChapter(2)" class="mobile-monolith px-3 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/40 font-mono text-[10px] tracking-wider uppercase text-sky-200">
           3D Logo
         </button>
-        <button type="button" onclick="openInquiryModal('General Studio Inquiry')" class="px-3 py-1.5 rounded-full bg-white text-slate-950 font-mono text-[10px] font-semibold uppercase">
-          Contact
+        <button type="button" onclick="openBookingOrInquiry('Something else')" class="px-3 py-1.5 rounded-full bg-white text-slate-950 font-mono text-[10px] font-semibold uppercase">
+          Enquire
         </button>
       </div>
     </nav>
@@ -282,12 +283,12 @@
       <span class="sr-only">04 · Philosophy</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">04 · Philosophy</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(4)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="4" aria-label="Go to On the horizon" title="On the horizon">
-      <span class="sr-only">05 · On the horizon</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">05 · On the horizon</span>
+    <button type="button" onclick="jumpToChapter(4)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="4" aria-label="Go to Product ideas" title="Product ideas">
+      <span class="sr-only">05 · Product ideas</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">05 · Product ideas</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(5)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="5" aria-label="Go to Selected work" title="Selected work">
-      <span class="sr-only">06 · Selected work</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">06 · Selected work</span>
+    <button type="button" onclick="jumpToChapter(5)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="5" aria-label="Go to PramanixLabs products" title="PramanixLabs products">
+      <span class="sr-only">06 · Products</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">06 · Products</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
   </aside>
@@ -319,23 +320,23 @@
         </div>
 
         <h1 class="text-4xl sm:text-6xl lg:text-[64px] font-medium tracking-tight leading-[1.06] text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]">
-          Ideas into <br />
+          Build the digital product <br />
           <span class="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-white to-orange-300">
-            intelligent things.
+            your business needs next.
           </span>
         </h1>
 
         <p class="text-xs sm:text-base text-slate-300/90 max-w-lg mx-auto leading-relaxed font-light">
-          PramanixLabs is an independent technology studio in Pune, India — building AI systems and software, with active interests in cybersecurity and digital learning.
+          PramanixLabs is an independent technology studio in Pune, India. We plan and build AI-enabled products, websites, apps, internal tools and automation around real business needs.
         </p>
 
         <div class="interactive pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
           <button type="button" onclick="jumpToChapter(2)" class="pill-cta-primary w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-medium text-white flex items-center justify-center gap-2.5">
-            <span>Enter 3D Brand Core</span>
+            <span>Explore our services</span>
             <span class="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center text-[11px]">→</span>
           </button>
-          <button type="button" onclick="jumpToChapter(5)" class="pill-cta-secondary w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-medium text-slate-200">
-            Explore selected work
+          <button type="button" onclick="openBookingOrInquiry('Something else')" class="pill-cta-secondary w-full sm:w-auto px-6 py-3 rounded-full text-xs sm:text-sm font-medium text-slate-200">
+            Request a project call
           </button>
         </div>
       </div>
@@ -362,41 +363,41 @@
             <span class="font-serif italic font-normal text-orange-300">not noise.</span>
           </h2>
           <p class="text-xs sm:text-sm text-slate-300/90 leading-relaxed max-w-md">
-            Operating out of Pune, India, we treat software architecture as a living system—separating verified engineering craft from inflated claims.
+            Based in Pune, India, PramanixLabs helps teams turn a defined business need into useful software. Start with an idea, an inefficient workflow or a product that needs a technical partner.
           </p>
         </div>
 
         <div class="interactive lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
           <div class="hud-glass rounded-2xl p-5 sm:p-6">
             <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[11px] tracking-widest text-sky-400">01 / HONEST SYSTEMS</span>
+              <span class="font-mono text-[11px] tracking-widest text-sky-400">01 / BUSINESS GOALS</span>
               <span class="w-2 h-2 rounded-full bg-sky-400/80"></span>
             </div>
-            <h3 class="text-base sm:text-lg font-medium text-white">Zero fabricated metrics</h3>
+            <h3 class="text-base sm:text-lg font-medium text-white">Understand the need</h3>
             <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed">
-              Every build is documented by its true engineering stage—whether in active development, controlled evaluation, or early research.
+              We start with the problem, the people who will use the solution and the constraints around the work.
             </p>
           </div>
 
           <div class="hud-glass rounded-2xl p-5 sm:p-6">
             <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[11px] tracking-widest text-violet-300">02 / END-TO-END CRAFT</span>
+              <span class="font-mono text-[11px] tracking-widest text-violet-300">02 / FOCUSED SCOPE</span>
               <span class="w-2 h-2 rounded-full bg-violet-400/80"></span>
             </div>
-            <h3 class="text-base sm:text-lg font-medium text-white">Topology to production</h3>
+            <h3 class="text-base sm:text-lg font-medium text-white">Agree the first release</h3>
             <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed">
-              From relational schema design and edge runtimes to tactile spatial interfaces, every layer is engineered as one cohesive whole.
+              We shape a practical first scope together before deciding what should be built.
             </p>
           </div>
 
           <div class="hud-glass rounded-2xl p-5 sm:p-6">
             <div class="flex items-center justify-between mb-2">
-              <span class="font-mono text-[11px] tracking-widest text-orange-400">03 / SECURITY FIRST</span>
+              <span class="font-mono text-[11px] tracking-widest text-orange-400">03 / CLEAR COMMUNICATION</span>
               <span class="w-2 h-2 rounded-full bg-orange-400/80"></span>
             </div>
-            <h3 class="text-base sm:text-lg font-medium text-white">Hardened boundaries by default</h3>
+            <h3 class="text-base sm:text-lg font-medium text-white">Review as we build</h3>
             <p class="text-xs text-slate-300/85 mt-1.5 leading-relaxed">
-              We value clear access boundaries, careful data handling and security considerations from the start of a project.
+              Progress, open questions and tradeoffs are shared as the work moves forward.
             </p>
           </div>
         </div>
@@ -404,7 +405,7 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- CHAPTER 3 (0.32 - 0.54): 03 / CAPABILITIES — 3D LOGO MONOLITH MATRIX -->
+    <!-- CHAPTER 3 (0.32 - 0.54): 03 / SERVICES — 3D LOGO MONOLITH MATRIX -->
     <!-- Matches exact layout, typography scale, and placement of reference   -->
     <!-- =================================================================== -->
     <section id="chapter-2" class="chapter-layer justify-between pt-28 pb-8">
@@ -412,12 +413,12 @@
         <!-- Left-Aligned Minimalist Copy Block (Vertically Centered, Unobstructed 3D Center) -->
         <div class="max-w-[320px] space-y-2.5 z-10">
           <div class="font-mono text-[11px] tracking-[0.18em] uppercase text-white/55">
-            03 / CAPABILITIES
+            03 / SERVICES
           </div>
           <h2 class="text-[18px] sm:text-[20px] font-light tracking-[-0.01em] leading-[1.45] text-[#F8FAFC] drop-shadow-[0_2px_20px_rgba(0,0,0,0.95)]">
-            A core aligned with<br />
-            engineering discipline.<br />
-            We build from first principles.
+            AI, software and digital products<br />
+            shaped around your business.<br />
+            Start with a clear need.
           </h2>
           <ul class="grid grid-cols-2 gap-x-4 gap-y-1.5 pt-2 font-mono text-[10px] sm:text-[11px] tracking-wide text-white/60" aria-label="Studio services">
             <li>AI &amp; AI agents</li>
@@ -433,9 +434,9 @@
       <!-- Bottom Monospace Telemetry Strip (Exact 3-Column Bar from Reference Image) -->
       <div class="max-w-6xl mx-auto w-full pt-4">
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center font-mono text-[10px] sm:text-[11px] tracking-[0.16em] uppercase text-white/45">
-          <div class="sm:text-left">[ LOGO PARTICLE DENSITY: 65K ]</div>
-          <div class="text-center">[ MONOLITH MATRIX ACTIVE ]</div>
-          <div class="sm:text-right">[ FIRST PRINCIPLES ARCHITECTURE ]</div>
+          <div class="sm:text-left">[ 3D MONOLITH ACTIVE ]</div>
+          <div class="text-center">[ SIX SERVICE AREAS ]</div>
+          <div class="sm:text-right">[ PUNE, INDIA ]</div>
         </div>
       </div>
     </section>
@@ -451,24 +452,24 @@
             <span>04 / ENGINEERING PHILOSOPHY</span>
           </div>
           <h2 class="text-4xl sm:text-6xl font-medium tracking-tight leading-[1.06] text-white">
-            Everything revolves <br />
-            around one thing — <br />
+            From first conversation <br />
+            to a useful first release <br />
             <span class="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-orange-400">
-              real utility
+              with a clear scope
             </span>
           </h2>
         </div>
 
         <div class="interactive lg:col-span-5 space-y-6 lg:pt-8">
           <p class="text-sm sm:text-base text-slate-300/90 leading-relaxed font-light">
-            Thousands of moving variables. One center of gravity. We strip away bloated abstractions to turn complex operational and security problems into calm, reliable software.
+            We start by understanding the goal, users and constraints. If there is a fit, we agree on a focused scope, build in reviewable steps and confirm the next stage together.
           </p>
           <div class="flex flex-wrap items-center gap-3">
             <button type="button" onclick="jumpToChapter(5)" class="pill-cta-primary px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white flex items-center gap-2">
-              <span>View active systems</span>
+              <span>See our products</span>
               <span>→</span>
             </button>
-            <button type="button" onclick="openInquiryModal('Architecture Consultation')" class="pill-cta-secondary px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium text-slate-200">
+            <button type="button" onclick="openBookingOrInquiry('Something else')" class="pill-cta-secondary px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium text-slate-200">
               Start a conversation
             </button>
           </div>
@@ -482,7 +483,7 @@
     <section id="chapter-4" class="chapter-layer items-center justify-between py-24 text-center">
       <div class="space-y-3 pt-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-violet-500/10 border border-violet-400/30 font-mono text-[10px] tracking-[0.22em] uppercase text-violet-200">
-          <span>05 / ON THE HORIZON</span>
+          <span>05 / PRODUCT IDEAS</span>
         </div>
         <h2 class="text-3xl sm:text-5xl font-medium tracking-tight text-white">
           Early ideas, <span class="font-serif italic font-normal text-violet-300">taking shape</span>
@@ -512,21 +513,21 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-orange-400 mb-1.5">
-              06 / SELECTED WORK &amp; ECOSYSTEM
+              06 / PRAMANIXLABS PRODUCTS
             </div>
             <h2 class="text-3xl sm:text-5xl font-medium tracking-tight text-white">
-              A universe of builds — <span class="font-serif italic font-normal text-sky-300">already in motion</span>
+              Products we are building — <span class="font-serif italic font-normal text-sky-300">already in motion</span>
             </h2>
           </div>
 
           <div class="interactive flex flex-wrap gap-1.5 bg-white/5 backdrop-blur-xl p-1 rounded-full border border-white/10">
-            <button type="button" onclick="filterProjects('all')" data-filter="all" class="filter-btn px-3 py-1 rounded-full text-[11px] font-mono bg-white text-slate-950 transition-all">All (5)</button>
-            <button type="button" onclick="filterProjects('active')" data-filter="active" class="filter-btn px-3 py-1 rounded-full text-[11px] font-mono text-slate-300 hover:text-white transition-all">Active</button>
-            <button type="button" onclick="filterProjects('exploration')" data-filter="exploration" class="filter-btn px-3 py-1 rounded-full text-[11px] font-mono text-slate-300 hover:text-white transition-all">R&amp;D / Shelf</button>
+            <button type="button" onclick="filterProjects('all')" data-filter="all" class="filter-btn px-3 py-1 rounded-full text-[11px] font-mono bg-white text-slate-950 transition-all">All products (5)</button>
+            <button type="button" onclick="filterProjects('active')" data-filter="active" class="filter-btn px-3 py-1 rounded-full text-[11px] font-mono text-slate-300 hover:text-white transition-all">In progress</button>
+            <button type="button" onclick="filterProjects('exploration')" data-filter="exploration" class="filter-btn px-3 py-1 rounded-full text-[11px] font-mono text-slate-300 hover:text-white transition-all">In exploration</button>
           </div>
         </div>
 
-        <!-- 5 Real PramanixLabs Project Cards -->
+        <!-- In-house products with their current status -->
         <div id="projects-grid" class="interactive grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
           <article data-category="active" data-project-code="01" onclick="openProjectDrawer('restovra')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('restovra')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
             <img data-project-image class="hidden w-full max-h-36 object-cover rounded-xl mb-3" loading="lazy" decoding="async" alt="" />
@@ -541,7 +542,7 @@
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Project notes</span>
+              <span>Product details</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
@@ -559,7 +560,7 @@
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Project notes</span>
+              <span>Product details</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
@@ -577,7 +578,7 @@
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Project notes</span>
+              <span>Product details</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
@@ -595,7 +596,7 @@
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Project notes</span>
+              <span>Product details</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
@@ -613,7 +614,7 @@
               </p>
             </div>
             <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[11px] text-slate-300 group-hover:text-white">
-              <span>Project notes</span>
+              <span>Product details</span>
               <span class="group-hover:translate-x-1 transition-transform">↗</span>
             </div>
           </article>
@@ -630,17 +631,14 @@
           </div>
 
           <div class="flex flex-wrap items-center justify-center gap-2.5">
-            <button type="button" onclick="downloadBrandSVG()" class="px-3.5 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 font-mono text-[11px] text-sky-200 transition-colors">
-              ↓ Brand SVG
-            </button>
-            <a href="https://github.com/manthankro/pramanixlabs-website" target="_blank" rel="noreferrer" class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs text-slate-200 transition-colors">
-              GitHub ↗
+            <a href="https://www.linkedin.com/company/pramanix-labs/" target="_blank" rel="noreferrer" class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs text-slate-200 transition-colors">
+              LinkedIn ↗
             </a>
             <a href="/admin" class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs text-slate-200 transition-colors">
               Studio access
             </a>
-            <button type="button" onclick="openInquiryModal('New Project Inquiry')" class="pill-cta-primary px-5 py-2 rounded-full text-xs font-medium text-white">
-              Say Hello →
+            <button type="button" onclick="openBookingOrInquiry('Something else')" class="pill-cta-primary px-5 py-2 rounded-full text-xs font-medium text-white">
+              Request a project call →
             </button>
           </div>
         </div>
@@ -709,7 +707,7 @@
         </div>
 
         <div>
-          <label for="inq-topic" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">Focus Area / Project</label>
+          <label for="inq-topic" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">Service you need</label>
           <select id="inq-topic" name="topic" required
             class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white focus:outline-none">
             <option value="" disabled>Select a focus area</option>
@@ -724,8 +722,25 @@
         </div>
 
         <div>
+          <label for="inq-organization" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">Company or organization (optional)</label>
+          <input id="inq-organization" name="organization" type="text" maxlength="160" autocomplete="organization" placeholder="Company name"
+            class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none" />
+        </div>
+
+        <div>
+          <label for="inq-timeline" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">Preferred timing (optional)</label>
+          <select id="inq-timeline" name="timeline" class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white focus:outline-none">
+            <option value="">Select a timeframe</option>
+            <option>As soon as possible</option>
+            <option>Within 1–3 months</option>
+            <option>More than 3 months away</option>
+            <option>Still exploring</option>
+          </select>
+        </div>
+
+        <div>
           <label for="inq-msg" class="block font-mono text-[10px] uppercase tracking-wider text-slate-400 mb-1.5">What are we building?</label>
-          <textarea id="inq-msg" name="message" rows="3" required minlength="10" maxlength="5000" placeholder="Share a little about what you need..."
+          <textarea id="inq-msg" name="message" rows="3" required minlength="10" maxlength="4500" placeholder="Share a little about what you need..."
             class="w-full rounded-xl bg-white/5 border border-white/15 focus:border-sky-400 px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none"></textarea>
         </div>
 
@@ -734,7 +749,7 @@
           <input id="inq-company-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
         </div>
         <div class="pt-2 flex items-center justify-between gap-3">
-          <span id="inq-feedback" class="font-mono text-[11px] text-emerald-400 hidden">✓ Prepared email dispatch</span>
+          <span id="inq-feedback" role="status" aria-live="polite" class="font-mono text-[11px] text-emerald-400 hidden"></span>
           <button type="submit" class="ml-auto pill-cta-primary px-6 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white">
             Send Inquiry ↗
           </button>
@@ -1529,6 +1544,15 @@
     }
 
     let inquiryConfig = null;
+    let studioBookingUrl = null;
+
+    function openBookingOrInquiry(topic = 'Something else') {
+      if (studioBookingUrl) {
+        window.open(studioBookingUrl, '_blank', 'noopener,noreferrer');
+        return;
+      }
+      openInquiryModal(topic);
+    }
 
     window.addEventListener('message', event => {
       if (event.origin !== window.location.origin || event.source !== window.parent) return;
@@ -1537,7 +1561,10 @@
         return;
       }
       if (event.data?.type !== 'PRAMANIX_SUPABASE_CONFIG') return;
-      const { url, anonKey } = event.data;
+      const { url, anonKey, bookingUrl } = event.data;
+      if (typeof bookingUrl === 'string') {
+        try { const parsed = new URL(bookingUrl); studioBookingUrl = parsed.protocol === 'https:' ? parsed.href : null; } catch { studioBookingUrl = null; }
+      }
       if (typeof url === 'string' && typeof anonKey === 'string' && url && anonKey) {
         inquiryConfig = { url: url.replace(/\/$/, ''), anonKey };
       }
@@ -1550,6 +1577,9 @@
       const email = document.getElementById('inq-email').value.trim();
       const topic = document.getElementById('inq-topic').value.trim();
       const msg = document.getElementById('inq-msg').value.trim();
+      const organization = document.getElementById('inq-organization').value.trim();
+      const timeline = document.getElementById('inq-timeline').value.trim();
+      const fullMessage = [msg, organization && `Company or organization: ${organization}`, timeline && `Preferred timing: ${timeline}`].filter(Boolean).join('\n\n');
       const companyWebsite = document.getElementById('inq-company-website').value.trim();
       const feedback = document.getElementById('inq-feedback');
       const submit = form.querySelector('button[type="submit"]');
@@ -1559,7 +1589,7 @@
       if (!inquiryConfig) {
         feedback.textContent = 'Opening your email app. If it does not open, email pramanixlabs@gmail.com.';
         const subject = encodeURIComponent(`[PramanixLabs] ${topic} — ${name}`);
-        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\n${msg}`);
+        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\n${fullMessage}`);
         window.location.href = `mailto:pramanixlabs@gmail.com?subject=${subject}&body=${body}`;
         submit.disabled = false;
         return;
@@ -1574,7 +1604,7 @@
             apikey: inquiryConfig.anonKey,
             Authorization: `Bearer ${inquiryConfig.anonKey}`,
           },
-          body: JSON.stringify({ name, email, topic, message: msg, company_website: companyWebsite }),
+          body: JSON.stringify({ name, email, topic, message: fullMessage, company_website: companyWebsite }),
         });
         const result = await response.json();
         if (!response.ok || result.success !== true) {

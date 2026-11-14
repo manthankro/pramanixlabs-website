@@ -91,6 +91,9 @@ VITE_SUPABASE_URL=https://<project-ref>.supabase.co
 VITE_SUPABASE_ANON_KEY=<project-anon-key>
 ```
 
+
+Optional direct scheduling: add `VITE_BOOKING_URL` with your public Calendly or Google appointment schedule URL. It is public browser configuration, not a secret. When it is blank, booking buttons lead to the project inquiry form. Redeploy after changing Vercel variables.
+
 The anon key is designed to be public; RLS and the admin allowlist enforce access. Never use a service-role key or database password in a `VITE_*` variable. Vite embeds `VITE_*` values into browser code. After changing a Vercel variable, create a new deployment for it to take effect.
 
 ### SPA fallback
@@ -98,7 +101,7 @@ The anon key is designed to be public; RLS and the admin allowlist enforce acces
 `/admin` is a client-side route. The host must serve `index.html` for unknown paths:
 
 - Cloudflare Pages / Netlify: `public/_redirects` is already included and copied into `dist/`.
-- Vercel: `vercel.json` now rewrites unmatched routes to `/index.html`; static files such as `/cosmic-architecture.html` continue to resolve first.
+- Vercel: `vercel.json` now rewrites unmatched routes to `/index.html`; static files continue to resolve first.
 - Any static server: configure the equivalent fallback.
 
 ### Headers
@@ -106,15 +109,15 @@ The anon key is designed to be public; RLS and the admin allowlist enforce acces
 `public/_headers` ships the production header set for Cloudflare Pages and Netlify. For another host, apply the same values in its configuration:
 
 ```text
-Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://<project-ref>.supabase.co; connect-src 'self' https://<project-ref>.supabase.co wss://<project-ref>.supabase.co; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://<project-ref>.supabase.co; connect-src 'self' https://<project-ref>.supabase.co wss://<project-ref>.supabase.co; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self' mailto:; upgrade-insecure-requests
 X-Content-Type-Options: nosniff
-X-Frame-Options: DENY
+X-Frame-Options: SAMEORIGIN
 Referrer-Policy: strict-origin-when-cross-origin
 Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 ```
 
-Vercel uses the equivalent headers in `vercel.json`; `public/_headers` applies to Cloudflare Pages and Netlify. The current cosmic experience uses inline scripts and Tailwind/Three.js CDNs, so its compatible CSP allows inline scripts and those external hosts. This is a compatibility policy; bundle or self-host these assets before tightening CSP. Restrict Supabase connect/image hosts to the project where practical.
+Vercel uses the equivalent headers in `vercel.json`; `public/_headers` applies to Cloudflare Pages and Netlify. The 3D company page loads Three.js and Tailwind from the listed CDNs, Google Fonts, and Supabase. Its inline script and styles require `unsafe-inline`; keep the allowed script hosts limited to the two listed CDNs. `frame-ancestors 'self'` and `X-Frame-Options: SAMEORIGIN` allow the same-origin React shell to host the experience. Restrict Supabase connect/image hosts to the project where practical.
 
 ### Canonical URL and social preview
 
@@ -134,7 +137,7 @@ Work through this list against the real project, not the repository defaults.
 - [ ] `/admin` loads directly (SPA fallback works), an allowlisted account signs in, and a non-allowlisted account is denied.
 - [ ] A submitted inquiry appears in Supabase and in the dashboard inbox. If email secrets are set, the notification arrives with a working reply-to.
 - [ ] Submitting faster than five times in fifteen minutes returns the rate-limit message.
-- [ ] An image upload from `/admin` appears on the public portfolio with its alt text, and an unapproved MIME type or a file over 5 MB is rejected.
+- [ ] An image upload from `/admin` appears on the public in-house product section with its alt text, and an unapproved MIME type or a file over 5 MB is rejected.
 - [ ] Sign out clears access; reloading `/admin` requires a new session.
 - [ ] Response headers include CSP and HSTS; the browser console has no CSP violations.
 - [ ] Touch, keyboard-only navigation, Escape-to-close menu and visible focus states all work.

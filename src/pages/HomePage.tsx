@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useSeo } from '../lib/useSeo'
 import { projects as initialProjects, type Project } from '../data/content'
 import { supabase } from '../lib/supabase'
+import { bookingUrl } from '../lib/booking'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim() ?? ''
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim() ?? ''
@@ -28,56 +29,48 @@ function mergeProjects(rows: Record<string, unknown>[]): Project[] {
 }
 
 export default function HomePage() {
-  useSeo({
-    title: 'PramanixLabs — Imagine. Build. Evolve.',
-    description:
-      'PramanixLabs is an independent technology studio in Pune building AI systems and software, with active interests in cybersecurity and digital learning.',
-  })
-
   const frame = useRef<HTMLIFrameElement>(null)
   const [frameReady, setFrameReady] = useState(false)
   const [projects, setProjects] = useState<Project[]>(initialProjects)
 
+  useSeo({
+    title: 'PramanixLabs | 3D product and software studio',
+    description: 'Explore PramanixLabs in a 3D cosmic experience. Pune-based product and software studio for AI, SaaS, websites, apps and automation. Start a project inquiry.',
+  })
+
   useEffect(() => {
     if (!supabase) return
     let active = true
-    supabase
-      .from('projects')
-      .select('*')
-      .order('sort_order')
-      .then(({ data }) => {
-        if (active && data?.length) setProjects(mergeProjects(data))
-      })
-    return () => {
-      active = false
-    }
+    void (async () => {
+      try {
+        const { data, error } = await supabase.from('projects').select('*').order('sort_order')
+        if (active && !error && data?.length) setProjects(mergeProjects(data))
+      } catch {
+        // Keep the built-in project details if the database is unavailable.
+      }
+    })()
+    return () => { active = false }
   }, [])
 
   useEffect(() => {
     if (!frameReady) return
-    frame.current?.contentWindow?.postMessage(
-      { type: 'PRAMANIX_PROJECTS_DATA', projects },
-      window.location.origin,
-    )
+    const target = frame.current?.contentWindow
+    target?.postMessage({ type: 'PRAMANIX_PROJECTS_DATA', projects }, window.location.origin)
+    target?.postMessage({
+      type: 'PRAMANIX_SUPABASE_CONFIG',
+      url: supabaseUrl,
+      anonKey: supabaseAnonKey,
+      bookingUrl,
+    }, window.location.origin)
   }, [frameReady, projects])
 
   return (
     <main id="main" style={{ position: 'fixed', inset: 0, zIndex: 80, background: '#020308' }}>
       <iframe
         ref={frame}
-        title="PramanixLabs cosmic architecture experience"
+        title="PramanixLabs 3D cosmic architecture and services"
         src="/cosmic-architecture.html"
-        onLoad={event => {
-          setFrameReady(true)
-          event.currentTarget.contentWindow?.postMessage(
-            {
-              type: 'PRAMANIX_SUPABASE_CONFIG',
-              url: supabaseUrl,
-              anonKey: supabaseAnonKey,
-            },
-            window.location.origin,
-          )
-        }}
+        onLoad={() => setFrameReady(true)}
         style={{ display: 'block', width: '100%', height: '100%', border: 0 }}
       />
     </main>

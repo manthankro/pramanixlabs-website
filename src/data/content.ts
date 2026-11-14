@@ -95,37 +95,37 @@ export const services = [
     no: '01',
     title: 'AI & AI agents',
     mark: 'AI',
-    copy: 'Intelligent systems, assistant experiences and agent-shaped automation, designed around a concrete use case rather than the technology itself.',
+    copy: 'AI features, assistants and workflow support built around a specific business task, with clear boundaries and human review where needed.',
   },
   {
     no: '02',
     title: 'SaaS products & dashboards',
     mark: 'SAAS',
-    copy: 'Product concepts, dashboards and internal tools that turn scattered workflows and data into something a team can actually operate.',
+    copy: 'Web software, dashboards and internal tools that help teams manage information and everyday operations.',
   },
   {
     no: '03',
     title: 'Web development',
     mark: 'WEB',
-    copy: 'Websites and web applications built on a clear information structure, accessible interfaces and a maintainable front end.',
+    copy: 'Business websites and web applications with clear information, accessible pages and a practical path for customers to get in touch.',
   },
   {
     no: '04',
     title: 'Mobile applications',
     mark: 'APP',
-    copy: 'Mobile application exploration and development, with the same attention to interaction detail and performance as the web work.',
+    copy: 'Mobile applications for customer or team workflows, scoped around the core features people need to use.',
   },
   {
     no: '05',
     title: 'Custom software',
     mark: 'CODE',
-    copy: 'Tailored software shaped around a specific problem, a specific team and the constraints that come with both.',
+    copy: 'Tools designed around your team’s process when off-the-shelf software does not fit the work.',
   },
   {
     no: '06',
     title: 'Automation & digital solutions',
     mark: 'FLOW',
-    copy: 'Workflow automation and pragmatic digital tooling that removes repetitive work without adding fragile machinery.',
+    copy: 'Connect repeatable tasks and tools to reduce manual data entry, routine follow-ups and hand-offs.',
   },
 ] as const
 

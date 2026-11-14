@@ -42,16 +42,16 @@ The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY
 
 - `vercel.json` sets CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` and HSTS on Vercel. `public/_headers` provides equivalent host rules for Cloudflare Pages/Netlify.
 - Tighten `connect-src` and `img-src` from `https://*.supabase.co` to the exact project origin after provisioning.
-- The cosmic experience currently uses inline scripts, Tailwind from `cdn.tailwindcss.com`, Three.js from cdnjs, and Google Fonts. Its CSP allows these sources and `'unsafe-inline'` for scripts and styles. This is a compatibility baseline, not a strict CSP; bundle/self-host these assets and remove inline handlers before tightening the policy.
-- The main React site embeds the same-origin cosmic HTML page in an iframe, so `frame-ancestors 'self'` and `X-Frame-Options: SAMEORIGIN` are required.
+- The main company experience is rendered in a same-origin HTML page inside the React shell. It loads Three.js from cdnjs, Tailwind from cdn.tailwindcss.com, and Google Fonts. The CSP permits these listed hosts and inline scripts/styles because the experience currently relies on them.
+- The 3D experience is embedded by the same-origin React shell; framing is restricted to the same origin with `frame-ancestors 'self'` and `X-Frame-Options: SAMEORIGIN`.
 
 ## Residual risks and what is not included
 
 - The rate limit is per IP hash inside a fifteen-minute window. It is a basic abuse control, not bot management, a WAF or a CAPTCHA.
-- No automated data-retention job is included. Define a retention period, then delete old inquiries from the dashboard or with a scheduled SQL task.
+- No automated data-retention job is included. Delete old inquiries from the dashboard or with a scheduled SQL task when they are no longer needed.
 - No monitoring, alerting or audit-log export is configured.
 - The site does not process payments or store passwords itself; authentication is delegated to Supabase.
-- Uploaded portfolio images are public and could be indexed. Do not upload confidential material.
+- Uploaded product images are public and could be indexed. Do not upload confidential material.
 
 ## Before using real visitor data
 
