@@ -114,7 +114,7 @@ Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 ```
 
-Vercel uses the equivalent headers in `vercel.json`; `public/_headers` applies to Cloudflare Pages and Netlify. The current cosmic experience uses inline scripts and Tailwind/Three.js CDNs, so its compatible CSP allows inline scripts and those external hosts. This is a compatibility policy; bundle or self-host these assets before tightening CSP. Restrict Supabase connect/image hosts to the project where practical.
+Vercel uses the equivalent headers in `vercel.json`; `public/_headers` applies to Cloudflare Pages and Netlify. The current company page does not load the old Three.js/Tailwind prototype. The policy allows the same-origin app, Google Fonts, and Supabase. `style-src 'unsafe-inline'` supports the existing inline style on the no-JavaScript fallback. Restrict Supabase connect/image hosts to the project where practical.
 
 ### Canonical URL and social preview
 
