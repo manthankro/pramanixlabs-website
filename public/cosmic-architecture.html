@@ -67,14 +67,15 @@
       position: relative;
       height: 660vh;
       z-index: 10;
+      pointer-events: none;
     }
 
     /* Fixed Stage Viewport Container */
-    .stage-viewport {
+     .stage-viewport {
       position: fixed;
       inset: 0;
       z-index: 10;
-      pointer-events: none;
+      pointer-events: auto;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -98,7 +99,8 @@
       pointer-events: none;
     }
 
-    .chapter-layer.active {
+     .chapter-layer.active {
+      pointer-events: auto;
       opacity: 1;
       filter: blur(0px);
       transform: translateY(0px) scale(1);
