@@ -490,17 +490,18 @@
       </div>
 
       <div class="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 text-left">
-        <article class="hud-glass rounded-2xl p-5">
+        <article data-horizon-code="04" class="hud-glass rounded-2xl p-5">
           <p class="font-mono text-[10px] tracking-[0.16em] uppercase text-orange-300">Digital identity · In exploration</p>
           <h3 class="mt-2 text-lg font-medium text-white">SECOND LIFE ID</h3>
           <p class="mt-2 text-xs leading-relaxed text-slate-300/85">An early-stage identity concept. Scope and product details are still being explored.</p>
         </article>
-        <article class="hud-glass rounded-2xl p-5">
+        <article data-horizon-code="05" class="hud-glass rounded-2xl p-5">
           <p class="font-mono text-[10px] tracking-[0.16em] uppercase text-sky-300">Digital learning · In exploration</p>
           <h3 class="mt-2 text-lg font-medium text-white">Pramanix Shelf</h3>
           <p class="mt-2 text-xs leading-relaxed text-slate-300/85">A reading and learning experience in early exploration. Its shape is still being worked out.</p>
         </article>
       </div>
+      <p id="horizon-empty" class="hidden max-w-lg mx-auto px-4 text-sm text-slate-300/80">No projects are currently listed in exploration. New ideas will appear here when they are ready to share.</p>
     </section>
 
     <!-- =================================================================== -->
@@ -527,10 +528,11 @@
 
         <!-- 5 Real PramanixLabs Project Cards -->
         <div id="projects-grid" class="interactive grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          <article data-category="active" onclick="openProjectDrawer('restovra')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('restovra')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+          <article data-category="active" data-project-code="01" onclick="openProjectDrawer('restovra')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('restovra')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+            <img data-project-image class="hidden w-full max-h-36 object-cover rounded-xl mb-3" loading="lazy" decoding="async" alt="" />
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-400/30">IN DEVELOPMENT</span>
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-400/30" data-project-status>IN DEVELOPMENT</span>
                 <span class="font-mono text-[10px] text-slate-400">🔒 Private Repo</span>
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-sky-300 transition-colors">Restovra</h3>
@@ -544,10 +546,11 @@
             </div>
           </article>
 
-          <article data-category="active" onclick="openProjectDrawer('kavachscan')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('kavachscan')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+          <article data-category="active" data-project-code="02" onclick="openProjectDrawer('kavachscan')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('kavachscan')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+            <img data-project-image class="hidden w-full max-h-36 object-cover rounded-xl mb-3" loading="lazy" decoding="async" alt="" />
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-400/30">CONTROLLED EVALUATION</span>
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-400/30" data-project-status>CONTROLLED EVALUATION</span>
                 <span class="font-mono text-[10px] text-slate-400">🔒 Private Repo</span>
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-sky-300 transition-colors">KavachScan</h3>
@@ -561,10 +564,11 @@
             </div>
           </article>
 
-          <article data-category="active" onclick="openProjectDrawer('pramanix-ai')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('pramanix-ai')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+          <article data-category="active" data-project-code="03" onclick="openProjectDrawer('pramanix-ai')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('pramanix-ai')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+            <img data-project-image class="hidden w-full max-h-36 object-cover rounded-xl mb-3" loading="lazy" decoding="async" alt="" />
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300 border border-violet-400/30">PUBLIC REPOSITORY</span>
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-violet-500/15 text-violet-300 border border-violet-400/30" data-project-status>PUBLIC REPOSITORY</span>
                 <span class="font-mono text-[10px] text-slate-400">AI LEARNING</span>
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-sky-300 transition-colors">Pramanix AI</h3>
@@ -578,10 +582,11 @@
             </div>
           </article>
 
-          <article data-category="exploration" onclick="openProjectDrawer('second-life-id')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('second-life-id')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+          <article data-category="exploration" data-project-code="04" onclick="openProjectDrawer('second-life-id')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('second-life-id')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between">
+            <img data-project-image class="hidden w-full max-h-36 object-cover rounded-xl mb-3" loading="lazy" decoding="async" alt="" />
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-400/30">EXPLORATION</span>
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-400/30" data-project-status>EXPLORATION</span>
                 <span class="font-mono text-[10px] text-slate-400">PROVENANCE</span>
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-orange-300 transition-colors">SECOND LIFE ID</h3>
@@ -595,10 +600,11 @@
             </div>
           </article>
 
-          <article data-category="exploration" onclick="openProjectDrawer('pramanix-shelf')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('pramanix-shelf')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between sm:col-span-2 lg:col-span-2">
+          <article data-category="exploration" data-project-code="05" onclick="openProjectDrawer('pramanix-shelf')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProjectDrawer('pramanix-shelf')}" tabindex="0" role="button" aria-haspopup="dialog" class="project-card hud-glass rounded-2xl p-4 sm:p-5 cursor-pointer group flex flex-col justify-between sm:col-span-2 lg:col-span-2">
+            <img data-project-image class="hidden w-full max-h-36 object-cover rounded-xl mb-3" loading="lazy" decoding="async" alt="" />
             <div>
               <div class="flex items-center justify-between gap-2 mb-2.5">
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-slate-200 border border-white/20">IN EXPLORATION</span>
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-slate-200 border border-white/20" data-project-status>IN EXPLORATION</span>
                 <span class="font-mono text-[10px] text-slate-400">ARCHIVE</span>
               </div>
               <h3 class="text-lg font-medium text-white group-hover:text-sky-300 transition-colors">Pramanix Shelf</h3>
@@ -629,6 +635,9 @@
             </button>
             <a href="https://github.com/manthankro/pramanixlabs-website" target="_blank" rel="noreferrer" class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs text-slate-200 transition-colors">
               GitHub ↗
+            </a>
+            <a href="/admin" class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs text-slate-200 transition-colors">
+              Studio access
             </a>
             <button type="button" onclick="openInquiryModal('New Project Inquiry')" class="pill-cta-primary px-5 py-2 rounded-full text-xs font-medium text-white">
               Say Hello →
@@ -1332,7 +1341,8 @@
       });
 
       document.querySelectorAll('.project-card').forEach((card) => {
-        if (category === 'all' || card.dataset.category === category) {
+        const exists = card.dataset.present !== 'false';
+        if (exists && (category === 'all' || card.dataset.category === category)) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';
@@ -1397,6 +1407,65 @@
         ],
       },
     };
+
+    function applyProjects(projects) {
+      if (!Array.isArray(projects)) return;
+      const keysByCode = { '01': 'restovra', '02': 'kavachscan', '03': 'pramanix-ai', '04': 'second-life-id', '05': 'pramanix-shelf' };
+      const grid = document.getElementById('projects-grid');
+      const cards = new Map(Array.from(grid.querySelectorAll('[data-project-code]')).map(card => [card.dataset.projectCode, card]));
+      const ordered = [];
+      const incomingCodes = new Set(projects.map(project => String(project.code ?? '')));
+      cards.forEach((card, code) => { card.dataset.present = incomingCodes.has(code) ? 'true' : 'false'; });
+
+      projects.forEach(project => {
+        const code = String(project.code ?? '');
+        const card = cards.get(code);
+        const key = keysByCode[code];
+        const drawer = PROJECTS_DATA[key];
+        if (!card || !drawer) return;
+        const title = card.querySelector('h3');
+        const description = card.querySelector('p');
+        const status = card.querySelector('[data-project-status]');
+        const image = card.querySelector('[data-project-image]');
+        const horizonCard = document.querySelector(`[data-horizon-code="${code}"]`);
+        if (title) title.textContent = project.name;
+        if (description) description.textContent = project.description;
+        if (status) status.textContent = project.status;
+        if (image) {
+          if (project.image_url) {
+            image.src = project.image_url;
+            image.alt = project.image_alt || `${project.name} project image`;
+            image.classList.remove('hidden');
+          } else {
+            image.removeAttribute('src');
+            image.alt = '';
+            image.classList.add('hidden');
+          }
+        }
+        card.dataset.category = project.upcoming ? 'exploration' : 'active';
+        drawer.title = project.name;
+        drawer.summary = project.description;
+        drawer.stage = `${project.status} · ${project.category}`;
+        if (horizonCard) {
+          const horizonTitle = horizonCard.querySelector('h3');
+          const horizonDescription = horizonCard.querySelector('p:last-child');
+          if (horizonTitle) horizonTitle.textContent = project.name;
+          if (horizonDescription) horizonDescription.textContent = project.description;
+          horizonCard.classList.toggle('hidden', !project.upcoming);
+        }
+        ordered.push(card);
+      });
+
+      ordered.forEach(card => grid.appendChild(card));
+      const activeCount = projects.filter(project => !project.upcoming).length;
+      const explorationCount = projects.filter(project => project.upcoming).length;
+      const horizonEmpty = document.getElementById('horizon-empty');
+      if (horizonEmpty) horizonEmpty.classList.toggle('hidden', explorationCount > 0);
+      document.querySelector('[data-filter="all"]').textContent = `All (${projects.length})`;
+      document.querySelector('[data-filter="active"]').textContent = `Active (${activeCount})`;
+      document.querySelector('[data-filter="exploration"]').textContent = `R&D / Shelf (${explorationCount})`;
+      filterProjects(document.querySelector('.filter-btn.bg-white')?.dataset.filter ?? 'all');
+    }
 
     function openProjectDrawer(key) {
       const data = PROJECTS_DATA[key];
@@ -1463,6 +1532,10 @@
 
     window.addEventListener('message', event => {
       if (event.origin !== window.location.origin || event.source !== window.parent) return;
+      if (event.data?.type === 'PRAMANIX_PROJECTS_DATA') {
+        applyProjects(event.data.projects);
+        return;
+      }
       if (event.data?.type !== 'PRAMANIX_SUPABASE_CONFIG') return;
       const { url, anonKey } = event.data;
       if (typeof url === 'string' && typeof anonKey === 'string' && url && anonKey) {
