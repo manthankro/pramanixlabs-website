@@ -91,6 +91,9 @@ VITE_SUPABASE_URL=https://<project-ref>.supabase.co
 VITE_SUPABASE_ANON_KEY=<project-anon-key>
 ```
 
+
+Optional direct scheduling: add `VITE_BOOKING_URL` with your public Calendly or Google appointment schedule URL. It is public browser configuration, not a secret. When it is blank, booking buttons lead to the project inquiry form. Redeploy after changing Vercel variables.
+
 The anon key is designed to be public; RLS and the admin allowlist enforce access. Never use a service-role key or database password in a `VITE_*` variable. Vite embeds `VITE_*` values into browser code. After changing a Vercel variable, create a new deployment for it to take effect.
 
 ### SPA fallback
