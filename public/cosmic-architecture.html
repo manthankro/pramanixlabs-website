@@ -283,8 +283,8 @@
       <span class="sr-only">04 · Philosophy</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">04 · Philosophy</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
-    <button type="button" onclick="jumpToChapter(4)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="4" aria-label="Go to Product ideas" title="Product ideas">
-      <span class="sr-only">05 · Product ideas</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">05 · Product ideas</span>
+    <button type="button" onclick="jumpToChapter(4)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="4" aria-label="Go to Project planning" title="Project planning">
+      <span class="sr-only">05 · Project planning</span><span aria-hidden="true" class="hidden lg:inline font-mono text-[10px] tracking-widest uppercase text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">05 · Product ideas</span>
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
     <button type="button" onclick="jumpToChapter(5)" class="chapter-dot group flex items-center gap-2.5 py-1" data-dot="5" aria-label="Go to PramanixLabs products" title="PramanixLabs products">
@@ -292,14 +292,6 @@
       <span class="dot-indicator w-2 h-2 rounded-full bg-white/25 transition-all"></span>
     </button>
   </aside>
-
-  <!-- Quick Stage Switcher Pill (Bottom-Left) for Instant Inspection -->
-  <div class="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 flex items-center gap-2">
-    <button type="button" id="quick-monolith-btn" onclick="jumpToChapter(2)" class="px-3.5 py-2 rounded-full bg-[#070C18]/85 hover:bg-sky-500/20 backdrop-blur-xl border border-sky-400/35 font-mono text-[10px] sm:text-[11px] tracking-wider uppercase text-sky-200 shadow-lg transition-all flex items-center gap-2">
-      <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-ping"></span>
-      <span>Inspect 3D Logo Monolith</span>
-    </button>
-  </div>
 
   <!-- Fixed Choreographed Foreground HUD Stages -->
   <div class="stage-viewport">
@@ -315,19 +307,19 @@
           </div>
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.06] backdrop-blur-xl border border-white/15 font-mono text-[11px] tracking-[0.2em] uppercase text-slate-200">
             <span class="text-sky-400">✦</span>
-            <span>IMAGINE. BUILD. EVOLVE.</span>
+            <span>INDEPENDENT SOFTWARE STUDIO · PUNE, INDIA</span>
           </div>
         </div>
 
         <h1 class="text-4xl sm:text-6xl lg:text-[64px] font-medium tracking-tight leading-[1.06] text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.9)]">
-          Build the digital product <br />
+          Software built around <br />
           <span class="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-white to-orange-300">
-            your business needs next.
+            how your business works.
           </span>
         </h1>
 
         <p class="text-xs sm:text-base text-slate-300/90 max-w-lg mx-auto leading-relaxed font-light">
-          PramanixLabs is an independent technology studio in Pune, India. We plan and build AI-enabled products, websites, apps, internal tools and automation around real business needs.
+          PramanixLabs builds web and mobile products, SaaS platforms, internal tools and AI workflows. Bring us the problem you need to solve; we will help shape the right first step.
         </p>
 
         <div class="interactive pt-2 flex flex-col sm:flex-row items-center justify-center gap-3.5">
@@ -420,13 +412,13 @@
             shaped around your business.<br />
             Start with a clear need.
           </h2>
-          <ul class="grid grid-cols-2 gap-x-4 gap-y-1.5 pt-2 font-mono text-[10px] sm:text-[11px] tracking-wide text-white/60" aria-label="Studio services">
-            <li>AI &amp; AI agents</li>
-            <li>SaaS &amp; dashboards</li>
-            <li>Web development</li>
-            <li>Mobile applications</li>
-            <li>Custom software</li>
-            <li>Automation &amp; digital solutions</li>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-2 pt-2 font-mono text-[10px] sm:text-[11px] tracking-wide text-white/70" aria-label="Ask us about a service">
+            <li><button type="button" onclick="openInquiryModal('AI &amp; AI agents')" class="text-left hover:text-white focus-visible:text-white transition-colors">AI &amp; AI agents ↗</button></li>
+            <li><button type="button" onclick="openInquiryModal('SaaS products &amp; dashboards')" class="text-left hover:text-white focus-visible:text-white transition-colors">SaaS &amp; dashboards ↗</button></li>
+            <li><button type="button" onclick="openInquiryModal('Web development')" class="text-left hover:text-white focus-visible:text-white transition-colors">Web development ↗</button></li>
+            <li><button type="button" onclick="openInquiryModal('Mobile applications')" class="text-left hover:text-white focus-visible:text-white transition-colors">Mobile applications ↗</button></li>
+            <li><button type="button" onclick="openInquiryModal('Custom software')" class="text-left hover:text-white focus-visible:text-white transition-colors">Custom software ↗</button></li>
+            <li><button type="button" onclick="openInquiryModal('Automation &amp; digital solutions')" class="text-left hover:text-white focus-visible:text-white transition-colors">Automation ↗</button></li>
           </ul>
         </div>
       </div>
@@ -483,27 +475,19 @@
     <section id="chapter-4" class="chapter-layer items-center justify-between py-24 text-center">
       <div class="space-y-3 pt-4">
         <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-violet-500/10 border border-violet-400/30 font-mono text-[10px] tracking-[0.22em] uppercase text-violet-200">
-          <span>05 / PRODUCT IDEAS</span>
+          <span>05 / BEFORE WE TALK</span>
         </div>
         <h2 class="text-3xl sm:text-5xl font-medium tracking-tight text-white">
-          Early ideas, <span class="font-serif italic font-normal text-violet-300">taking shape</span>
+          A good brief starts <span class="font-serif italic font-normal text-violet-300">with the problem.</span>
         </h2>
       </div>
-
-      <div class="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-3 px-4 text-left">
-        <article data-horizon-code="04" class="hud-glass rounded-2xl p-5">
-          <p class="font-mono text-[10px] tracking-[0.16em] uppercase text-orange-300">Digital identity · In exploration</p>
-          <h3 class="mt-2 text-lg font-medium text-white">SECOND LIFE ID</h3>
-          <p class="mt-2 text-xs leading-relaxed text-slate-300/85">An early-stage identity concept. Scope and product details are still being explored.</p>
-        </article>
-        <article data-horizon-code="05" class="hud-glass rounded-2xl p-5">
-          <p class="font-mono text-[10px] tracking-[0.16em] uppercase text-sky-300">Digital learning · In exploration</p>
-          <h3 class="mt-2 text-lg font-medium text-white">Pramanix Shelf</h3>
-          <p class="mt-2 text-xs leading-relaxed text-slate-300/85">A reading and learning experience in early exploration. Its shape is still being worked out.</p>
-        </article>
+      <div class="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-3 px-4 text-left">
+        <article class="hud-glass rounded-2xl p-5"><p class="font-mono text-[10px] tracking-[0.16em] uppercase text-orange-300">01 · THE GOAL</p><h3 class="mt-2 text-lg font-medium text-white">What needs to change?</h3><p class="mt-2 text-xs leading-relaxed text-slate-300/85">Describe the task, bottleneck or product idea you want to move forward.</p></article>
+        <article class="hud-glass rounded-2xl p-5"><p class="font-mono text-[10px] tracking-[0.16em] uppercase text-sky-300">02 · THE PEOPLE</p><h3 class="mt-2 text-lg font-medium text-white">Who will use it?</h3><p class="mt-2 text-xs leading-relaxed text-slate-300/85">A little context about your team or customers helps us understand the need.</p></article>
+        <article class="hud-glass rounded-2xl p-5"><p class="font-mono text-[10px] tracking-[0.16em] uppercase text-violet-300">03 · THE CONSTRAINTS</p><h3 class="mt-2 text-lg font-medium text-white">What should we know?</h3><p class="mt-2 text-xs leading-relaxed text-slate-300/85">Include timing, existing systems or a budget range if you already have one.</p></article>
       </div>
-      <p id="horizon-empty" class="hidden max-w-lg mx-auto px-4 text-sm text-slate-300/80">No projects are currently listed in exploration. New ideas will appear here when they are ready to share.</p>
-    </section>
+      <button type="button" onclick="openBookingOrInquiry('Something else')" class="pill-cta-primary px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white">Start a project enquiry →</button>
+    </section>ion>
 
     <!-- =================================================================== -->
     <!-- CHAPTER 6 (0.85 - 1.00): SELECTED WORK & CONTACT — SPIRAL GALAXY     -->
@@ -634,9 +618,7 @@
             <a href="https://www.linkedin.com/company/pramanix-labs/" target="_blank" rel="noreferrer" class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs text-slate-200 transition-colors">
               LinkedIn ↗
             </a>
-            <a href="/admin" class="px-4 py-2 rounded-full bg-white/5 hover:bg-white/15 border border-white/15 text-xs text-slate-200 transition-colors">
-              Studio access
-            </a>
+            
             <button type="button" onclick="openBookingOrInquiry('Something else')" class="pill-cta-primary px-5 py-2 rounded-full text-xs font-medium text-white">
               Request a project call →
             </button>
@@ -684,7 +666,7 @@
   <div id="inquiry-modal" class="drawer-backdrop fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4" onclick="closeInquiryModal()">
     <div role="dialog" aria-modal="true" aria-labelledby="inquiry-title" class="drawer-panel hud-glass bg-[#070B16]/95 border border-white/20 rounded-3xl max-w-lg w-full p-6 sm:p-8 text-white space-y-5" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b border-white/10 pb-4">
-        <span class="font-mono text-[11px] tracking-widest uppercase text-orange-400">PRAMANIXLABS · DIRECT DISPATCH</span>
+        <span class="font-mono text-[11px] tracking-widest uppercase text-orange-400">PRAMANIXLABS · PROJECT ENQUIRY</span>
         <button type="button" onclick="closeInquiryModal()" aria-label="Close inquiry form" class="font-mono text-xs text-slate-400 hover:text-white">CLOSE ✕</button>
       </div>
 
@@ -749,7 +731,7 @@
           <input id="inq-company-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
         </div>
         <div class="pt-2 flex items-center justify-between gap-3">
-          <span id="inq-feedback" role="status" aria-live="polite" class="font-mono text-[11px] text-emerald-400 hidden"></span>
+          <div id="inq-feedback" role="status" aria-live="polite" class="hidden mr-auto text-left text-[11px] text-slate-300"><span id="inq-feedback-text"></span><a id="inq-email-fallback" class="hidden mt-1 inline-block text-sky-300 underline underline-offset-4" href="mailto:pramanixlabs@gmail.com">Open email draft ↗</a></div>
           <button type="submit" class="ml-auto pill-cta-primary px-6 py-2.5 rounded-full text-xs sm:text-sm font-medium text-white">
             Send Inquiry ↗
           </button>
@@ -1229,7 +1211,6 @@
       const chapterEls = Array.from({ length: 6 }, (_, i) => document.getElementById(`chapter-${i}`));
       const dotEls = Array.from(document.querySelectorAll('.chapter-dot'));
       const navProgress = document.getElementById('nav-progress');
-      const quickBtn = document.getElementById('quick-monolith-btn');
       let lastActiveChapter = -1;
 
       function updateChapterUI(progress) {
@@ -1265,15 +1246,7 @@
               dot.classList.remove('bg-white', 'scale-125', 'shadow-[0_0_10px_#fff]');
             }
           });
-          if (quickBtn) {
-            if (idx === 2) {
-              quickBtn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-orange-400"></span><span>Back to Hero Portal</span>`;
-              quickBtn.onclick = () => jumpToChapter(0);
-            } else {
-              quickBtn.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-ping"></span><span>Inspect 3D Logo Monolith</span>`;
-              quickBtn.onclick = () => jumpToChapter(2);
-            }
-          }
+
         }
       }
 
@@ -1579,43 +1552,49 @@
       const msg = document.getElementById('inq-msg').value.trim();
       const organization = document.getElementById('inq-organization').value.trim();
       const timeline = document.getElementById('inq-timeline').value.trim();
-      const fullMessage = [msg, organization && `Company or organization: ${organization}`, timeline && `Preferred timing: ${timeline}`].filter(Boolean).join('\n\n');
+      const fullMessage = [msg, organization && 'Company or organization: ' + organization, timeline && 'Preferred timing: ' + timeline].filter(Boolean).join('\n\n');
       const companyWebsite = document.getElementById('inq-company-website').value.trim();
       const feedback = document.getElementById('inq-feedback');
+      const feedbackText = document.getElementById('inq-feedback-text');
+      const emailFallback = document.getElementById('inq-email-fallback');
       const submit = form.querySelector('button[type="submit"]');
       submit.disabled = true;
       feedback.classList.remove('hidden');
+      emailFallback.classList.add('hidden');
+
+      const subject = encodeURIComponent('[PramanixLabs] ' + topic + ' — ' + name);
+      const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nTopic: ' + topic + '\n\n' + fullMessage);
+      emailFallback.href = 'mailto:pramanixlabs@gmail.com?subject=' + subject + '&body=' + body;
 
       if (!inquiryConfig) {
-        feedback.textContent = 'Opening your email app. If it does not open, email pramanixlabs@gmail.com.';
-        const subject = encodeURIComponent(`[PramanixLabs] ${topic} — ${name}`);
-        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\n${fullMessage}`);
-        window.location.href = `mailto:pramanixlabs@gmail.com?subject=${subject}&body=${body}`;
+        feedbackText.textContent = 'Online enquiry delivery is unavailable right now. Use the email draft below to send your request.';
+        emailFallback.classList.remove('hidden');
         submit.disabled = false;
         return;
       }
 
-      feedback.textContent = 'Sending your inquiry…';
+      feedbackText.textContent = 'Sending your request…';
       try {
-        const response = await fetch(`${inquiryConfig.url}/functions/v1/submit-inquiry`, {
+        const response = await fetch(inquiryConfig.url + '/functions/v1/submit-inquiry', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             apikey: inquiryConfig.anonKey,
-            Authorization: `Bearer ${inquiryConfig.anonKey}`,
+            Authorization: 'Bearer ' + inquiryConfig.anonKey,
           },
           body: JSON.stringify({ name, email, topic, message: fullMessage, company_website: companyWebsite }),
         });
-        const result = await response.json();
+        const result = await response.json().catch(() => ({}));
         if (!response.ok || result.success !== true) {
-          throw new Error(result.error || 'Unable to send your inquiry right now.');
+          throw new Error('The online enquiry service is unavailable right now.');
         }
-        feedback.textContent = result.emailSent
-          ? 'Inquiry sent. We will reply to the email address you provided.'
-          : 'Inquiry received. We will reply to the email address you provided.';
+        feedbackText.textContent = result.emailSent
+          ? 'Request sent. We will follow up at the email address you provided.'
+          : 'Request received. We will follow up at the email address you provided.';
         form.reset();
-      } catch (error) {
-        feedback.textContent = `${error.message || 'Unable to send your inquiry.'} Please email pramanixlabs@gmail.com.`;
+      } catch {
+        feedbackText.textContent = 'We could not send this request online. Use the email draft below to contact us.';
+        emailFallback.classList.remove('hidden');
       } finally {
         submit.disabled = false;
       }
