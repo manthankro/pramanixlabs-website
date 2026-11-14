@@ -4,6 +4,7 @@ import Header from '../components/Header'
 import InquiryForm from '../components/InquiryForm'
 import { projects as initialProjects, services, studio, type Project } from '../data/content'
 import { supabase } from '../lib/supabase'
+import { bookingUrl } from '../lib/booking'
 
 function mergeStudioProjects(rows: Record<string, unknown>[]): Project[] {
   return rows.flatMap(row => {
@@ -56,7 +57,7 @@ export default function HomePage() {
       <a className="skip-link" href="#main">Skip to content</a>
       <Header />
       <main id="main">
-        <section className="hero business-hero" aria-labelledby="hero-title">
+        <section id="top" className="hero business-hero" aria-labelledby="hero-title">
           <div className="hero-backdrop" aria-hidden="true">
             <div className="hero-aurora" />
           </div>
@@ -73,8 +74,8 @@ export default function HomePage() {
                   We help founders and teams plan and build AI-enabled products, websites, apps, internal tools and automation around a real business need.
                 </p>
                 <div className="hero-actions">
-                  <a className="button button-primary" href="#contact">
-                    Request a project call <span aria-hidden="true">↗</span>
+                  <a className="button button-primary" href={bookingUrl ?? "#contact"} target={bookingUrl ? "_blank" : undefined} rel={bookingUrl ? "noopener noreferrer" : undefined}>
+                    {bookingUrl ? "Book an intro call" : "Request a project call"} <span aria-hidden="true">↗</span>
                   </a>
                   <a className="text-link" href="#services">Explore services <span aria-hidden="true">↓</span></a>
                 </div>
@@ -180,7 +181,7 @@ export default function HomePage() {
               <div className="contact-copy">
                 <p className="eyebrow"><span className="eyebrow-mark">●</span>Start a project conversation</p>
                 <h2>Tell us what you <span>need to build.</span></h2>
-                <p>Send a short project request. We’ll review it and email you to discuss fit and arrange an initial call. Submitting this form requests a conversation; it does not reserve a calendar slot.</p>
+                <p>{bookingUrl ? 'Use the booking link to choose a call time, or send a written project request below.' : 'Send a short project request. We’ll review it and email you to discuss fit and arrange an initial call. Submitting this form requests a conversation; it does not reserve a calendar slot.'}</p>
                 <a className="contact-email" href={`mailto:${studio.email}`}>{studio.email} <span aria-hidden="true">↗</span></a>
                 <div className="business-contact-facts"><span>{studio.location}</span><span>AI · Software · Product development</span></div>
               </div>
@@ -197,8 +198,8 @@ export default function HomePage() {
             <div className="business-faq-grid">
               <div><h3>Do you have a fixed package or price list?</h3><p>Projects vary by scope. After understanding the need, we can discuss a suitable first phase and estimate.</p></div>
               <div><h3>Can I ask about one specific service?</h3><p>Yes. Choose the closest focus area in the form and include what you want to achieve.</p></div>
-              <div><h3>Can I book a call directly?</h3><p>Send a project request first. We’ll reply by email to confirm a time that works.</p></div>
-              <div><h3>Is the inquiry form a confirmed booking?</h3><p>No. It sends a request to the studio inbox. A meeting is arranged after we reply to you.</p></div>
+              <div><h3>Can I book a call directly?</h3><p>{bookingUrl ? 'Yes. Use the booking link to choose an available time.' : 'Send a project request first. We’ll reply by email to arrange a time.'}</p></div>
+              <div><h3>Is the inquiry form a confirmed booking?</h3><p>No. The form sends a request to the studio inbox. A meeting is confirmed only after a time is agreed by email or through the scheduler.</p></div>
             </div>
           </div>
         </section>
