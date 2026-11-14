@@ -2469,3 +2469,20 @@ h2 span {
 .business-faq-grid p{margin-top:9px;color:var(--muted);font-size:12.5px;line-height:1.75}
 @media(max-width:900px){.business-hero-layout{grid-template-columns:1fr;gap:36px}.business-hero-card{max-width:630px}.business-intro-grid{grid-template-columns:1fr;gap:22px}.business-steps{grid-template-columns:1fr}.business-steps li{min-height:0}.business-steps h3{margin-top:20px}}
 @media(max-width:640px){.business-hero{min-height:0}.business-hero .hero-inner{padding-top:98px;gap:40px}.business-hero .hero-topline{font-size:8px}.business-hero .hero-topline span:last-child{display:block;text-align:right}.business-hero h1{font-size:clamp(2.65rem,12vw,3.6rem)}.business-hero .hero-lede{font-size:14px}.business-hero-bottom{flex-direction:column}.business-brief{grid-template-columns:1fr;padding:21px}.business-faq-grid{grid-template-columns:1fr}.business-contact-facts{font-size:8px}}
+
+
+/* Studio product notes and inquiry privacy */
+.business-work{background:#080a0e;border-block:1px solid var(--line)}
+.business-work-head,.business-privacy-copy{display:grid;grid-template-columns:1fr .82fr;gap:clamp(40px,8vw,118px);align-items:end;padding-top:42px}
+.business-work-head h2,.business-privacy-copy h2{margin-top:18px}
+.business-work-head>p{max-width:440px;padding-bottom:5px;color:var(--muted);font-size:13px;line-height:1.8}
+.business-work-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:34px;background:var(--line);border:1px solid var(--line)}
+.business-work-item{padding:22px;background:#090c11}
+.business-work-status{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--faint);font:400 8px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.business-work-item h3{margin-top:26px;font-size:19px}.business-work-item p{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.75}
+.business-work-item a{display:inline-block;margin-top:14px;color:#a9caff;font-size:11px}.business-work-item a:hover{color:#fff}
+.business-privacy{padding-block:56px;border-top:1px solid var(--line)}
+.business-privacy-copy{align-items:start;padding-top:34px}.business-privacy-copy h2{margin:0;font-size:clamp(1.9rem,3.6vw,3rem)}
+.business-privacy-copy p{margin-bottom:14px;color:var(--muted);font-size:12px;line-height:1.8}
+.business-privacy-copy a{color:#b7d0f4;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:900px){.business-work-head,.business-privacy-copy{grid-template-columns:1fr;gap:20px}.business-work-list{grid-template-columns:1fr}}
