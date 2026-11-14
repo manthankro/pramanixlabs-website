@@ -18,7 +18,7 @@ index.html                     document metadata, JSON-LD, fonts
 public/                        favicon, social image, robots.txt, _headers, _redirects
 src/App.tsx                    tiny router: public site or /admin
 src/pages/HomePage.tsx         company services and project inquiry page
-src/pages/AdminPage.tsx        private dashboard (login, portfolio editor, inbox)
+src/pages/AdminPage.tsx        private dashboard (login, product details, inquiry inbox)
 src/components/                Header, InquiryForm and Brand
 src/data/content.ts            services, studio products and inquiry topics
 src/styles.css                 design system and responsive layout
@@ -52,7 +52,7 @@ npm run preview   # serve the built site locally
 
 - **Services, project records, inquiry topics and studio links** live in `src/data/content.ts`. Service descriptions and inquiry topics are used on the company website.
 - **In-house product names, status and descriptions** can be managed at `/admin` and stored in Supabase. The public section falls back to `src/data/content.ts` when Supabase is not configured.
-- **Upcoming innovations** are project rows with `upcoming = true`. Toggle the flag in the dashboard to move an entry into the “On the horizon” section; the counter updates automatically.
+- **Concept-stage products** are project rows with `upcoming = true`; the public page lists products currently in development or evaluation.
 - The homepage is designed to explain services and collect project requests. It does not claim client testimonials, case study outcomes or fixed delivery timelines.
 
 Restovra and KavachScan are private projects: their records carry no repository link and are described as “Source kept private”. Do not add public links to them.
