@@ -2486,3 +2486,6 @@ h2 span {
 .business-privacy-copy p{margin-bottom:14px;color:var(--muted);font-size:12px;line-height:1.8}
 .business-privacy-copy a{color:#b7d0f4;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:900px){.business-work-head,.business-privacy-copy{grid-template-columns:1fr;gap:20px}.business-work-list{grid-template-columns:1fr}}
+
+.business-work-image{width:100%;height:130px;margin-top:17px;object-fit:cover;border:1px solid var(--line);background:var(--bg-raised)}
+.form-status:not(.is-error){color:var(--muted)}
