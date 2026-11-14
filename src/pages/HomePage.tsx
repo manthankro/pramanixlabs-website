@@ -41,9 +41,14 @@ export default function HomePage() {
   useEffect(() => {
     if (!supabase) return
     let active = true
-    void supabase.from('projects').select('*').order('sort_order').then(({ data, error }) => {
-      if (active && !error && data?.length) setProjects(mergeProjects(data))
-    }).catch(() => undefined)
+    void (async () => {
+      try {
+        const { data, error } = await supabase.from('projects').select('*').order('sort_order')
+        if (active && !error && data?.length) setProjects(mergeProjects(data))
+      } catch {
+        // Keep the built-in project details if the database is unavailable.
+      }
+    })()
     return () => { active = false }
   }, [])
 
