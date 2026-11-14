@@ -116,12 +116,13 @@
     @media (max-width: 767px) {
       #chapter-2 .services-copy {
         max-width: calc(100vw - 3rem);
-        transform: translateY(78px);
+        transform: translateY(132px);
       }
       #chapter-2 .services-heading {
         font-size: 20px;
         line-height: 1.2;
       }
+      #chapter-2 > div:last-child { display: none; }
       #chapter-1.active,
       #chapter-4.active {
         justify-content: flex-start;
@@ -1015,7 +1016,7 @@
 
             // Keep the monogram clear of the services copy on narrow screens.
             if (isMonolith > 0.01 && uMobile > 0.5) {
-              pos.xy *= 0.40;
+              pos.xy *= 0.55;
               pos.y += 0.95 * isMonolith;
             }
 
