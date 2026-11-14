@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 import Brand from './Brand'
+import { bookingUrl } from '../lib/booking'
 
 const links = [
   { label: 'Studio', href: '#studio' },
@@ -96,8 +97,8 @@ export default function Header() {
               ))}
             </ul>
           </nav>
-          <a className="nav-cta" href="#contact" onClick={() => setOpen(false)}>
-            Start a conversation
+          <a className="nav-cta" href={bookingUrl ?? "#contact"} target={bookingUrl ? "_blank" : undefined} rel={bookingUrl ? "noopener noreferrer" : undefined} onClick={() => setOpen(false)}>
+            {bookingUrl ? "Book a call" : "Start a conversation"}
             <ArrowUpRight aria-hidden="true" size={14} />
           </a>
         </div>
