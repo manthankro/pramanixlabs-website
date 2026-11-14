@@ -122,6 +122,14 @@
         font-size: 20px;
         line-height: 1.2;
       }
+      #chapter-1.active,
+      #chapter-4.active {
+        justify-content: flex-start;
+        overflow-y: auto;
+        overscroll-behavior-y: auto;
+        touch-action: pan-y;
+        -webkit-overflow-scrolling: touch;
+      }
     }
 
     /* Tactile Dark-Glass HUD Panels */
@@ -271,9 +279,6 @@
 
       <!-- Mobile Quick Action -->
       <div class="flex md:hidden items-center gap-2">
-        <button type="button" onclick="jumpToChapter(2)" class="mobile-monolith px-3 py-1.5 rounded-full bg-sky-500/20 border border-sky-400/40 font-mono text-[10px] tracking-wider uppercase text-sky-200">
-          3D Logo
-        </button>
         <button type="button" onclick="openBookingOrInquiry('Something else')" class="px-3 py-1.5 rounded-full bg-white text-slate-950 font-mono text-[10px] font-semibold uppercase">
           Enquire
         </button>
@@ -798,7 +803,7 @@
 
       // Adaptive particle count (65,000 desktop / 30,000 mobile)
       const isMobile = window.innerWidth < 768;
-      const COUNT = isMobile ? 30000 : 65000;
+      const COUNT = isMobile ? 42000 : 65000;
 
       const posPortal = new Float32Array(COUNT * 3);
       const posConduit = new Float32Array(COUNT * 3);
@@ -1042,7 +1047,9 @@
             // -----------------------------------------------------------------
             // Left Wing = Electric Sapphire Blue (#1D4ED8 -> #38BDF8)
             // Right Wing = Molten Coral-Orange & Crimson (#F97316 -> #F43F5E)
-            float splitX = isMonolith > 0.1 ? (pos.x - 0.38 * isMonolith) : pos.x;
+            float logoColorX = pos.x;
+            if (isMonolith > 0.01 && uMobile > 0.5) logoColorX /= 0.40;
+            float splitX = isMonolith > 0.1 ? (logoColorX - 0.38 * isMonolith) : pos.x;
             float lrMix = smoothstep(-0.18, 0.18, splitX);
             vec3 colIce = mix(vec3(0.12, 0.42, 0.98), vec3(0.28, 0.80, 1.0), aRandom.x);
             vec3 colFire = mix(vec3(0.99, 0.46, 0.12), vec3(0.95, 0.24, 0.32), aRandom.y);
