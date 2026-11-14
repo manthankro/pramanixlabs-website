@@ -72,7 +72,7 @@ Access model: the browser holds only the project URL and anon key. Row-level sec
 
 ## Deployment
 
-The build is static. `vercel.json` configures Vercel security headers and the `/admin` SPA fallback. `public/_headers` and `public/_redirects` cover Cloudflare Pages and Netlify. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel for Preview and Production; these are public browser configuration values. Configure `SITE_ORIGIN` and optional email secrets in Supabase Edge Function settings.
+The build is static. `vercel.json` configures Vercel security headers and the `/admin` SPA fallback. `public/_headers` and `public/_redirects` cover Cloudflare Pages and Netlify. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in Vercel for Preview and Production; these are public browser configuration values. Optionally add `VITE_BOOKING_URL` to connect a public appointment schedule. Configure `SITE_ORIGIN` and optional email secrets in Supabase Edge Function settings.
 
 See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for hosting options, CSP, canonical/OG URLs and the launch checklist, and [docs/SECURITY.md](docs/SECURITY.md) for the access model and data boundaries.
 
