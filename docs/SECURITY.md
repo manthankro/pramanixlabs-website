@@ -51,7 +51,7 @@ The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY
 - No automated data-retention job is included. Define a retention period, then delete old inquiries from the dashboard or with a scheduled SQL task.
 - No monitoring, alerting or audit-log export is configured.
 - The site does not process payments or store passwords itself; authentication is delegated to Supabase.
-- Uploaded portfolio images are public and could be indexed. Do not upload confidential material.
+- Uploaded product images are public and could be indexed. Do not upload confidential material.
 
 ## Before using real visitor data
 
