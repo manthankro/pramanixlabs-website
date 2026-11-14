@@ -113,6 +113,17 @@
     #chapter-5 { touch-action: pan-y; overscroll-behavior-y: auto; }
     #chapter-5.active { pointer-events: auto; }
 
+    @media (max-width: 767px) {
+      #chapter-2 .services-copy {
+        max-width: calc(100vw - 3rem);
+        transform: translateY(78px);
+      }
+      #chapter-2 .services-heading {
+        font-size: 20px;
+        line-height: 1.2;
+      }
+    }
+
     /* Tactile Dark-Glass HUD Panels */
     .hud-glass {
       background: rgba(6, 9, 18, 0.62);
@@ -408,13 +419,13 @@
     <section id="chapter-2" class="chapter-layer justify-between pt-28 pb-8">
       <div class="max-w-6xl mx-auto w-full my-auto flex items-center">
         <!-- Left-Aligned Minimalist Copy Block (Vertically Centered, Unobstructed 3D Center) -->
-        <div class="max-w-[320px] space-y-2.5 z-10">
+        <div class="services-copy max-w-[320px] space-y-2.5 z-10">
           <div class="font-mono text-[11px] tracking-[0.18em] uppercase text-white/55">
             03 / SERVICES
           </div>
-          <h2 class="text-[18px] sm:text-[20px] font-light tracking-[-0.01em] leading-[1.45] text-[#F8FAFC] drop-shadow-[0_2px_20px_rgba(0,0,0,0.95)]">
+          <h2 class="services-heading text-xl sm:text-2xl font-medium tracking-tight leading-[1.15] text-[#F8FAFC] drop-shadow-[0_2px_20px_rgba(0,0,0,0.95)]">
             AI, software and digital products<br />
-            shaped around your business.<br />
+            <span class="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-sky-300 to-orange-300">shaped around your business.</span><br />
             Start with a clear need.
           </h2>
           <ul class="grid grid-cols-2 gap-x-4 gap-y-2 pt-2 font-mono text-[10px] sm:text-[11px] tracking-wide text-white/70" aria-label="Ask us about a service">
@@ -923,6 +934,7 @@
         uPixelRatio: { value: dpr },
         uPointer: { value: new THREE.Vector2(0, 0) },
         uPulse: { value: 0 },
+        uMobile: { value: isMobile ? 1.0 : 0.0 },
       };
       monolithPulseUniform = uniforms.uPulse;
 
@@ -937,6 +949,7 @@
           uniform float uPixelRatio;
           uniform vec2 uPointer;
           uniform float uPulse;
+          uniform float uMobile;
 
           attribute vec3 aPortal;
           attribute vec3 aConduit;
@@ -984,6 +997,12 @@
             pos = mix(pos, aHorizon, w3);
             pos = mix(pos, aBlackHole, w4);
             pos = mix(pos, aGalaxy, w5);
+
+            // Keep the monogram clear of the services copy on narrow screens.
+            if (isMonolith > 0.01 && uMobile > 0.5) {
+              pos.xy *= 0.40;
+              pos.y += 0.95 * isMonolith;
+            }
 
             // Tighter harmonic micro-shimmer during Monolith stage so edges stay razor-sharp
             float driftScale = mix(0.075, 0.016, isMonolith);
