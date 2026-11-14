@@ -63,7 +63,7 @@ Full steps, secrets and troubleshooting are in [docs/DEPLOYMENT.md](docs/DEPLOYM
 
 1. Create a Supabase project.
 2. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env.local` and in your host's build environment.
-3. Apply both migrations in `supabase/migrations/` with `supabase db push`.
+3. Apply the migrations in `supabase/migrations/` with `supabase db push`.
 4. Disable public sign-ups. Create the studio user in Supabase Auth, then insert its UUID into `public.admin_users`.
 5. Deploy `submit-inquiry` with `--no-verify-jwt` (it is a public form endpoint) and set `SITE_ORIGIN`.
 6. Optionally add `RESEND_API_KEY`, `INQUIRY_RECIPIENT` and `INQUIRY_FROM` as function secrets for email notifications. Inquiries are stored with or without email.
@@ -86,4 +86,4 @@ See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for hosting options, CSP, canonical
 
 ## Status of external services
 
-This repository contains the complete application and schema, but no live Supabase project, email provider, domain or hosting account. Supabase, email delivery, storage, authentication and deployment have not been verified by the repository author; follow the deployment guide to configure and verify them against your own project.
+This repository contains the complete application and schema, but no live Supabase project, email provider, domain or hosting account. The migrations and row-level security policies have been executed and exercised against a local Postgres-compatible engine, but Supabase Auth, Storage, Edge Function execution, email delivery and deployment have not been verified against a live project. Follow the deployment guide to configure and verify them against your own project.

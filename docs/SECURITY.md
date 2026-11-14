@@ -20,6 +20,7 @@ The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY
 - `/admin` is not a security boundary by itself: it is a client route guarded by a session check plus an `is_site_admin()` RPC call. Real protection is row-level security on every table and storage policy.
 - A user who authenticates but is not in `public.admin_users` sees the “no studio access” message and receives no rows from the database.
 - `is_site_admin()` runs as `SECURITY DEFINER` with `search_path = public`, is revoked from `public`, and is granted only to `authenticated`.
+- `public.admin_users` has row-level security enabled by migration 003. Without it, the authenticated grants would let any signed-in account read the allowlist or insert itself as an administrator. Never apply migration 001 without 003.
 - Removing a UUID from `public.admin_users` revokes dashboard and data access immediately.
 
 ## Inquiry handling
@@ -54,7 +55,14 @@ The browser bundle contains only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY
 
 ## Before using real visitor data
 
-1. Apply both migrations and review the policies in the target project (`select * from pg_policies where schemaname = 'public';`).
+1. Apply all migrations and review the policies in the target project (`select * from pg_policies where schemaname = 'public';`). Confirm row-level security is on for every table:
+
+   ```sql
+   select relname, relrowsecurity
+   from pg_class
+   where relnamespace = 'public'::regnamespace
+     and relname in ('projects', 'inquiries', 'admin_users', 'inquiry_rate_limits');
+   ```
 2. Set `SITE_ORIGIN` to the exact production origin and verify a foreign-origin request is rejected.
 3. Confirm signed-out requests cannot read `inquiries`, `admin_users` or rate-limit rows.
 4. Create the allowlisted admin account with a unique password and enable MFA in Supabase if available for your plan.

@@ -14,7 +14,7 @@ This repository builds to static files in `dist/` and uses Supabase for auth, da
    supabase link --project-ref <project-ref>
    ```
 
-3. Apply both migrations:
+3. Apply all migrations:
 
    ```sh
    supabase db push
@@ -22,6 +22,7 @@ This repository builds to static files in `dist/` and uses Supabase for auth, da
 
    - `202611130001_init.sql` creates `admin_users`, `inquiries`, `inquiry_rate_limits`, `projects`, the `is_site_admin()` and `claim_inquiry_slot()` functions, RLS policies and the `portfolio-media` bucket.
    - `202611130002_portfolio_refinements.sql` adds `image_alt`, `updated_at` maintenance, indexes, inquiry deletion for admins and the final project copy.
+   - `202611130003_enable_admin_users_rls.sql` enables row-level security on `admin_users`. Migration 001 created the allowlist policy but not RLS itself; without 003 any signed-in account could read or modify the allowlist. Always apply it.
 
 ### 1.2 Create the only admin account
 
@@ -152,7 +153,7 @@ Work through this list against the real project, not the repository defaults.
 | --- | --- |
 | Form returns 403 | `SITE_ORIGIN` does not match the browser origin exactly (scheme, host, port). |
 | Form returns 500 | Migrations were not applied, or the function lacks its Supabase environment variables. |
-| Admin signs in but sees nothing | The user is not in `public.admin_users`, or migrations 001/002 were not applied. |
+| Admin signs in but sees nothing | The user is not in `public.admin_users`, or the migrations were not applied. |
 | Images upload but do not display | The bucket is not public, or CSP `img-src` does not include the project origin. |
 | `/admin` returns 404 on refresh | SPA fallback is missing on the host. |
 | Email notifications missing | `RESEND_API_KEY`, `INQUIRY_RECIPIENT` or `INQUIRY_FROM` missing, or the sender domain is unverified in Resend. Inquiries are still stored. |
