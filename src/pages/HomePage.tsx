@@ -159,6 +159,7 @@ export default function HomePage() {
                 {projects.map(project => (
                   <article key={project.code} className="business-work-item">
                     <div className="business-work-status"><span>{project.category}</span><span>{project.status}</span></div>
+                    {project.image_url && <img className="business-work-image" src={project.image_url} alt={project.image_alt || `${project.name} product image`} loading="lazy" />}
                     <h3>{project.name}</h3>
                     <p>{project.description}</p>
                     {project.href && <a href={project.href} target="_blank" rel="noreferrer">View public repository <span aria-hidden="true">↗</span></a>}
