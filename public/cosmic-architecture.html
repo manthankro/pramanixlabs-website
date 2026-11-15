@@ -1934,35 +1934,144 @@
     })();
 
     // =========================================================================
-    // 6. WEB AUDIO API MICRO-TICKS (MUTED BY DEFAULT)
+    // 6. AMBIENT SOUNDTRACK + MICRO-TICKS (PREFERENCE PERSISTS ACROSS RELOADS)
     // =========================================================================
+    const AUDIO_PREF_KEY = 'prx.ambient-audio';
     let studioAudioCtx = null;
     let studioAudioEnabled = false;
+    let ambientNodes = null;
+    let ambientChordTimer = null;
+    let ambientChordIndex = 0;
+
+    // Slow, consonant chord bed: Am7 -> Fmaj7 -> Cmaj7 -> Gmaj7
+    const AMBIENT_CHORDS = [
+      [110.00, 164.81, 261.63, 392.00],
+      [87.31, 130.81, 220.00, 329.63],
+      [130.81, 196.00, 329.63, 493.88],
+      [98.00, 146.83, 246.94, 369.99]
+    ];
 
     function setAudioToggleState(enabled) {
       document.querySelectorAll('[data-audio-toggle]').forEach((btn) => {
         btn.textContent = enabled ? '🔊' : '🔇';
         btn.setAttribute('aria-pressed', String(enabled));
+        btn.setAttribute('aria-label', enabled ? 'Mute ambient audio' : 'Play ambient audio');
+        btn.setAttribute('title', enabled ? 'Mute ambient audio' : 'Play ambient audio');
       });
     }
 
-    function toggleStudioAudio() {
-      if (!studioAudioEnabled) {
+    function ensureAudioContext() {
+      if (!studioAudioCtx) {
+        studioAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (studioAudioCtx.state === 'suspended') studioAudioCtx.resume();
+      return studioAudioCtx;
+    }
+
+    function startAmbient() {
+      if (ambientNodes) return;
+      const ctx = ensureAudioContext();
+      const now = ctx.currentTime;
+
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(0.0001, now);
+      master.gain.exponentialRampToValueAtTime(0.2, now + 4);
+      master.connect(ctx.destination);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(820, now);
+      filter.Q.value = 0.5;
+      filter.connect(master);
+
+      const voices = AMBIENT_CHORDS[0].map((freq, i) => {
+        const osc = ctx.createOscillator();
+        osc.type = i === 0 ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.detune.setValueAtTime(i % 2 ? 4 : -4, now);
+        const gain = ctx.createGain();
+        gain.gain.value = i === 0 ? 0.22 : 0.11;
+        osc.connect(gain);
+        gain.connect(filter);
+        osc.start();
+        return { osc, gain };
+      });
+
+      // Filtered noise "air" layer with a very slow swell
+      const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
+      const samples = noiseBuffer.getChannelData(0);
+      let last = 0;
+      for (let i = 0; i < samples.length; i++) {
+        last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+        samples[i] = last * 3.2;
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = noiseBuffer;
+      noise.loop = true;
+      const noiseFilter = ctx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.value = 1500;
+      noiseFilter.Q.value = 0.6;
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.value = 0.045;
+      const lfo = ctx.createOscillator();
+      lfo.frequency.value = 0.04;
+      const lfoGain = ctx.createGain();
+      lfoGain.gain.value = 0.025;
+      lfo.connect(lfoGain);
+      lfoGain.connect(noiseGain.gain);
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(master);
+      noise.start();
+      lfo.start();
+
+      ambientNodes = { master, filter, voices, noise, noiseGain, lfo };
+
+      ambientChordTimer = setInterval(() => {
+        if (!ambientNodes) return;
+        ambientChordIndex = (ambientChordIndex + 1) % AMBIENT_CHORDS.length;
+        const chord = AMBIENT_CHORDS[ambientChordIndex];
+        const t = ctx.currentTime;
+        ambientNodes.voices.forEach((voice, i) => voice.osc.frequency.setTargetAtTime(chord[i], t, 1.9));
+      }, 12000);
+    }
+
+    function stopAmbient() {
+      if (ambientChordTimer) { clearInterval(ambientChordTimer); ambientChordTimer = null; }
+      if (!ambientNodes || !studioAudioCtx) { ambientNodes = null; return; }
+      const dying = ambientNodes;
+      ambientNodes = null;
+      const stopAt = studioAudioCtx.currentTime + 1.6;
+      try {
+        dying.master.gain.cancelScheduledValues(studioAudioCtx.currentTime);
+        dying.master.gain.setTargetAtTime(0.0001, studioAudioCtx.currentTime, 0.4);
+        dying.voices.forEach((voice) => voice.osc.stop(stopAt));
+        dying.noise.stop(stopAt);
+        dying.lfo.stop(stopAt);
+        setTimeout(() => { try { dying.master.disconnect(); } catch (e) {} }, 1800);
+      } catch (e) { /* already stopped */ }
+    }
+
+    function setStudioAudio(enabled, silentTick) {
+      studioAudioEnabled = enabled;
+      setAudioToggleState(enabled);
+      try { localStorage.setItem(AUDIO_PREF_KEY, enabled ? 'on' : 'off'); } catch (e) { /* storage blocked */ }
+      if (enabled) {
         try {
-          if (!studioAudioCtx) {
-            studioAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          }
-          if (studioAudioCtx.state === 'suspended') studioAudioCtx.resume();
-          studioAudioEnabled = true;
-          setAudioToggleState(true);
-          playMicroTick();
+          ensureAudioContext();
+          startAmbient();
+          if (!silentTick) playMicroTick();
         } catch (e) {
           document.querySelectorAll('[data-audio-toggle]').forEach((btn) => { btn.textContent = '⚠️'; });
         }
       } else {
-        studioAudioEnabled = false;
-        setAudioToggleState(false);
+        stopAmbient();
       }
+    }
+
+    function toggleStudioAudio() {
+      setStudioAudio(!studioAudioEnabled);
     }
 
     function playMicroTick() {
@@ -1984,6 +2093,37 @@
     // Attach micro-tick sounds to interactive hover events
     document.querySelectorAll('.hud-glass, .pill-cta-primary, .pill-cta-secondary, .chapter-dot, .nav-link').forEach((el) => {
       el.addEventListener('pointerenter', () => { playMicroTick(); }, { passive: true });
+    });
+
+    // Restore the visitor's choice; default on, but start on the first gesture
+    // because browsers block audio until the page has been interacted with.
+    (function restoreAudioPreference() {
+      let stored = null;
+      try { stored = localStorage.getItem(AUDIO_PREF_KEY); } catch (e) { /* storage blocked */ }
+      studioAudioEnabled = stored !== 'off';
+      setAudioToggleState(studioAudioEnabled);
+      if (!studioAudioEnabled) return;
+
+      const startOnGesture = () => {
+        if (!studioAudioEnabled) return;
+        try {
+          ensureAudioContext();
+          if (!ambientNodes) startAmbient();
+        } catch (e) { /* autoplay blocked */ }
+      };
+      ['pointerdown', 'touchstart', 'keydown', 'wheel'].forEach((type) => {
+        window.addEventListener(type, (event) => {
+          // Let the toggle itself decide; avoid a blip when muting a muted page.
+          if (event.target && event.target.closest && event.target.closest('[data-audio-toggle]')) return;
+          startOnGesture();
+        }, { passive: true });
+      });
+    })();
+
+    // Pause the soundtrack while the tab is hidden to save battery
+    document.addEventListener('visibilitychange', () => {
+      if (!studioAudioCtx || !studioAudioEnabled) return;
+      if (document.hidden) { studioAudioCtx.suspend(); } else { studioAudioCtx.resume(); }
     });
 
     // =========================================================================
