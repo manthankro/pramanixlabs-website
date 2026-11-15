@@ -145,19 +145,43 @@
 
     /* Tactile Dark-Glass HUD Panels */
     .hud-glass {
-      background: rgba(6, 9, 18, 0.62);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
+      position: relative;
+      isolation: isolate;
+      --mouse-x: -1000px;
+      --mouse-y: -1000px;
+      background-color: rgba(10, 12, 16, 0.72);
+      background-image: radial-gradient(340px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.065), transparent 65%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.11);
       box-shadow:
         0 24px 60px -15px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-      transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s ease;
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+      transition: border-color 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.28s ease;
     }
 
     .hud-glass:hover {
       border-color: rgba(56, 189, 248, 0.35);
-      background: rgba(10, 15, 28, 0.78);
+      background-color: rgba(13, 16, 22, 0.82);
+    }
+
+    .card-arrow {
+      display: inline-block;
+      transition: transform 0.25s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .hud-glass:hover { transform: translateY(-2px); }
+      #chapter-5 button.hud-glass:hover .card-arrow { transform: translateX(4px); }
+    }
+
+    #chapter-5 a {
+      transition: color 0.22s ease, opacity 0.22s ease;
+    }
+
+    #chapter-5 a:hover {
+      color: #ffffff;
+      opacity: 1;
     }
 
     /* Glass Pill CTAs */
@@ -230,6 +254,21 @@
       background: rgba(255, 255, 255, 0.32);
     }
 
+    h1, h2 {
+      background-image: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.82) 48%, rgba(255, 255, 255, 0.68) 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .studio-vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 48%, rgba(5, 6, 8, 0.08) 0%, rgba(5, 6, 8, 0.18) 56%, rgba(5, 6, 8, 0.48) 100%);
+    }
+
     /* Drawer / Modal Transition */
     .drawer-backdrop {
       opacity: 0;
@@ -262,6 +301,7 @@
   <!-- Full-Viewport Fixed 3D Particle & Volumetric Light Universe -->
   <canvas id="cosmic-canvas" aria-hidden="true"></canvas>
   <div class="volumetric-backdrop" aria-hidden="true"></div>
+  <div class="studio-vignette" aria-hidden="true"></div>
 
   <!-- Top Floating Glass Navigation Bar (Matching Mockup Layout & Typography) -->
   <header class="fixed top-4 sm:top-5 inset-x-0 z-40 px-4 sm:px-8 flex justify-center pointer-events-none">
@@ -523,7 +563,7 @@
 
     <!-- =================================================================== -->
     <!-- CHAPTER 6 (0.85 - 1.00): SERVICES & CONTACT -->
-    <section id="chapter-5" class="chapter-layer justify-start pt-24 pb-6 overflow-y-auto">
+    <section id="chapter-5" class="chapter-layer justify-start pt-24 pb-11 overflow-y-auto">
       <div class="max-w-6xl mx-auto w-full space-y-5">
         <div class="max-w-3xl">
           <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-orange-400 mb-1.5">06 / WORK WITH PRAMANIXLABS</div>
@@ -531,12 +571,12 @@
           <p class="text-sm text-slate-300 mt-2">Choose a service to start a short project enquiry. We’ll continue the conversation with you on WhatsApp.</p>
         </div>
         <div class="interactive grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <button type="button" onclick="openInquiryModal('SaaS products &amp; dashboards')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-sky-300">01 / SAAS</span><h3 class="mt-2 text-base font-medium text-white">SaaS dashboards &amp; products</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Customer portals, admin panels and subscription software.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this →</span></button>
-          <button type="button" onclick="openInquiryModal('AI &amp; AI agents')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-violet-300">02 / AI</span><h3 class="mt-2 text-base font-medium text-white">AI &amp; AI agents</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Useful AI features and task focused agents for your product.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this →</span></button>
-          <button type="button" onclick="openInquiryModal('Web development')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-orange-300">03 / WEB</span><h3 class="mt-2 text-base font-medium text-white">Websites &amp; web apps</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Company websites, customer experiences and web applications.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this →</span></button>
-          <button type="button" onclick="openInquiryModal('Mobile applications')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-emerald-300">04 / MOBILE</span><h3 class="mt-2 text-base font-medium text-white">Mobile applications</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Mobile products designed around your customers and team.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this →</span></button>
-          <button type="button" onclick="openInquiryModal('Custom software')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-amber-300">05 / SOFTWARE</span><h3 class="mt-2 text-base font-medium text-white">Custom business software</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Internal tools and software built for your workflow.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this →</span></button>
-          <button type="button" onclick="openInquiryModal('Automation &amp; digital solutions')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-rose-300">06 / AUTOMATION</span><h3 class="mt-2 text-base font-medium text-white">Automation &amp; integrations</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Connect tools and reduce repetitive work across your business.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this →</span></button>
+          <button type="button" onclick="openInquiryModal('SaaS products &amp; dashboards')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-sky-300">01 / SAAS</span><h3 class="mt-2 text-base font-medium text-white">SaaS dashboards &amp; products</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Customer portals, admin panels and subscription software.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this <span class="card-arrow">→</span></span></button>
+          <button type="button" onclick="openInquiryModal('AI &amp; AI agents')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-violet-300">02 / AI</span><h3 class="mt-2 text-base font-medium text-white">AI &amp; AI agents</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Useful AI features and task focused agents for your product.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this <span class="card-arrow">→</span></span></button>
+          <button type="button" onclick="openInquiryModal('Web development')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-orange-300">03 / WEB</span><h3 class="mt-2 text-base font-medium text-white">Websites &amp; web apps</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Company websites, customer experiences and web applications.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this <span class="card-arrow">→</span></span></button>
+          <button type="button" onclick="openInquiryModal('Mobile applications')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-emerald-300">04 / MOBILE</span><h3 class="mt-2 text-base font-medium text-white">Mobile applications</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Mobile products designed around your customers and team.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this <span class="card-arrow">→</span></span></button>
+          <button type="button" onclick="openInquiryModal('Custom software')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-amber-300">05 / SOFTWARE</span><h3 class="mt-2 text-base font-medium text-white">Custom business software</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Internal tools and software built for your workflow.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this <span class="card-arrow">→</span></span></button>
+          <button type="button" onclick="openInquiryModal('Automation &amp; digital solutions')" class="hud-glass cursor-pointer rounded-2xl p-4 text-left hover:border-sky-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-2 transition-colors"><span class="font-mono text-[10px] text-rose-300">06 / AUTOMATION</span><h3 class="mt-2 text-base font-medium text-white">Automation &amp; integrations</h3><p class="mt-1 text-xs leading-relaxed text-slate-300/80">Connect tools and reduce repetitive work across your business.</p><span class="mt-3 block font-mono text-[10px] text-slate-400">Enquire about this <span class="card-arrow">→</span></span></button>
         </div>
         <div class="interactive hud-glass rounded-2xl p-4 sm:px-6 sm:py-4 flex flex-col gap-4">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -1093,7 +1133,12 @@
 
             vColor = color;
             float baseAlpha = (aLogoFlag > 0.5 && aLogoFlag < 1.5) ? 0.95 : (0.48 + 0.48 * aRandom.x);
-            vAlpha = baseAlpha * smoothstep(18.0, 2.2, -mvPosition.z);
+            float studioText = smoothstep(0.12, 0.16, uScroll) * (1.0 - smoothstep(0.29, 0.33, uScroll));
+          float processText = smoothstep(0.50, 0.54, uScroll) * (1.0 - smoothstep(0.66, 0.70, uScroll));
+          float briefText = smoothstep(0.66, 0.70, uScroll) * (1.0 - smoothstep(0.81, 0.85, uScroll));
+          float serviceText = smoothstep(0.82, 0.86, uScroll);
+          float textFocus = max(max(studioText, processText), max(briefText, serviceText));
+          vAlpha = baseAlpha * smoothstep(18.0, 2.2, -mvPosition.z) * (1.0 - 0.25 * textFocus);
           }
         `,
         fragmentShader: `
@@ -1197,6 +1242,19 @@
         pointer.tx = (e.clientX / window.innerWidth) * 2 - 1;
         pointer.ty = -(e.clientY / window.innerHeight) * 2 + 1;
       }, { passive: true });
+
+      document.querySelectorAll('#chapter-1 .hud-glass, #chapter-4 .hud-glass, #chapter-5 button.hud-glass').forEach((card) => {
+        card.addEventListener('pointermove', (e) => {
+          if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+        }, { passive: true });
+        card.addEventListener('pointerleave', () => {
+          card.style.setProperty('--mouse-x', '-1000px');
+          card.style.setProperty('--mouse-y', '-1000px');
+        }, { passive: true });
+      });
 
       const clock = new THREE.Clock();
       function animate() {
