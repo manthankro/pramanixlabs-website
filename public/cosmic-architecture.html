@@ -424,6 +424,46 @@
     <span class="font-mono text-[10px] tracking-[0.28em] uppercase text-slate-400">PramanixLabs // Initializing</span>
   </div>
 
+  <script>
+    // Boot curtain guard. Registered before any canvas/3D asset loads, so the overlay
+    // cannot outlive a failed THREE.js/WebGL initialisation. 3.5s is the hard cap.
+    (function () {
+      var curtain = document.getElementById('studio-boot-curtain');
+      if (!curtain) return;
+      var bar = document.getElementById('boot-laser-bar');
+      var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var dismissed = false;
+
+      function restoreScrolling() {
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        document.body.classList.remove('lenis-stopped');
+        document.documentElement.classList.remove('lenis-stopped');
+      }
+
+      function dismiss() {
+        if (dismissed) return;
+        dismissed = true;
+        restoreScrolling();
+        curtain.style.pointerEvents = 'none';
+        curtain.classList.add('is-hidden');
+        curtain.style.opacity = '0';
+        curtain.style.visibility = 'hidden';
+        window.setTimeout(function () {
+          if (curtain.parentNode) curtain.parentNode.removeChild(curtain);
+        }, 750);
+      }
+
+      if (bar) window.requestAnimationFrame(function () { bar.style.height = '100%'; });
+      window.setTimeout(dismiss, prefersReduced ? 0 : 650);
+      // Guaranteed fallback: dismiss even if assets, shaders or WebGL fail.
+      window.setTimeout(dismiss, 3500);
+      window.addEventListener('error', dismiss);
+      window.addEventListener('unhandledrejection', dismiss);
+      window.__prxDismissBootCurtain = dismiss;
+    })();
+  </script>
+
   <!-- Full-Viewport Fixed 3D Particle & Volumetric Light Universe -->
   <canvas id="cosmic-canvas" aria-hidden="true"></canvas>
   <div class="volumetric-backdrop" aria-hidden="true"></div>
@@ -970,10 +1010,19 @@
     // =========================================================================
     let monolithPulseUniform = null;
 
+    // Declared before the render loop starts. animate() reads this during its first
+    // synchronous frame, so a later `let` would hit the temporal dead zone and abort
+    // the whole boot sequence, leaving the preloader on screen forever.
+    let prxLenis = null;
+
     (function initCosmicUniverse() {
       const canvas = document.getElementById('cosmic-canvas');
-      if (!canvas || typeof THREE === 'undefined') return;
+      if (!canvas || typeof THREE === 'undefined') {
+        console.warn('[cosmic] THREE.js unavailable - static backdrop in use.');
+        return;
+      }
 
+      try {
       const renderer = new THREE.WebGLRenderer({
         canvas,
         antialias: false,
@@ -1473,34 +1522,20 @@
 
       animate();
 
-      (function initStudioBoot() {
-        const bar = document.getElementById('boot-laser-bar');
-        const curtain = document.getElementById('studio-boot-curtain');
-        if (!curtain) return;
-        requestAnimationFrame(() => { if (bar) bar.style.height = '100%'; });
-        let dismissed = false;
-        const dismiss = () => {
-          if (dismissed) return;
-          dismissed = true;
-          curtain.style.opacity = '0';
-          setTimeout(() => { if (curtain.parentNode) curtain.remove(); }, 750);
-        };
-        setTimeout(dismiss, prefersReducedMotion ? 0 : 650);
-        setTimeout(dismiss, 1500); // 1500ms hard fallback
-      })();
-
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
+      } catch (err) {
+        console.warn('[cosmic] WebGL scene failed to initialise - static backdrop in use.', err);
+      }
     })();
 
     // =========================================================================
     // 3. CHAPTER JUMP NAVIGATION, CAPABILITY PULSE & PROJECT FILTERING
     // =========================================================================
     const CHAPTER_SCROLL_TARGETS = [0.0, 0.22, 0.42, 0.59, 0.75, 1.0];
-    let prxLenis = null;
     if (!prefersReducedMotion && typeof Lenis !== 'undefined') {
       prxLenis = new Lenis({
         duration: 1.1,
