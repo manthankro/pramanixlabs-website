@@ -19,3 +19,6 @@ supabase/functions/.env
 .vercel/
 .netlify/
 supabase/verify.local.json
+
+# Supabase CLI access token (never commit)
+.supabase-token

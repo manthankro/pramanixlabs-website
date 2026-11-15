@@ -56,7 +56,7 @@ Deno.serve(async request => {
   }
 
   if (request.method === 'OPTIONS') {
-    return new Response('ok', { status: 204, headers: corsHeaders(origin) })
+    return new Response(null, { status: 204, headers: corsHeaders(origin) })
   }
   if (request.method !== 'POST') {
     return json({ success: false, error: 'Method not allowed' }, 405, origin)
