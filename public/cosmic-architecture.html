@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -149,20 +150,21 @@
       isolation: isolate;
       --mouse-x: -1000px;
       --mouse-y: -1000px;
-      background-color: rgba(10, 12, 16, 0.72);
-      background-image: radial-gradient(340px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.065), transparent 65%);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.11);
+      background-color: rgba(6, 9, 18, 0.74);
+      background-image: radial-gradient(420px circle at var(--mouse-x) var(--mouse-y), rgba(56, 189, 248, 0.09), rgba(249, 115, 22, 0.04) 40%, transparent 70%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow:
-        0 24px 60px -15px rgba(0, 0, 0, 0.8),
+        0 24px 60px -15px rgba(0, 0, 0, 0.85),
         inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
-      transition: border-color 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.28s ease;
+      transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s ease, box-shadow 0.35s ease;
     }
 
     .hud-glass:hover {
-      border-color: rgba(56, 189, 248, 0.35);
-      background-color: rgba(13, 16, 22, 0.82);
+      border-color: rgba(56, 189, 248, 0.38);
+      background-color: rgba(10, 15, 28, 0.84);
+      box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.85), 0 0 24px rgba(56, 189, 248, 0.07), inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
     }
 
     .card-arrow {
@@ -261,12 +263,75 @@
       -webkit-text-fill-color: transparent;
     }
 
+    .chapter-layer h1,
+    .chapter-layer h2 {
+      background-image: linear-gradient(180deg, #ffffff 0%, rgba(248, 250, 252, 0.94) 52%, rgba(148, 163, 184, 0.8) 100%);
+    }
+
+    .chapter-layer h1 span.font-serif,
+    .chapter-layer h2 span.font-serif {
+      -webkit-text-fill-color: initial;
+    }
+
+    .studio-grain {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0.028;
+      mix-blend-mode: soft-light;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    }
+
     .studio-vignette {
       position: fixed;
       inset: 0;
       z-index: 2;
       pointer-events: none;
       background: radial-gradient(circle at 50% 48%, rgba(5, 6, 8, 0.08) 0%, rgba(5, 6, 8, 0.18) 56%, rgba(5, 6, 8, 0.48) 100%);
+    }
+
+    .studio-boot-curtain {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.9rem;
+      background: #020308;
+      opacity: 1;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    .studio-boot-curtain.is-hidden { opacity: 0; visibility: hidden; }
+    .boot-laser-track { width: 2px; height: 2rem; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.1); }
+    .boot-laser-bar { display: block; width: 100%; height: 0; background: linear-gradient(to bottom, #38bdf8, #22d3ee, #f97316); box-shadow: 0 0 16px rgba(56,189,248,.65); transition: height .35s ease; }
+    .studio-boot-curtain.is-starting .boot-laser-bar { height: 100%; }
+
+    #chapter-5 { padding-bottom: 3.25rem; }
+
+    .pill-cta-primary,
+    .pill-cta-secondary { --mag-x: 0px; --mag-y: 0px; }
+    .pill-cta-primary { transform: translate3d(var(--mag-x), var(--mag-y), 0); }
+    .pill-cta-primary:hover { transform: translate3d(var(--mag-x), calc(var(--mag-y) - 1px), 0); }
+    .pill-cta-secondary { transform: translate3d(var(--mag-x), var(--mag-y), 0); }
+    .pill-cta-secondary:hover { transform: translate3d(var(--mag-x), calc(var(--mag-y) - 1px), 0); }
+
+    body.blueprint-grid::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(56,189,248,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,.09) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .studio-boot-curtain, .boot-laser-bar, .hud-glass, .pill-cta-primary, .pill-cta-secondary { transition-duration: 0.01ms !important; }
+      .studio-grain { opacity: 0.018; }
     }
 
     /* Drawer / Modal Transition */
@@ -297,10 +362,15 @@
   </style>
 </head>
 <body class="selection:bg-sky-500/30 selection:text-white">
+  <div id="studio-boot-curtain" class="studio-boot-curtain" aria-hidden="true">
+    <div class="boot-laser-track"><span id="boot-laser-bar" class="boot-laser-bar"></span></div>
+    <span class="font-mono text-[10px] tracking-[0.28em] uppercase text-slate-400">PramanixLabs // Initializing</span>
+  </div>
 
   <!-- Full-Viewport Fixed 3D Particle & Volumetric Light Universe -->
   <canvas id="cosmic-canvas" aria-hidden="true"></canvas>
   <div class="volumetric-backdrop" aria-hidden="true"></div>
+  <div class="studio-grain" aria-hidden="true"></div>
   <div class="studio-vignette" aria-hidden="true"></div>
 
   <!-- Top Floating Glass Navigation Bar (Matching Mockup Layout & Typography) -->
@@ -1250,11 +1320,30 @@
           card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
           card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
         }, { passive: true });
+        card.addEventListener('pointerenter', () => {
+          if (monolithPulseUniform) monolithPulseUniform.value = Math.max(monolithPulseUniform.value, 0.55);
+        }, { passive: true });
         card.addEventListener('pointerleave', () => {
           card.style.setProperty('--mouse-x', '-1000px');
           card.style.setProperty('--mouse-y', '-1000px');
         }, { passive: true });
       });
+
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        document.querySelectorAll('.pill-cta-primary, .pill-cta-secondary').forEach((button) => {
+          button.addEventListener('pointermove', (e) => {
+            const rect = button.getBoundingClientRect();
+            const dx = (e.clientX - rect.left - rect.width / 2) * 0.12;
+            const dy = (e.clientY - rect.top - rect.height / 2) * 0.12;
+            button.style.setProperty('--mag-x', `${dx.toFixed(1)}px`);
+            button.style.setProperty('--mag-y', `${dy.toFixed(1)}px`);
+          }, { passive: true });
+          button.addEventListener('pointerleave', () => {
+            button.style.setProperty('--mag-x', '0px');
+            button.style.setProperty('--mag-y', '0px');
+          }, { passive: true });
+        });
+      }
 
       const clock = new THREE.Clock();
       function animate() {
@@ -1288,9 +1377,15 @@
         renderer.render(scene, camera);
       }
 
-      window.onload = function () {
+      window.addEventListener('load', () => {
         animate();
-      };
+        const curtain = document.getElementById('studio-boot-curtain');
+        const laser = document.getElementById('boot-laser-bar');
+        if (curtain) curtain.classList.add('is-starting');
+        if (laser) laser.style.height = '100%';
+        window.setTimeout(() => curtain && curtain.classList.add('is-hidden'), prefersReducedMotion ? 0 : 520);
+        window.setTimeout(() => curtain && curtain.remove(), prefersReducedMotion ? 0 : 900);
+      }, { once: true });
 
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -1303,14 +1398,29 @@
     // 3. CHAPTER JUMP NAVIGATION, CAPABILITY PULSE & PROJECT FILTERING
     // =========================================================================
     const CHAPTER_SCROLL_TARGETS = [0.0, 0.22, 0.42, 0.59, 0.75, 0.96];
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let prxLenis = null;
+    if (!prefersReducedMotion && typeof Lenis !== 'undefined') {
+      prxLenis = new Lenis({
+        duration: 1.25,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        smoothTouch: false,
+      });
+      window.prxLenis = prxLenis;
+      const lenisFrame = (time) => {
+        prxLenis.raf(time);
+        requestAnimationFrame(lenisFrame);
+      };
+      requestAnimationFrame(lenisFrame);
+    }
 
     function jumpToChapter(index) {
       const targetRatio = CHAPTER_SCROLL_TARGETS[index] ?? 0;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      window.scrollTo({
-        top: maxScroll * targetRatio,
-        behavior: 'smooth',
-      });
+      const destination = maxScroll * targetRatio;
+      if (prxLenis) prxLenis.scrollTo(destination);
+      else window.scrollTo({ top: destination, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     }
 
     function filterProjects(category) {
@@ -1458,9 +1568,26 @@
       document.getElementById('drawer-title').textContent = data.title;
       document.getElementById('drawer-summary').textContent = data.summary;
       document.getElementById('drawer-privacy').textContent = data.privacy;
-      document.getElementById('drawer-topology').innerHTML = data.topology
-        .map((step) => `<li class="p-3 rounded-xl bg-white/[0.04] border border-white/10 font-mono text-xs text-slate-200">${step}</li>`)
-        .join('');
+      const topologyList = document.getElementById('drawer-topology');
+      topologyList.replaceChildren();
+      data.topology.forEach((step, index) => {
+        const item = document.createElement('li');
+        item.className = 'relative p-3 rounded-xl bg-white/[0.04] border border-white/10 font-mono text-xs text-slate-200 flex items-center gap-3';
+        const node = document.createElement('span');
+        node.className = 'relative z-10 w-2 h-2 shrink-0 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(56,189,248,0.7)]';
+        const label = document.createElement('span');
+        label.textContent = step;
+        item.append(node, label);
+        if (index < data.topology.length - 1) {
+          const flow = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          flow.setAttribute('aria-hidden', 'true');
+          flow.setAttribute('viewBox', '0 0 8 14');
+          flow.setAttribute('class', 'absolute left-[1.15rem] top-full w-2 h-3 overflow-visible pointer-events-none');
+          flow.innerHTML = '<path d="M4 0V13" fill="none" stroke="rgba(56,189,248,.55)" stroke-width="1" stroke-dasharray="2 2"><animate attributeName="stroke-dashoffset" from="0" to="-4" dur="0.7s" repeatCount="indefinite"/></path>';
+          item.appendChild(flow);
+        }
+        topologyList.appendChild(item);
+      });
 
       document.getElementById('drawer-inquire-btn').onclick = () => {
         closeProjectDrawer();
@@ -1601,6 +1728,11 @@
       if (e.key === 'Escape') {
         closeProjectDrawer();
         closeInquiryModal();
+      }
+      const target = e.target;
+      const typing = target && (target.isContentEditable || /INPUT|TEXTAREA|SELECT/.test(target.tagName));
+      if (e.shiftKey && e.key.toLowerCase() === 'b' && !typing) {
+        document.body.classList.toggle('blueprint-grid');
       }
     });
   </script>
