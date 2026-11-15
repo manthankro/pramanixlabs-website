@@ -2095,12 +2095,13 @@
       el.addEventListener('pointerenter', () => { playMicroTick(); }, { passive: true });
     });
 
-    // Restore the visitor's choice; default on, but start on the first gesture
-    // because browsers block audio until the page has been interacted with.
+    // Restore the visitor's choice; first-time visitors start muted. When the
+    // soundtrack is enabled it still waits for a gesture, because browsers
+    // block audio until the page has been interacted with.
     (function restoreAudioPreference() {
       let stored = null;
       try { stored = localStorage.getItem(AUDIO_PREF_KEY); } catch (e) { /* storage blocked */ }
-      studioAudioEnabled = stored !== 'off';
+      studioAudioEnabled = stored === 'on';
       setAudioToggleState(studioAudioEnabled);
       if (!studioAudioEnabled) return;
 
