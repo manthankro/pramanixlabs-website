@@ -492,6 +492,7 @@
         <button type="button" onclick="jumpToChapter(2)" data-nav-idx="2" class="nav-link hover:text-sky-300 transition-colors">SERVICES</button>
         <button type="button" onclick="jumpToChapter(5)" data-nav-idx="5" class="nav-link cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-300 focus-visible:outline-offset-4 hover:text-white transition-colors">CONTACT</button>
         <button type="button" onclick="jumpToChapter(4)" data-nav-idx="4" class="nav-link hover:text-white transition-colors">START HERE</button>
+        <button type="button" data-audio-toggle onclick="toggleStudioAudio()" aria-pressed="false" aria-label="Toggle ambient audio" title="Toggle ambient audio" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/15 text-[10px] flex items-center justify-center transition-colors">🔇</button>
         <button type="button" onclick="openBookingOrInquiry('Something else')" class="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white hover:text-slate-950 text-white border border-white/15 transition-all">
           START A PROJECT
         </button>
@@ -499,6 +500,7 @@
 
       <!-- Mobile Quick Action -->
       <div class="flex md:hidden items-center gap-2">
+        <button type="button" data-audio-toggle onclick="toggleStudioAudio()" aria-pressed="false" aria-label="Toggle ambient audio" title="Toggle ambient audio" class="w-7 h-7 rounded-full bg-white/10 text-white border border-white/15 text-[10px] flex items-center justify-center">🔇</button>
         <button type="button" onclick="openBookingOrInquiry('Something else')" class="px-3 py-1.5 rounded-full bg-white text-slate-950 font-mono text-[10px] font-semibold uppercase">
           Enquire
         </button>
@@ -669,7 +671,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center font-mono text-[10px] sm:text-[11px] tracking-[0.16em] uppercase text-white/45">
           <div class="sm:text-left">AI & SOFTWARE</div>
           <div class="text-center">WEB & MOBILE</div>
-          <div class="sm:text-right">PUNE, INDIA <button type="button" id="audio-toggle-btn" onclick="toggleStudioAudio()" class="ml-1.5 w-4 h-4 inline-flex items-center justify-center rounded-full bg-white/[0.08] text-[8px] hover:bg-white/15 transition-colors align-middle" aria-label="Toggle ambient audio" title="Toggle ambient audio">🔇</button></div>
+          <div class="sm:text-right">PUNE, INDIA <button type="button" id="audio-toggle-btn" data-audio-toggle onclick="toggleStudioAudio()" aria-pressed="false" class="ml-1.5 w-4 h-4 inline-flex items-center justify-center rounded-full bg-white/[0.08] text-[8px] hover:bg-white/15 transition-colors align-middle" aria-label="Toggle ambient audio" title="Toggle ambient audio">🔇</button></div>
         </div>
       </div>
     </section>
@@ -1937,8 +1939,14 @@
     let studioAudioCtx = null;
     let studioAudioEnabled = false;
 
+    function setAudioToggleState(enabled) {
+      document.querySelectorAll('[data-audio-toggle]').forEach((btn) => {
+        btn.textContent = enabled ? '🔊' : '🔇';
+        btn.setAttribute('aria-pressed', String(enabled));
+      });
+    }
+
     function toggleStudioAudio() {
-      const btn = document.getElementById('audio-toggle-btn');
       if (!studioAudioEnabled) {
         try {
           if (!studioAudioCtx) {
@@ -1946,14 +1954,14 @@
           }
           if (studioAudioCtx.state === 'suspended') studioAudioCtx.resume();
           studioAudioEnabled = true;
-          if (btn) btn.textContent = '🔊';
+          setAudioToggleState(true);
           playMicroTick();
         } catch (e) {
-          if (btn) btn.textContent = '⚠️';
+          document.querySelectorAll('[data-audio-toggle]').forEach((btn) => { btn.textContent = '⚠️'; });
         }
       } else {
         studioAudioEnabled = false;
-        if (btn) btn.textContent = '🔇';
+        setAudioToggleState(false);
       }
     }
 
