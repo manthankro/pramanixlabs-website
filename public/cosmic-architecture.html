@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PramanixLabs | 3D Product &amp; Software Studio</title>
   <meta name="description" content="Explore PramanixLabs in a 3D cosmic experience. Pune-based product and software studio for AI, SaaS, websites, apps and automation. Start a project inquiry." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta property="og:site_name" content="PramanixLabs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:title" content="PramanixLabs | 3D Product &amp; Software Studio" />
+  <meta property="og:description" content="Explore PramanixLabs in a 3D cosmic experience. Pune-based product and software studio for AI, SaaS, websites, apps and automation." />
+  <meta property="og:image" content="/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="PramanixLabs — 3D cosmic software studio." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PramanixLabs | 3D Product &amp; Software Studio" />
+  <meta name="twitter:description" content="Explore PramanixLabs in a 3D cosmic experience. Pune-based product and software studio for AI, SaaS, websites, apps and automation." />
+  <meta name="twitter:image" content="/og-image.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -82,7 +96,7 @@
       justify-content: center;
     }
 
-    /* Individual Chapter Overlay Layers with Depth-of-Field Blur Choreography */
+    /* Individual Chapter Overlay Layers with Zero-Lag Silky Transition */
     .chapter-layer {
       position: absolute;
       inset: 0;
@@ -91,19 +105,17 @@
       justify-content: center;
       padding: 5.5rem 1.5rem 2.5rem 1.5rem;
       opacity: 0;
-      filter: blur(14px);
-      transform: translateY(16px) scale(0.985);
+      transform: translateY(14px) scale(0.99);
       transition:
-        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-        filter 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
+      will-change: opacity, transform;
     }
 
      .chapter-layer.active {
       pointer-events: auto;
       opacity: 1;
-      filter: blur(0px);
       transform: translateY(0px) scale(1);
     }
 
@@ -276,11 +288,19 @@
     .studio-grain {
       position: fixed;
       inset: 0;
-      z-index: 3;
+      z-index: 2;
       pointer-events: none;
       opacity: 0.028;
       mix-blend-mode: soft-light;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    }
+
+    .topology-flow-line {
+      stroke-dasharray: 4 2;
+      animation: topologyDash 1.2s linear infinite;
+    }
+    @keyframes topologyDash {
+      to { stroke-dashoffset: -6; }
     }
 
     .studio-vignette {
@@ -358,6 +378,43 @@
       .mobile-brand-mark { width: 1.35rem; height: 1.35rem; }
       .mobile-brand-wordmark { font-size: 0.68rem; letter-spacing: 0.08em; white-space: nowrap; }
       .mobile-monolith { display: none !important; }
+    }
+
+    /* Desktop-Only Optical Reticle Cursor */
+    @media (pointer: fine) {
+      html { cursor: none; }
+      a, button, [onclick], input, textarea, select { cursor: none; }
+      input, textarea, select { cursor: auto !important; }
+      .studio-cursor-dot {
+        position: fixed;
+        z-index: 55;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #38bdf8;
+        box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.2s ease;
+        will-change: left, top;
+      }
+      .studio-cursor-ring {
+        position: fixed;
+        z-index: 55;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(56, 189, 248, 0.35);
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, opacity 0.2s ease;
+        will-change: left, top;
+      }
+      .studio-cursor-ring.hovering {
+        width: 48px;
+        height: 48px;
+        border-color: rgba(56, 189, 248, 0.55);
+      }
     }
   </style>
 </head>
@@ -570,7 +627,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-center font-mono text-[10px] sm:text-[11px] tracking-[0.16em] uppercase text-white/45">
           <div class="sm:text-left">AI & SOFTWARE</div>
           <div class="text-center">WEB & MOBILE</div>
-          <div class="sm:text-right">PUNE, INDIA</div>
+          <div class="sm:text-right">PUNE, INDIA <button type="button" id="audio-toggle-btn" onclick="toggleStudioAudio()" class="ml-1.5 w-4 h-4 inline-flex items-center justify-center rounded-full bg-white/[0.08] text-[8px] hover:bg-white/15 transition-colors align-middle" aria-label="Toggle ambient audio" title="Toggle ambient audio">🔇</button></div>
         </div>
       </div>
     </section>
@@ -633,7 +690,7 @@
 
     <!-- =================================================================== -->
     <!-- CHAPTER 6 (0.85 - 1.00): SERVICES & CONTACT -->
-    <section id="chapter-5" class="chapter-layer justify-start pt-24 pb-11 overflow-y-auto">
+    <section id="chapter-5" data-lenis-prevent="true" class="chapter-layer justify-start pt-24 pb-11 overflow-y-auto">
       <div class="max-w-6xl mx-auto w-full space-y-5">
         <div class="max-w-3xl">
           <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-orange-400 mb-1.5">06 / WORK WITH PRAMANIXLABS</div>
@@ -688,6 +745,14 @@
       <div class="space-y-2.5">
         <div class="font-mono text-[10px] tracking-widest uppercase text-slate-400">Project Detail</div>
         <ul id="drawer-topology" class="space-y-2"></ul>
+      </div>
+
+      <div class="space-y-2">
+        <button type="button" id="drawer-sim-btn" onclick="runProjectSimulation()" class="w-full rounded-xl bg-white/[0.04] border border-white/12 hover:border-sky-400/40 transition-colors px-4 py-2.5 font-mono text-[11px] tracking-wider uppercase text-sky-300 text-left flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-sky-400 shadow-[0_0_8px_#38bdf8]"></span>
+          Run Diagnostic Simulation
+        </button>
+        <pre id="drawer-sim-output" class="hidden rounded-xl bg-black/40 border border-white/8 p-3 font-mono text-[10px] text-emerald-300/90 leading-relaxed max-h-40 overflow-y-auto whitespace-pre-wrap"></pre>
       </div>
 
       <div class="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -779,6 +844,8 @@
   </div>
 
   <script>
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // =========================================================================
     // 0. EXACT PRAMANIXLABS MONOGRAM SVG (WITH ROUNDED INNER CUTOUTS & LASER AXIS)
     // =========================================================================
@@ -1299,13 +1366,30 @@
               dot.classList.remove('bg-white', 'scale-125', 'shadow-[0_0_10px_#fff]');
             }
           });
+        }
 
+        // Auto-scroll Chapter 6 content down to reveal footer as user scrolls the final stretch
+        const chapter5 = chapterEls[5];
+        if (chapter5) {
+          if (progress >= 0.84) {
+            const ch5Factor = Math.min(1, Math.max(0, (progress - 0.84) / 0.16));
+            const maxScroll = chapter5.scrollHeight - chapter5.clientHeight;
+            if (maxScroll > 0) {
+              chapter5.scrollTop = ch5Factor * maxScroll;
+            }
+          } else {
+            chapter5.scrollTop = 0;
+          }
         }
       }
 
-      window.addEventListener('scroll', () => {
+      window.updateTargetScroll = function(scrollY) {
         const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        targetScroll = maxScroll > 0 ? Math.min(Math.max(window.scrollY / maxScroll, 0), 1) : 0;
+        targetScroll = maxScroll > 0 ? Math.min(Math.max(scrollY / maxScroll, 0), 1) : 0;
+      };
+
+      window.addEventListener('scroll', () => {
+        window.updateTargetScroll(window.scrollY);
       }, { passive: true });
 
       window.addEventListener('pointermove', (e) => {
@@ -1313,45 +1397,55 @@
         pointer.ty = -(e.clientY / window.innerHeight) * 2 + 1;
       }, { passive: true });
 
-      document.querySelectorAll('#chapter-1 .hud-glass, #chapter-4 .hud-glass, #chapter-5 button.hud-glass').forEach((card) => {
-        card.addEventListener('pointermove', (e) => {
-          if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-        }, { passive: true });
-        card.addEventListener('pointerenter', () => {
-          if (monolithPulseUniform) monolithPulseUniform.value = Math.max(monolithPulseUniform.value, 0.55);
-        }, { passive: true });
-        card.addEventListener('pointerleave', () => {
-          card.style.setProperty('--mouse-x', '-1000px');
-          card.style.setProperty('--mouse-y', '-1000px');
-        }, { passive: true });
-      });
+      if (!window.__PRX_STUDIO_POLISH_BOUND__) {
+        window.__PRX_STUDIO_POLISH_BOUND__ = true;
 
-      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        document.querySelectorAll('.pill-cta-primary, .pill-cta-secondary').forEach((button) => {
-          button.addEventListener('pointermove', (e) => {
-            const rect = button.getBoundingClientRect();
-            const dx = (e.clientX - rect.left - rect.width / 2) * 0.12;
-            const dy = (e.clientY - rect.top - rect.height / 2) * 0.12;
-            button.style.setProperty('--mag-x', `${dx.toFixed(1)}px`);
-            button.style.setProperty('--mag-y', `${dy.toFixed(1)}px`);
+        document.querySelectorAll('.hud-glass').forEach((card) => {
+          if (card.dataset.spotlightBound) return;
+          card.dataset.spotlightBound = 'true';
+          card.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+            card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
           }, { passive: true });
-          button.addEventListener('pointerleave', () => {
-            button.style.setProperty('--mag-x', '0px');
-            button.style.setProperty('--mag-y', '0px');
+          card.addEventListener('pointerenter', () => {
+            if (typeof monolithPulseUniform !== 'undefined' && monolithPulseUniform) {
+              monolithPulseUniform.value = 0.85;
+            }
+          }, { passive: true });
+          card.addEventListener('pointerleave', () => {
+            card.style.setProperty('--mouse-x', '-1000px');
+            card.style.setProperty('--mouse-y', '-1000px');
           }, { passive: true });
         });
+
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          document.querySelectorAll('.pill-cta-primary, .pill-cta-secondary').forEach((btn) => {
+            if (btn.dataset.magnetBound) return;
+            btn.dataset.magnetBound = 'true';
+            btn.addEventListener('pointermove', (e) => {
+              const r = btn.getBoundingClientRect();
+              const dx = ((e.clientX - (r.left + r.width / 2)) * 0.22).toFixed(1);
+              const dy = ((e.clientY - (r.top + r.height / 2)) * 0.28).toFixed(1);
+              btn.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
+            });
+            btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+          });
+        }
       }
 
       const clock = new THREE.Clock();
       function animate() {
         requestAnimationFrame(animate);
 
-        currentScroll += (targetScroll - currentScroll) * 0.08;
-        pointer.x += (pointer.tx - pointer.x) * 0.08;
-        pointer.y += (pointer.ty - pointer.y) * 0.08;
+        const lerpSpeed = prxLenis ? 0.32 : 0.16;
+        currentScroll += (targetScroll - currentScroll) * lerpSpeed;
+        if (Math.abs(targetScroll - currentScroll) < 0.0003) {
+          currentScroll = targetScroll;
+        }
+        pointer.x += (pointer.tx - pointer.x) * 0.14;
+        pointer.y += (pointer.ty - pointer.y) * 0.14;
 
         uniforms.uTime.value = clock.getElapsedTime();
         uniforms.uScroll.value = currentScroll;
@@ -1377,15 +1471,23 @@
         renderer.render(scene, camera);
       }
 
-      window.addEventListener('load', () => {
-        animate();
+      animate();
+
+      (function initStudioBoot() {
+        const bar = document.getElementById('boot-laser-bar');
         const curtain = document.getElementById('studio-boot-curtain');
-        const laser = document.getElementById('boot-laser-bar');
-        if (curtain) curtain.classList.add('is-starting');
-        if (laser) laser.style.height = '100%';
-        window.setTimeout(() => curtain && curtain.classList.add('is-hidden'), prefersReducedMotion ? 0 : 520);
-        window.setTimeout(() => curtain && curtain.remove(), prefersReducedMotion ? 0 : 900);
-      }, { once: true });
+        if (!curtain) return;
+        requestAnimationFrame(() => { if (bar) bar.style.height = '100%'; });
+        let dismissed = false;
+        const dismiss = () => {
+          if (dismissed) return;
+          dismissed = true;
+          curtain.style.opacity = '0';
+          setTimeout(() => { if (curtain.parentNode) curtain.remove(); }, 750);
+        };
+        setTimeout(dismiss, prefersReducedMotion ? 0 : 650);
+        setTimeout(dismiss, 1500); // 1500ms hard fallback
+      })();
 
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -1397,17 +1499,19 @@
     // =========================================================================
     // 3. CHAPTER JUMP NAVIGATION, CAPABILITY PULSE & PROJECT FILTERING
     // =========================================================================
-    const CHAPTER_SCROLL_TARGETS = [0.0, 0.22, 0.42, 0.59, 0.75, 0.96];
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const CHAPTER_SCROLL_TARGETS = [0.0, 0.22, 0.42, 0.59, 0.75, 1.0];
     let prxLenis = null;
     if (!prefersReducedMotion && typeof Lenis !== 'undefined') {
       prxLenis = new Lenis({
-        duration: 1.25,
+        duration: 1.1,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
         smoothTouch: false,
       });
       window.prxLenis = prxLenis;
+      prxLenis.on('scroll', (e) => {
+        if (window.updateTargetScroll) window.updateTargetScroll(e.scroll);
+      });
       const lenisFrame = (time) => {
         prxLenis.raf(time);
         requestAnimationFrame(lenisFrame);
@@ -1564,30 +1668,34 @@
     function openProjectDrawer(key) {
       const data = PROJECTS_DATA[key];
       if (!data) return;
+      const simOut = document.getElementById('drawer-sim-output');
+      if (simOut) {
+        simOut.classList.add('hidden');
+        simOut.textContent = '';
+      }
       document.getElementById('drawer-stage').textContent = data.stage;
       document.getElementById('drawer-title').textContent = data.title;
       document.getElementById('drawer-summary').textContent = data.summary;
       document.getElementById('drawer-privacy').textContent = data.privacy;
-      const topologyList = document.getElementById('drawer-topology');
-      topologyList.replaceChildren();
-      data.topology.forEach((step, index) => {
-        const item = document.createElement('li');
-        item.className = 'relative p-3 rounded-xl bg-white/[0.04] border border-white/10 font-mono text-xs text-slate-200 flex items-center gap-3';
-        const node = document.createElement('span');
-        node.className = 'relative z-10 w-2 h-2 shrink-0 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(56,189,248,0.7)]';
-        const label = document.createElement('span');
-        label.textContent = step;
-        item.append(node, label);
-        if (index < data.topology.length - 1) {
-          const flow = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-          flow.setAttribute('aria-hidden', 'true');
-          flow.setAttribute('viewBox', '0 0 8 14');
-          flow.setAttribute('class', 'absolute left-[1.15rem] top-full w-2 h-3 overflow-visible pointer-events-none');
-          flow.innerHTML = '<path d="M4 0V13" fill="none" stroke="rgba(56,189,248,.55)" stroke-width="1" stroke-dasharray="2 2"><animate attributeName="stroke-dashoffset" from="0" to="-4" dur="0.7s" repeatCount="indefinite"/></path>';
-          item.appendChild(flow);
-        }
-        topologyList.appendChild(item);
-      });
+
+      document.getElementById('drawer-topology').innerHTML = data.topology
+        .map((step, idx) => {
+          const [nodeLabel, nodeDetail] = step.split('→').map((s) => s.trim());
+          const isLast = idx === data.topology.length - 1;
+          return `<li class="relative">
+            <div class="p-3.5 rounded-xl bg-white/[0.04] border border-white/12 hover:border-sky-400/40 transition-colors flex items-start justify-between gap-3">
+              <div>
+                <div class="font-mono text-[11px] font-medium text-sky-300">${nodeLabel}</div>
+                ${nodeDetail ? `<div class="text-xs text-slate-300 mt-0.5">${nodeDetail}</div>` : ''}
+              </div>
+              <span class="shrink-0 mt-1 w-2 h-2 rounded-full ${isLast ? 'bg-orange-400 shadow-[0_0_8px_#fb923c]' : 'bg-sky-400 shadow-[0_0_8px_#38bdf8]'}"></span>
+            </div>
+            ${!isLast ? `<div class="flex justify-center my-0.5" aria-hidden="true">
+              <svg width="16" height="18" viewBox="0 0 16 18" fill="none">
+                <line x1="8" y1="0" x2="8" y2="18" stroke="rgba(56,189,248,0.55)" stroke-width="1.5" class="topology-flow-line" />
+              </svg></div>` : ''}
+          </li>`;
+        }).join('');
 
       document.getElementById('drawer-inquire-btn').onclick = () => {
         closeProjectDrawer();
@@ -1735,6 +1843,152 @@
         document.body.classList.toggle('blueprint-grid');
       }
     });
+
+    // =========================================================================
+    // 5. DESKTOP-ONLY OPTICAL RETICLE CURSOR
+    // =========================================================================
+    (function initReticleCursor() {
+      if (!window.matchMedia('(pointer: fine)').matches) return;
+      if (window.__PRX_CURSOR_BOUND__) return;
+      window.__PRX_CURSOR_BOUND__ = true;
+
+      const dot = document.createElement('div');
+      dot.className = 'studio-cursor-dot';
+      const ring = document.createElement('div');
+      ring.className = 'studio-cursor-ring';
+      document.body.appendChild(dot);
+      document.body.appendChild(ring);
+
+      let cx = -100, cy = -100;
+      let rx = -100, ry = -100;
+
+      document.addEventListener('pointermove', (e) => {
+        cx = e.clientX;
+        cy = e.clientY;
+      }, { passive: true });
+
+      document.addEventListener('pointerover', (e) => {
+        const interactive = e.target.closest('button, a, [onclick], .hud-glass, .pill-cta-primary, .pill-cta-secondary, input, textarea, select');
+        if (interactive) ring.classList.add('hovering');
+        else ring.classList.remove('hovering');
+      }, { passive: true });
+
+      document.addEventListener('pointerleave', () => {
+        dot.style.opacity = '0';
+        ring.style.opacity = '0';
+      }, { passive: true });
+
+      document.addEventListener('pointerenter', () => {
+        dot.style.opacity = '1';
+        ring.style.opacity = '1';
+      }, { passive: true });
+
+      (function animateCursor() {
+        rx += (cx - rx) * 0.16;
+        ry += (cy - ry) * 0.16;
+        dot.style.left = cx + 'px';
+        dot.style.top = cy + 'px';
+        ring.style.left = rx + 'px';
+        ring.style.top = ry + 'px';
+        requestAnimationFrame(animateCursor);
+      })();
+    })();
+
+    // =========================================================================
+    // 6. WEB AUDIO API MICRO-TICKS (MUTED BY DEFAULT)
+    // =========================================================================
+    let studioAudioCtx = null;
+    let studioAudioEnabled = false;
+
+    function toggleStudioAudio() {
+      const btn = document.getElementById('audio-toggle-btn');
+      if (!studioAudioEnabled) {
+        try {
+          if (!studioAudioCtx) {
+            studioAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (studioAudioCtx.state === 'suspended') studioAudioCtx.resume();
+          studioAudioEnabled = true;
+          if (btn) btn.textContent = '🔊';
+          playMicroTick();
+        } catch (e) {
+          if (btn) btn.textContent = '⚠️';
+        }
+      } else {
+        studioAudioEnabled = false;
+        if (btn) btn.textContent = '🔇';
+      }
+    }
+
+    function playMicroTick() {
+      if (!studioAudioEnabled || !studioAudioCtx) return;
+      try {
+        const osc = studioAudioCtx.createOscillator();
+        const gain = studioAudioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(2800 + Math.random() * 800, studioAudioCtx.currentTime);
+        gain.gain.setValueAtTime(0.03, studioAudioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, studioAudioCtx.currentTime + 0.06);
+        osc.connect(gain);
+        gain.connect(studioAudioCtx.destination);
+        osc.start();
+        osc.stop(studioAudioCtx.currentTime + 0.06);
+      } catch (e) { /* silently fail for strict autoplay policies */ }
+    }
+
+    // Attach micro-tick sounds to interactive hover events
+    document.querySelectorAll('.hud-glass, .pill-cta-primary, .pill-cta-secondary, .chapter-dot, .nav-link').forEach((el) => {
+      el.addEventListener('pointerenter', () => { playMicroTick(); }, { passive: true });
+    });
+
+    // =========================================================================
+    // 7. LIVE DIAGNOSTIC SIMULATION RUNNER (PROJECT DRAWER)
+    // =========================================================================
+    let simRunning = false;
+
+    function runProjectSimulation() {
+      if (simRunning) return;
+      const output = document.getElementById('drawer-sim-output');
+      const btn = document.getElementById('drawer-sim-btn');
+      if (!output || !btn) return;
+      simRunning = true;
+      output.classList.remove('hidden');
+      output.textContent = '';
+      btn.style.opacity = '0.5';
+      btn.style.pointerEvents = 'none';
+
+      const title = (document.getElementById('drawer-title').textContent || 'Project').trim();
+      const lines = [
+        '> Initializing ' + title + ' diagnostic scan...',
+        '> Loading project configuration manifest...',
+        '> Verifying module dependency tree... OK',
+        '> Running architecture integrity check...',
+        '> Analyzing data-flow topology graph...',
+        '> Validating security boundaries... PASS',
+        '> Testing API endpoint connectivity... OK',
+        '> Benchmarking response latency: p95 < 120ms',
+        '> Memory footprint: within threshold ✓',
+        '> Static analysis: 0 warnings, 0 errors',
+        '> All subsystems nominal ✓',
+        '> Diagnostic complete — ' + title + ' deployment-ready.',
+      ];
+
+      let i = 0;
+      function typeLine() {
+        if (i < lines.length) {
+          output.textContent += (i > 0 ? '\n' : '') + lines[i];
+          output.scrollTop = output.scrollHeight;
+          playMicroTick();
+          i++;
+          setTimeout(typeLine, 160 + Math.random() * 240);
+        } else {
+          simRunning = false;
+          btn.style.opacity = '1';
+          btn.style.pointerEvents = '';
+        }
+      }
+      typeLine();
+    }
   </script>
 </body>
 </html>
