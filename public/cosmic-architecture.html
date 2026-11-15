@@ -22,22 +22,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-        },
-      },
-    };
-  </script>
   <style>
     * {
       box-sizing: border-box;
@@ -418,7 +404,9 @@
         border-color: rgba(56, 189, 248, 0.55);
       }
     }
-  </style>
+  </style>  <!-- Compiled Tailwind utilities; kept after the custom styles so they keep
+       the same precedence the CDN runtime used to have. -->
+  <link rel="stylesheet" href="/tailwind.css" />
 </head>
 <body class="selection:bg-sky-500/30 selection:text-white">
   <div id="studio-boot-curtain" class="studio-boot-curtain" aria-hidden="true">
