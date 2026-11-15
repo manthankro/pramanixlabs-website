@@ -1968,6 +1968,20 @@
       return studioAudioCtx;
     }
 
+    // Noise-decay impulse: gives the pad a long, soft "deep space" tail
+    function makeReverbImpulse(ctx, seconds, decay) {
+      const rate = ctx.sampleRate;
+      const length = Math.floor(rate * seconds);
+      const impulse = ctx.createBuffer(2, length, rate);
+      for (let channel = 0; channel < 2; channel++) {
+        const data = impulse.getChannelData(channel);
+        for (let i = 0; i < length; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
+        }
+      }
+      return impulse;
+    }
+
     function startAmbient() {
       if (ambientNodes) return;
       const ctx = ensureAudioContext();
@@ -1975,14 +1989,23 @@
 
       const master = ctx.createGain();
       master.gain.setValueAtTime(0.0001, now);
-      master.gain.exponentialRampToValueAtTime(0.2, now + 4);
+      master.gain.exponentialRampToValueAtTime(0.14, now + 6);
       master.connect(ctx.destination);
 
-      const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(820, now);
-      filter.Q.value = 0.5;
-      filter.connect(master);
+      const reverb = ctx.createConvolver();
+      reverb.buffer = makeReverbImpulse(ctx, 3.6, 2.6);
+      const wet = ctx.createGain();
+      wet.gain.value = 0.55;
+      reverb.connect(wet);
+      wet.connect(master);
+
+      // Soft pad, filtered well below the sparkle so it sits under the page
+      const padFilter = ctx.createBiquadFilter();
+      padFilter.type = 'lowpass';
+      padFilter.frequency.setValueAtTime(700, now);
+      padFilter.Q.value = 0.4;
+      padFilter.connect(master);
+      padFilter.connect(reverb);
 
       const voices = AMBIENT_CHORDS[0].map((freq, i) => {
         const osc = ctx.createOscillator();
@@ -1990,12 +2013,29 @@
         osc.frequency.setValueAtTime(freq, now);
         osc.detune.setValueAtTime(i % 2 ? 4 : -4, now);
         const gain = ctx.createGain();
-        gain.gain.value = i === 0 ? 0.22 : 0.11;
+        gain.gain.value = i === 0 ? 0.2 : 0.085;
         osc.connect(gain);
-        gain.connect(filter);
+        gain.connect(padFilter);
         osc.start();
         return { osc, gain };
       });
+
+      // Very quiet high shimmer that drifts slowly, like distant starlight
+      const shimmer = ctx.createOscillator();
+      shimmer.type = 'sine';
+      shimmer.frequency.setValueAtTime(AMBIENT_CHORDS[0][2] * 2, now);
+      const shimmerGain = ctx.createGain();
+      shimmerGain.gain.value = 0.012;
+      const shimmerLfo = ctx.createOscillator();
+      shimmerLfo.frequency.value = 0.06;
+      const shimmerLfoGain = ctx.createGain();
+      shimmerLfoGain.gain.value = 0.008;
+      shimmerLfo.connect(shimmerLfoGain);
+      shimmerLfoGain.connect(shimmerGain.gain);
+      shimmer.connect(shimmerGain);
+      shimmerGain.connect(reverb);
+      shimmer.start();
+      shimmerLfo.start();
 
       // Filtered noise "air" layer with a very slow swell
       const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
@@ -2013,28 +2053,30 @@
       noiseFilter.frequency.value = 1500;
       noiseFilter.Q.value = 0.6;
       const noiseGain = ctx.createGain();
-      noiseGain.gain.value = 0.045;
+      noiseGain.gain.value = 0.03;
       const lfo = ctx.createOscillator();
       lfo.frequency.value = 0.04;
       const lfoGain = ctx.createGain();
-      lfoGain.gain.value = 0.025;
+      lfoGain.gain.value = 0.018;
       lfo.connect(lfoGain);
       lfoGain.connect(noiseGain.gain);
       noise.connect(noiseFilter);
       noiseFilter.connect(noiseGain);
       noiseGain.connect(master);
+      noiseGain.connect(reverb);
       noise.start();
       lfo.start();
 
-      ambientNodes = { master, filter, voices, noise, noiseGain, lfo };
+      ambientNodes = { master, reverb, wet, padFilter, voices, shimmer, shimmerGain, shimmerLfo, noise, noiseGain, lfo };
 
       ambientChordTimer = setInterval(() => {
         if (!ambientNodes) return;
         ambientChordIndex = (ambientChordIndex + 1) % AMBIENT_CHORDS.length;
         const chord = AMBIENT_CHORDS[ambientChordIndex];
         const t = ctx.currentTime;
-        ambientNodes.voices.forEach((voice, i) => voice.osc.frequency.setTargetAtTime(chord[i], t, 1.9));
-      }, 12000);
+        ambientNodes.voices.forEach((voice, i) => voice.osc.frequency.setTargetAtTime(chord[i], t, 2.6));
+        ambientNodes.shimmer.frequency.setTargetAtTime(chord[2] * 2, t, 3.2);
+      }, 16000);
     }
 
     function stopAmbient() {
@@ -2042,14 +2084,16 @@
       if (!ambientNodes || !studioAudioCtx) { ambientNodes = null; return; }
       const dying = ambientNodes;
       ambientNodes = null;
-      const stopAt = studioAudioCtx.currentTime + 1.6;
+      const stopAt = studioAudioCtx.currentTime + 2.2;
       try {
         dying.master.gain.cancelScheduledValues(studioAudioCtx.currentTime);
-        dying.master.gain.setTargetAtTime(0.0001, studioAudioCtx.currentTime, 0.4);
+        dying.master.gain.setTargetAtTime(0.0001, studioAudioCtx.currentTime, 0.6);
         dying.voices.forEach((voice) => voice.osc.stop(stopAt));
+        dying.shimmer.stop(stopAt);
+        dying.shimmerLfo.stop(stopAt);
         dying.noise.stop(stopAt);
         dying.lfo.stop(stopAt);
-        setTimeout(() => { try { dying.master.disconnect(); } catch (e) {} }, 1800);
+        setTimeout(() => { try { dying.master.disconnect(); } catch (e) {} }, 2400);
       } catch (e) { /* already stopped */ }
     }
 
@@ -2095,13 +2139,13 @@
       el.addEventListener('pointerenter', () => { playMicroTick(); }, { passive: true });
     });
 
-    // Restore the visitor's choice; first-time visitors start muted. When the
-    // soundtrack is enabled it still waits for a gesture, because browsers
-    // block audio until the page has been interacted with.
+    // Restore the visitor's choice; the soundtrack plays unless they muted it.
+    // Browsers block audio until the page is interacted with, so start now and
+    // fall back to the first gesture when autoplay is refused.
     (function restoreAudioPreference() {
       let stored = null;
       try { stored = localStorage.getItem(AUDIO_PREF_KEY); } catch (e) { /* storage blocked */ }
-      studioAudioEnabled = stored === 'on';
+      studioAudioEnabled = stored !== 'off';
       setAudioToggleState(studioAudioEnabled);
       if (!studioAudioEnabled) return;
 
@@ -2119,6 +2163,10 @@
           startOnGesture();
         }, { passive: true });
       });
+
+      // Try to play immediately; if the browser refuses, the listeners above
+      // start the soundtrack on the visitor's first interaction.
+      startOnGesture();
     })();
 
     // Pause the soundtrack while the tab is hidden to save battery

@@ -70,6 +70,7 @@ export default function HomePage() {
         ref={frame}
         title="PramanixLabs 3D cosmic architecture and services"
         src="/cosmic-architecture.html"
+        allow="autoplay"
         onLoad={() => setFrameReady(true)}
         style={{ display: 'block', width: '100%', height: '100%', border: 0 }}
       />
