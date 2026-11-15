@@ -367,6 +367,8 @@
     .drawer-panel {
       transform: translateY(20px) scale(0.97);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
     }
     .drawer-backdrop.open .drawer-panel {
       transform: translateY(0) scale(1);
@@ -809,7 +811,7 @@
 
   <!-- Direct Studio Inquiry Modal -->
   <div id="inquiry-modal" class="drawer-backdrop fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4" onclick="closeInquiryModal()">
-    <div role="dialog" aria-modal="true" aria-labelledby="inquiry-title" class="drawer-panel hud-glass bg-[#070B16]/95 border border-white/20 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 text-white space-y-5" onclick="event.stopPropagation()">
+    <div role="dialog" aria-modal="true" aria-labelledby="inquiry-title" data-lenis-prevent="true" class="drawer-panel hud-glass bg-[#070B16]/95 border border-white/20 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 text-white space-y-5" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b border-white/10 pb-4">
         <span class="font-mono text-[11px] tracking-widest uppercase text-orange-400">PRAMANIXLABS · PROJECT ENQUIRY</span>
         <button type="button" onclick="closeInquiryModal()" aria-label="Close inquiry form" class="font-mono text-xs text-slate-400 hover:text-white">CLOSE ✕</button>
