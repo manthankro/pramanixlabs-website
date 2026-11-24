@@ -518,21 +518,9 @@
           });
         }
 
-        // Auto-scroll Chapter 6 content down to reveal footer as user scrolls the final stretch
-        const chapter5 = chapterEls[5];
-        // On phones this chapter is a native touch scroller. Driving scrollTop
-        // from the outer animation loop cancels the user's swipe momentum.
-        if (chapter5 && !isMobile) {
-          if (progress >= 0.84) {
-            const ch5Factor = Math.min(1, Math.max(0, (progress - 0.84) / 0.16));
-            const maxScroll = chapter5.scrollHeight - chapter5.clientHeight;
-            if (maxScroll > 0) {
-              chapter5.scrollTop = ch5Factor * maxScroll;
-            }
-          } else {
-            chapter5.scrollTop = 0;
-          }
-        }
+        // The final chapter owns its own native scroll area. Never write its
+        // scrollTop from this animation loop: doing so races touch momentum,
+        // browser viewport resizing, and scroll chaining at the page boundary.
       }
 
       window.updateTargetScroll = function(scrollY) {
