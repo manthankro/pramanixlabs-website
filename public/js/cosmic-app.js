@@ -53,19 +53,6 @@
       });
     }
 
-    function downloadBrandSVG() {
-      const svgMarkup = createPramanixLogoSVG(512, 'export', true);
-      const blob = new Blob([svgMarkup], { type: 'image/svg+xml;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'pramanixlabs-monogram-dark.svg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-    }
-
     hydrateBrandLogos();
 
     // =========================================================================
@@ -143,7 +130,7 @@
         powerPreference: 'high-performance',
         alpha: false,
       });
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.5 : 1.75);
       renderer.setPixelRatio(dpr);
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setClearColor(0x020308, 1);
@@ -152,9 +139,9 @@
       const camera = new THREE.PerspectiveCamera(46, window.innerWidth / window.innerHeight, 0.1, 120);
       camera.position.set(0, 0, 6.2);
 
-      // Adaptive particle count (65,000 desktop / 30,000 mobile)
+      // Keep the particle field lighter on phones to reduce heat and battery use.
       const isMobile = window.innerWidth < 768;
-      const COUNT = isMobile ? 42000 : 65000;
+      const COUNT = isMobile ? 30000 : 65000;
 
       const posPortal = new Float32Array(COUNT * 3);
       const posConduit = new Float32Array(COUNT * 3);
@@ -639,6 +626,7 @@
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.5 : 1.75));
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
       } catch (err) {
@@ -814,46 +802,6 @@
       filterProjects(document.querySelector('.filter-btn.bg-white')?.dataset.filter ?? 'all');
     }
 
-    function openProjectDrawer(key) {
-      const data = PROJECTS_DATA[key];
-      if (!data) return;
-      const simOut = document.getElementById('drawer-sim-output');
-      if (simOut) {
-        simOut.classList.add('hidden');
-        simOut.textContent = '';
-      }
-      document.getElementById('drawer-stage').textContent = data.stage;
-      document.getElementById('drawer-title').textContent = data.title;
-      document.getElementById('drawer-summary').textContent = data.summary;
-      document.getElementById('drawer-privacy').textContent = data.privacy;
-
-      document.getElementById('drawer-topology').innerHTML = data.topology
-        .map((step, idx) => {
-          const [nodeLabel, nodeDetail] = step.split('→').map((s) => s.trim());
-          const isLast = idx === data.topology.length - 1;
-          return `<li class="relative">
-            <div class="p-3.5 rounded-xl bg-white/[0.04] border border-white/12 hover:border-sky-400/40 transition-colors flex items-start justify-between gap-3">
-              <div>
-                <div class="font-mono text-[11px] font-medium text-sky-300">${nodeLabel}</div>
-                ${nodeDetail ? `<div class="text-xs text-slate-300 mt-0.5">${nodeDetail}</div>` : ''}
-              </div>
-              <span class="shrink-0 mt-1 w-2 h-2 rounded-full ${isLast ? 'bg-orange-400 shadow-[0_0_8px_#fb923c]' : 'bg-sky-400 shadow-[0_0_8px_#38bdf8]'}"></span>
-            </div>
-            ${!isLast ? `<div class="flex justify-center my-0.5" aria-hidden="true">
-              <svg width="16" height="18" viewBox="0 0 16 18" fill="none">
-                <line x1="8" y1="0" x2="8" y2="18" stroke="rgba(56,189,248,0.55)" stroke-width="1.5" class="topology-flow-line" />
-              </svg></div>` : ''}
-          </li>`;
-        }).join('');
-
-      document.getElementById('drawer-inquire-btn').onclick = () => {
-        closeProjectDrawer();
-        openInquiryModal(`Architecture Inquiry: ${data.title}`);
-      };
-
-      document.getElementById('project-drawer').classList.add('open');
-    }
-
     function closeProjectDrawer() {
       document.getElementById('project-drawer').classList.remove('open');
     }
@@ -867,23 +815,6 @@
 
     function closeInquiryModal() {
       document.getElementById('inquiry-modal').classList.remove('open');
-    }
-
-    function copyStudioEmail() {
-      const el = document.createElement('input');
-      el.value = 'pramanixlabs@gmail.com';
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-
-      const btn = document.getElementById('copy-email-btn');
-      if (btn) {
-        btn.textContent = '✓ Copied pramanixlabs@gmail.com';
-        setTimeout(() => {
-          btn.textContent = 'pramanixlabs@gmail.com (Copy)';
-        }, 2200);
-      }
     }
 
     let inquiryConfig = null;
@@ -1044,248 +975,6 @@
     })();
 
     // =========================================================================
-    // 6. AMBIENT SOUNDTRACK + MICRO-TICKS (PREFERENCE PERSISTS ACROSS RELOADS)
-    // =========================================================================
-    const AUDIO_PREF_KEY = 'prx.ambient-audio';
-    let studioAudioCtx = null;
-    let studioAudioEnabled = false;
-    let ambientNodes = null;
-    let ambientChordTimer = null;
-    let ambientChordIndex = 0;
-
-    // Slow, consonant chord bed: Am7 -> Fmaj7 -> Cmaj7 -> Gmaj7
-    const AMBIENT_CHORDS = [
-      [110.00, 164.81, 261.63, 392.00],
-      [87.31, 130.81, 220.00, 329.63],
-      [130.81, 196.00, 329.63, 493.88],
-      [98.00, 146.83, 246.94, 369.99]
-    ];
-
-    function setAudioToggleState(enabled) {
-      document.querySelectorAll('[data-audio-toggle]').forEach((btn) => {
-        btn.textContent = enabled ? '🔊' : '🔇';
-        btn.setAttribute('aria-pressed', String(enabled));
-        btn.setAttribute('aria-label', enabled ? 'Mute ambient audio' : 'Play ambient audio');
-        btn.setAttribute('title', enabled ? 'Mute ambient audio' : 'Play ambient audio');
-      });
-    }
-
-    function ensureAudioContext() {
-      if (!studioAudioCtx) {
-        studioAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (studioAudioCtx.state === 'suspended') studioAudioCtx.resume();
-      return studioAudioCtx;
-    }
-
-    // Noise-decay impulse: gives the pad a long, soft "deep space" tail
-    function makeReverbImpulse(ctx, seconds, decay) {
-      const rate = ctx.sampleRate;
-      const length = Math.floor(rate * seconds);
-      const impulse = ctx.createBuffer(2, length, rate);
-      for (let channel = 0; channel < 2; channel++) {
-        const data = impulse.getChannelData(channel);
-        for (let i = 0; i < length; i++) {
-          data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);
-        }
-      }
-      return impulse;
-    }
-
-    function startAmbient() {
-      if (ambientNodes) return;
-      const ctx = ensureAudioContext();
-      const now = ctx.currentTime;
-
-      const master = ctx.createGain();
-      master.gain.setValueAtTime(0.0001, now);
-      master.gain.exponentialRampToValueAtTime(0.14, now + 6);
-      master.connect(ctx.destination);
-
-      const reverb = ctx.createConvolver();
-      reverb.buffer = makeReverbImpulse(ctx, 3.6, 2.6);
-      const wet = ctx.createGain();
-      wet.gain.value = 0.55;
-      reverb.connect(wet);
-      wet.connect(master);
-
-      // Soft pad, filtered well below the sparkle so it sits under the page
-      const padFilter = ctx.createBiquadFilter();
-      padFilter.type = 'lowpass';
-      padFilter.frequency.setValueAtTime(700, now);
-      padFilter.Q.value = 0.4;
-      padFilter.connect(master);
-      padFilter.connect(reverb);
-
-      const voices = AMBIENT_CHORDS[0].map((freq, i) => {
-        const osc = ctx.createOscillator();
-        osc.type = i === 0 ? 'sine' : 'triangle';
-        osc.frequency.setValueAtTime(freq, now);
-        osc.detune.setValueAtTime(i % 2 ? 4 : -4, now);
-        const gain = ctx.createGain();
-        gain.gain.value = i === 0 ? 0.2 : 0.085;
-        osc.connect(gain);
-        gain.connect(padFilter);
-        osc.start();
-        return { osc, gain };
-      });
-
-      // Very quiet high shimmer that drifts slowly, like distant starlight
-      const shimmer = ctx.createOscillator();
-      shimmer.type = 'sine';
-      shimmer.frequency.setValueAtTime(AMBIENT_CHORDS[0][2] * 2, now);
-      const shimmerGain = ctx.createGain();
-      shimmerGain.gain.value = 0.012;
-      const shimmerLfo = ctx.createOscillator();
-      shimmerLfo.frequency.value = 0.06;
-      const shimmerLfoGain = ctx.createGain();
-      shimmerLfoGain.gain.value = 0.008;
-      shimmerLfo.connect(shimmerLfoGain);
-      shimmerLfoGain.connect(shimmerGain.gain);
-      shimmer.connect(shimmerGain);
-      shimmerGain.connect(reverb);
-      shimmer.start();
-      shimmerLfo.start();
-
-      // Filtered noise "air" layer with a very slow swell
-      const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
-      const samples = noiseBuffer.getChannelData(0);
-      let last = 0;
-      for (let i = 0; i < samples.length; i++) {
-        last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
-        samples[i] = last * 3.2;
-      }
-      const noise = ctx.createBufferSource();
-      noise.buffer = noiseBuffer;
-      noise.loop = true;
-      const noiseFilter = ctx.createBiquadFilter();
-      noiseFilter.type = 'bandpass';
-      noiseFilter.frequency.value = 1500;
-      noiseFilter.Q.value = 0.6;
-      const noiseGain = ctx.createGain();
-      noiseGain.gain.value = 0.03;
-      const lfo = ctx.createOscillator();
-      lfo.frequency.value = 0.04;
-      const lfoGain = ctx.createGain();
-      lfoGain.gain.value = 0.018;
-      lfo.connect(lfoGain);
-      lfoGain.connect(noiseGain.gain);
-      noise.connect(noiseFilter);
-      noiseFilter.connect(noiseGain);
-      noiseGain.connect(master);
-      noiseGain.connect(reverb);
-      noise.start();
-      lfo.start();
-
-      ambientNodes = { master, reverb, wet, padFilter, voices, shimmer, shimmerGain, shimmerLfo, noise, noiseGain, lfo };
-
-      ambientChordTimer = setInterval(() => {
-        if (!ambientNodes) return;
-        ambientChordIndex = (ambientChordIndex + 1) % AMBIENT_CHORDS.length;
-        const chord = AMBIENT_CHORDS[ambientChordIndex];
-        const t = ctx.currentTime;
-        ambientNodes.voices.forEach((voice, i) => voice.osc.frequency.setTargetAtTime(chord[i], t, 2.6));
-        ambientNodes.shimmer.frequency.setTargetAtTime(chord[2] * 2, t, 3.2);
-      }, 16000);
-    }
-
-    function stopAmbient() {
-      if (ambientChordTimer) { clearInterval(ambientChordTimer); ambientChordTimer = null; }
-      if (!ambientNodes || !studioAudioCtx) { ambientNodes = null; return; }
-      const dying = ambientNodes;
-      ambientNodes = null;
-      const stopAt = studioAudioCtx.currentTime + 2.2;
-      try {
-        dying.master.gain.cancelScheduledValues(studioAudioCtx.currentTime);
-        dying.master.gain.setTargetAtTime(0.0001, studioAudioCtx.currentTime, 0.6);
-        dying.voices.forEach((voice) => voice.osc.stop(stopAt));
-        dying.shimmer.stop(stopAt);
-        dying.shimmerLfo.stop(stopAt);
-        dying.noise.stop(stopAt);
-        dying.lfo.stop(stopAt);
-        setTimeout(() => { try { dying.master.disconnect(); } catch (e) {} }, 2400);
-      } catch (e) { /* already stopped */ }
-    }
-
-    function setStudioAudio(enabled, silentTick) {
-      studioAudioEnabled = enabled;
-      setAudioToggleState(enabled);
-      try { localStorage.setItem(AUDIO_PREF_KEY, enabled ? 'on' : 'off'); } catch (e) { /* storage blocked */ }
-      if (enabled) {
-        try {
-          ensureAudioContext();
-          startAmbient();
-          if (!silentTick) playMicroTick();
-        } catch (e) {
-          document.querySelectorAll('[data-audio-toggle]').forEach((btn) => { btn.textContent = '⚠️'; });
-        }
-      } else {
-        stopAmbient();
-      }
-    }
-
-    function toggleStudioAudio() {
-      setStudioAudio(!studioAudioEnabled);
-    }
-
-    function playMicroTick() {
-      if (!studioAudioEnabled || !studioAudioCtx) return;
-      try {
-        const osc = studioAudioCtx.createOscillator();
-        const gain = studioAudioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(2800 + Math.random() * 800, studioAudioCtx.currentTime);
-        gain.gain.setValueAtTime(0.03, studioAudioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, studioAudioCtx.currentTime + 0.06);
-        osc.connect(gain);
-        gain.connect(studioAudioCtx.destination);
-        osc.start();
-        osc.stop(studioAudioCtx.currentTime + 0.06);
-      } catch (e) { /* silently fail for strict autoplay policies */ }
-    }
-
-    // Attach micro-tick sounds to interactive hover events
-    document.querySelectorAll('.hud-glass, .pill-cta-primary, .pill-cta-secondary, .chapter-dot, .nav-link').forEach((el) => {
-      el.addEventListener('pointerenter', () => { playMicroTick(); }, { passive: true });
-    });
-
-    // Restore the visitor's choice; the soundtrack plays unless they muted it.
-    // Browsers block audio until the page is interacted with, so start now and
-    // fall back to the first gesture when autoplay is refused.
-    (function restoreAudioPreference() {
-      let stored = null;
-      try { stored = localStorage.getItem(AUDIO_PREF_KEY); } catch (e) { /* storage blocked */ }
-      studioAudioEnabled = stored !== 'off';
-      setAudioToggleState(studioAudioEnabled);
-      if (!studioAudioEnabled) return;
-
-      const startOnGesture = () => {
-        if (!studioAudioEnabled) return;
-        try {
-          ensureAudioContext();
-          if (!ambientNodes) startAmbient();
-        } catch (e) { /* autoplay blocked */ }
-      };
-      ['pointerdown', 'touchstart', 'keydown', 'wheel'].forEach((type) => {
-        window.addEventListener(type, (event) => {
-          // Let the toggle itself decide; avoid a blip when muting a muted page.
-          if (event.target && event.target.closest && event.target.closest('[data-audio-toggle]')) return;
-          startOnGesture();
-        }, { passive: true });
-      });
-
-      // Try to play immediately; if the browser refuses, the listeners above
-      // start the soundtrack on the visitor's first interaction.
-      startOnGesture();
-    })();
-
-    // Pause the soundtrack while the tab is hidden to save battery
-    document.addEventListener('visibilitychange', () => {
-      if (!studioAudioCtx || !studioAudioEnabled) return;
-      if (document.hidden) { studioAudioCtx.suspend(); } else { studioAudioCtx.resume(); }
-    });
-
-    // =========================================================================
     // 7. LIVE DIAGNOSTIC SIMULATION RUNNER (PROJECT DRAWER)
     // =========================================================================
     let simRunning = false;
@@ -1322,7 +1011,6 @@
         if (i < lines.length) {
           output.textContent += (i > 0 ? '\n' : '') + lines[i];
           output.scrollTop = output.scrollHeight;
-          playMicroTick();
           i++;
           setTimeout(typeLine, 160 + Math.random() * 240);
         } else {
@@ -1344,7 +1032,6 @@
     if (action === 'stop') return;
     switch (action) {
       case 'chapter': jumpToChapter(Number(el.getAttribute('data-index'))); break;
-      case 'toggle-audio': toggleStudioAudio(); break;
       case 'booking': openBookingOrInquiry(el.getAttribute('data-topic')); break;
       case 'inquiry': openInquiryModal(el.getAttribute('data-topic')); break;
       case 'close-drawer': closeProjectDrawer(); break;
