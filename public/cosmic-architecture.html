@@ -125,7 +125,11 @@
       filter: blur(12px);
     }
 
-    #chapter-5 { touch-action: pan-y; overscroll-behavior-y: auto; }
+    #chapter-5 {
+      touch-action: pan-y;
+      overscroll-behavior-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     #chapter-5.active { pointer-events: auto; }
 
     @media (max-width: 767px) {
