@@ -520,7 +520,9 @@
 
         // Auto-scroll Chapter 6 content down to reveal footer as user scrolls the final stretch
         const chapter5 = chapterEls[5];
-        if (chapter5) {
+        // On phones this chapter is a native touch scroller. Driving scrollTop
+        // from the outer animation loop cancels the user's swipe momentum.
+        if (chapter5 && !isMobile) {
           if (progress >= 0.84) {
             const ch5Factor = Math.min(1, Math.max(0, (progress - 0.84) / 0.16));
             const maxScroll = chapter5.scrollHeight - chapter5.clientHeight;
@@ -664,145 +666,74 @@
       else window.scrollTo({ top: destination, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     }
 
-    function filterProjects(category) {
-      document.querySelectorAll('.filter-btn').forEach((btn) => {
-        if (btn.dataset.filter === category) {
-          btn.classList.add('bg-white', 'text-slate-950');
-          btn.classList.remove('text-slate-300');
-        } else {
-          btn.classList.remove('bg-white', 'text-slate-950');
-          btn.classList.add('text-slate-300');
-        }
-      });
-
-      document.querySelectorAll('.project-card').forEach((card) => {
-        const exists = card.dataset.present !== 'false';
-        if (exists && (category === 'all' || card.dataset.category === category)) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
     // =========================================================================
     // 4. PROJECT ARCHITECTURE DRAWER & DIRECT STUDIO INQUIRY MODAL
     // =========================================================================
     const PROJECTS_DATA = {
-      restovra: {
-        stage: 'IN DEVELOPMENT · RECOVERY ASSURANCE',
-        title: 'Restovra',
-        summary: 'A self-hosted recovery assurance workbench that turns authorised database backups into reviewed recovery drills and evidence teams can inspect.',
-        privacy: '🔒 Source kept private',
-        topology: [
-          '01 · Authorised database backups',
-          '02 · Reviewed recovery drills',
-          '03 · Inspectable recovery evidence',
-        ],
-      },
       kavachscan: {
-        stage: 'CONTROLLED EVALUATION · CYBERSECURITY',
+        stage: 'MOBILE SECURITY · R&D SYSTEM',
         title: 'KavachScan',
-        summary: 'A consent-first, read-only website security checker for small businesses in India. It turns selected public website and email settings into plain-language observations and practical next steps.',
-        privacy: '🔒 Source kept private',
-        topology: [
-          '01 · Selected public website and email settings',
-          '02 · Consent-first, read-only checks',
-          '03 · Plain-language observations and next steps',
-        ],
+        summary: 'Automated mobile security and vulnerability engine for surfacing hidden permission leaks, insecure configurations and runtime threats.',
+        details: ['PROBLEM · Mobile apps and devices can expose users through hidden permission leaks, insecure configuration and runtime threats.', 'APPROACH · Automated static and dynamic inspection with risk scoring and remediation guidance.', 'STACK · Android security · Python · Automated auditing · Zero-trust'],
+        privacy: 'PramanixLabs system',
+        trace: ['Preparing a sample mobile app assessment…', 'Reviewing declared permissions and configuration…', 'Mapping static and runtime inspection stages…', 'Preview complete. No device or application was scanned.'],
       },
       'pramanix-ai': {
-        stage: 'PUBLIC REPOSITORY · AI LEARNING',
+        stage: 'MULTI-AGENT WORKFLOW · R&D SYSTEM',
         title: 'Pramanix AI',
-        summary: 'An AI engineering mentor and capstone companion exploring project architecture, software concepts, debugging and viva preparation for engineering students.',
-        privacy: 'Public repository',
-        topology: [
-          'AI engineering mentor and capstone companion',
-          'Architecture, software concepts and debugging',
-          'Viva preparation for engineering students',
-        ],
+        summary: 'A multi-agent workflow and orchestration system for business tasks that need structured steps, tools and stateful context.',
+        details: ['PROBLEM · Generic chatbots often struggle with multi-step business workflows that need deterministic tools and stateful context.', 'APPROACH · Stateful graph routing across agents, structured outputs, tool calls and a streaming interface.', 'STACK · LangGraph · Gemini · FastAPI · React · TypeScript'],
+        privacy: 'PramanixLabs system',
+        trace: ['Preparing a sample workflow…', 'Mapping graph routing and shared state…', 'Previewing structured tool handoffs…', 'Preview complete. No live model or business tools were called.'],
       },
       'second-life-id': {
-        stage: 'IN EXPLORATION · DIGITAL IDENTITY',
-        title: 'SECOND LIFE ID',
-        summary: 'An early-stage identity concept in the PramanixLabs portfolio. Scope and product details are still being explored.',
-        privacy: '✦ Early-stage concept',
-        topology: [
-          'Product scope is still being explored.',
-        ],
-      },
-      'pramanix-shelf': {
-        stage: 'IN EXPLORATION · DIGITAL LEARNING',
-        title: 'Pramanix Shelf',
-        summary: 'A reading and learning experience in early exploration. The product shape is still being worked out.',
-        privacy: '✦ Early-stage concept',
-        topology: [
-          'Product scope is still being explored.',
-        ],
+        stage: 'HARDWARE IDENTITY · R&D SYSTEM',
+        title: 'Second-Life-ID',
+        summary: 'A hardware identity and diagnostic platform exploring tamper-evident, component-level verification for refurbished and enterprise devices.',
+        details: ['PROBLEM · Refurbished and enterprise devices need trustworthy component-level verification.', 'APPROACH · Hardware hashing, DirectADB serial verification and offline-verifiable cryptographic QR certificates.', 'STACK · Python · FastAPI · React · TypeScript · Cryptography'],
+        privacy: 'PramanixLabs system',
+        trace: ['Preparing a sample device identity record…', 'Reviewing component-hash verification stages…', 'Previewing offline certificate validation…', 'Preview complete. No physical device was connected or verified.'],
       },
     };
 
-    function applyProjects(projects) {
-      if (!Array.isArray(projects)) return;
-      const keysByCode = { '01': 'restovra', '02': 'kavachscan', '03': 'pramanix-ai', '04': 'second-life-id', '05': 'pramanix-shelf' };
-      const grid = document.getElementById('projects-grid');
-      if (!grid) return;
-      const cards = new Map(Array.from(grid.querySelectorAll('[data-project-code]')).map(card => [card.dataset.projectCode, card]));
-      const ordered = [];
-      const incomingCodes = new Set(projects.map(project => String(project.code ?? '')));
-      cards.forEach((card, code) => { card.dataset.present = incomingCodes.has(code) ? 'true' : 'false'; });
+    let selectedProjectKey = null;
+    let simTimers = [];
 
-      projects.forEach(project => {
-        const code = String(project.code ?? '');
-        const card = cards.get(code);
-        const key = keysByCode[code];
-        const drawer = PROJECTS_DATA[key];
-        if (!card || !drawer) return;
-        const title = card.querySelector('h3');
-        const description = card.querySelector('p');
-        const status = card.querySelector('[data-project-status]');
-        const image = card.querySelector('[data-project-image]');
-        const horizonCard = document.querySelector(`[data-horizon-code="${code}"]`);
-        if (title) title.textContent = project.name;
-        if (description) description.textContent = project.description;
-        if (status) status.textContent = project.status;
-        if (image) {
-          if (project.image_url) {
-            image.src = project.image_url;
-            image.alt = project.image_alt || `${project.name} project image`;
-            image.classList.remove('hidden');
-          } else {
-            image.removeAttribute('src');
-            image.alt = '';
-            image.classList.add('hidden');
-          }
-        }
-        card.dataset.category = project.upcoming ? 'exploration' : 'active';
-        drawer.title = project.name;
-        drawer.summary = project.description;
-        drawer.stage = `${project.status} · ${project.category}`;
-        if (horizonCard) {
-          const horizonTitle = horizonCard.querySelector('h3');
-          const horizonDescription = horizonCard.querySelector('p:last-child');
-          if (horizonTitle) horizonTitle.textContent = project.name;
-          if (horizonDescription) horizonDescription.textContent = project.description;
-          horizonCard.classList.toggle('hidden', !project.upcoming);
-        }
-        ordered.push(card);
-      });
+    function stopProjectSimulation() {
+      simTimers.forEach(window.clearTimeout);
+      simTimers = [];
+      const btn = document.getElementById('drawer-sim-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = '';
+      }
+    }
 
-      ordered.forEach(card => grid.appendChild(card));
-      const activeCount = projects.filter(project => !project.upcoming).length;
-      const explorationCount = projects.filter(project => project.upcoming).length;
-      const horizonEmpty = document.getElementById('horizon-empty');
-      if (horizonEmpty) horizonEmpty.classList.toggle('hidden', explorationCount > 0);
-      document.querySelector('[data-filter="all"]').textContent = `All (${projects.length})`;
-      document.querySelector('[data-filter="active"]').textContent = `Active (${activeCount})`;
-      document.querySelector('[data-filter="exploration"]').textContent = `R&D / Shelf (${explorationCount})`;
-      filterProjects(document.querySelector('.filter-btn.bg-white')?.dataset.filter ?? 'all');
+    function openProjectDrawer(key) {
+      const project = PROJECTS_DATA[key];
+      if (!project) return;
+      stopProjectSimulation();
+      selectedProjectKey = key;
+      document.getElementById('drawer-stage').textContent = project.stage;
+      document.getElementById('drawer-title').textContent = project.title;
+      document.getElementById('drawer-summary').textContent = project.summary;
+      document.getElementById('drawer-privacy').textContent = project.privacy;
+      const topology = document.getElementById('drawer-topology');
+      topology.replaceChildren(...project.details.map(detail => {
+        const item = document.createElement('li');
+        item.className = 'rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs leading-relaxed text-slate-300';
+        item.textContent = detail;
+        return item;
+      }));
+      const output = document.getElementById('drawer-sim-output');
+      output.classList.add('hidden');
+      output.textContent = '';
+      document.getElementById('project-drawer').classList.add('open');
     }
 
     function closeProjectDrawer() {
+      stopProjectSimulation();
       document.getElementById('project-drawer').classList.remove('open');
     }
 
@@ -810,11 +741,15 @@
       const topics = Array.from(document.querySelectorAll('input[name="topic"]'));
       const selectedTopic = topics.find(input => input.value === topic) || topics.find(input => input.value === 'Something else');
       if (selectedTopic) selectedTopic.checked = true;
+      const title = document.getElementById('inquiry-title');
+      if (title) title.textContent = topic && topic !== 'Something else' ? `Project conversation · ${topic.replace('Project enquiry: ', '')}` : 'Start a project conversation';
       document.getElementById('inquiry-modal').classList.add('open');
     }
 
     function closeInquiryModal() {
       document.getElementById('inquiry-modal').classList.remove('open');
+      const title = document.getElementById('inquiry-title');
+      if (title) title.textContent = 'Start a project conversation';
     }
 
     let inquiryConfig = null;
@@ -830,10 +765,6 @@
 
     window.addEventListener('message', event => {
       if (event.origin !== window.location.origin || event.source !== window.parent) return;
-      if (event.data?.type === 'PRAMANIX_PROJECTS_DATA') {
-        applyProjects(event.data.projects);
-        return;
-      }
       if (event.data?.type !== 'PRAMANIX_SUPABASE_CONFIG') return;
       const { url, anonKey, bookingUrl } = event.data;
       if (typeof bookingUrl === 'string') {
@@ -977,49 +908,27 @@
     // =========================================================================
     // 7. LIVE DIAGNOSTIC SIMULATION RUNNER (PROJECT DRAWER)
     // =========================================================================
-    let simRunning = false;
-
     function runProjectSimulation() {
-      if (simRunning) return;
+      stopProjectSimulation();
       const output = document.getElementById('drawer-sim-output');
       const btn = document.getElementById('drawer-sim-btn');
-      if (!output || !btn) return;
-      simRunning = true;
+      const project = PROJECTS_DATA[selectedProjectKey];
+      if (!output || !btn || !project) return;
       output.classList.remove('hidden');
       output.textContent = '';
+      output.setAttribute('aria-label', `${project.title} system trace preview`);
+      btn.disabled = true;
       btn.style.opacity = '0.5';
       btn.style.pointerEvents = 'none';
-
-      const title = (document.getElementById('drawer-title').textContent || 'Project').trim();
-      const lines = [
-        '> Initializing ' + title + ' diagnostic scan...',
-        '> Loading project configuration manifest...',
-        '> Verifying module dependency tree... OK',
-        '> Running architecture integrity check...',
-        '> Analyzing data-flow topology graph...',
-        '> Validating security boundaries... PASS',
-        '> Testing API endpoint connectivity... OK',
-        '> Benchmarking response latency: p95 < 120ms',
-        '> Memory footprint: within threshold ✓',
-        '> Static analysis: 0 warnings, 0 errors',
-        '> All subsystems nominal ✓',
-        '> Diagnostic complete — ' + title + ' deployment-ready.',
-      ];
-
-      let i = 0;
-      function typeLine() {
-        if (i < lines.length) {
-          output.textContent += (i > 0 ? '\n' : '') + lines[i];
+      output.textContent = `SYSTEM TRACE PREVIEW · ${project.title}\nThis is an illustrative UI preview; it does not run a live diagnostic.`;
+      project.trace.forEach((line, index) => {
+        const timer = window.setTimeout(() => {
+          output.textContent += `\n> ${line}`;
           output.scrollTop = output.scrollHeight;
-          i++;
-          setTimeout(typeLine, 160 + Math.random() * 240);
-        } else {
-          simRunning = false;
-          btn.style.opacity = '1';
-          btn.style.pointerEvents = '';
-        }
-      }
-      typeLine();
+          if (index === project.trace.length - 1) stopProjectSimulation();
+        }, 300 * (index + 1));
+        simTimers.push(timer);
+      });
     }
 
   // =========================================================================
@@ -1034,6 +943,15 @@
       case 'chapter': jumpToChapter(Number(el.getAttribute('data-index'))); break;
       case 'booking': openBookingOrInquiry(el.getAttribute('data-topic')); break;
       case 'inquiry': openInquiryModal(el.getAttribute('data-topic')); break;
+      case 'project': openProjectDrawer(el.getAttribute('data-project-key')); break;
+      case 'inquire-project': {
+        const project = PROJECTS_DATA[selectedProjectKey];
+        if (project) {
+          closeProjectDrawer();
+          openInquiryModal(`Project enquiry: ${project.title}`);
+        }
+        break;
+      }
       case 'close-drawer': closeProjectDrawer(); break;
       case 'close-modal': closeInquiryModal(); break;
       case 'run-sim': runProjectSimulation(); break;
